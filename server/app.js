@@ -9,7 +9,7 @@ const middleware = require('./middleware')
 const loginRouter = require('./routes/login')
 const topicsRouter = require('./routes/topics')
 
-app.use(cors())
+app.use(cors())	// Tarviiko tätä?
 app.use(express.static('public'))
 app.use(express.json())
 app.use(middleware.requestLogger)
