@@ -1,0 +1,1 @@
+-- Tähän SQL-komentoja copy-pastettavaksi, joilla saa tehtyä oikeanlaisen tietokannan

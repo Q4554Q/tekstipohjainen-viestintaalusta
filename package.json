@@ -1,0 +1,23 @@
+{
+	"name": "tekstipohjainen-viestintaalusta",
+	"version": "1.0.0",
+	"description": "Tekstipohjainen viestintäalusta: Ryhmän 3 projekti Web-projekti -kurssia varten.",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"lint": "eslint ."
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Q4554Q/tekstipohjainen-viestintaalusta.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Q4554Q/tekstipohjainen-viestintaalusta/issues"
+	},
+	"homepage": "https://github.com/Q4554Q/tekstipohjainen-viestintaalusta#readme",
+	"devDependencies": {
+		"eslint": "^8.3.0"
+	}
+}
