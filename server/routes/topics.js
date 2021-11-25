@@ -1,5 +1,7 @@
 // Tänne viestiketjujen reitit
 
+// const { body, validationResult } = require('express-validator')
+
 const router = require('express').Router()
 const Topics = require('../model/topics')
 const { userExtractor } = require('../middleware')
