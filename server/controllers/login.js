@@ -36,8 +36,12 @@ const login = async (req, res) => {
 }
 
 const validatedLogin = [
-	check('username').exists().withMessage('missing username'),
-	check('password').exists().withMessage('missing password'),
+	check('username')
+		.exists()
+		.withMessage('missing username'),
+	check('password')
+		.exists()
+		.withMessage('missing password'),
 	validationHandler,
 	login,
 ]
