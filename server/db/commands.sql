@@ -7,22 +7,22 @@ USE viestintäalusta;
 
 CREATE TABLE users(
 	id INT NOT NULL AUTO_INCREMENT,
-	username VARCHAR(20) UNIQUE,
-	password_hash VARCHAR(60),
+	username VARCHAR(20) UNIQUE NOT NULL,
+	password_hash VARCHAR(60) NOT NULL,
 	PRIMARY KEY (id)
 );
 
 CREATE TABLE topics(
 	id INT NOT NULL AUTO_INCREMENT,
-	topic_name VARCHAR(20),
+	topic_name VARCHAR(20) NOT NULL,
 	PRIMARY KEY (id)
 );
 
 CREATE TABLE threads(
 	id INT NOT NULL AUTO_INCREMENT,
-	topic_id INT,
+	topic_id INT NOT NULL,
 	-- user_id ei käy
-	writer_id INT,
+	writer_id INT NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY(topic_id) REFERENCES topics(id),
 	FOREIGN KEY(writer_id) REFERENCES users(id)
@@ -30,10 +30,10 @@ CREATE TABLE threads(
 
 CREATE TABLE messages(
 	id INT NOT NULL AUTO_INCREMENT,
-	thread_id INT,
+	thread_id INT NOT NULL,
 	-- user_id ei käy
-	writer_id INT,
-	content VARCHAR(350),
+	writer_id INT NOT NULL,
+	content VARCHAR(350) NOT NULL,
 	score INT DEFAULT 0,
 	posted_time DATETIME DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (id),

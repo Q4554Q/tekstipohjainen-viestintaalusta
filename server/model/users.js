@@ -30,9 +30,10 @@ const getById = async (id) => {
 }
 
 const create = async (user) => {
-	console.log(user)
-	// Insert a new user with a hashed password into the db
-	return user
+	const sql = 'INSERT INTO users SET username = ?, password_hash = ?'
+	const resultEvent = await query(sql, [user.username, user.passwordHash])
+	const createdUser = await getById(resultEvent.insertId)
+	return createdUser
 }
 
 module.exports = {
