@@ -4,9 +4,8 @@ const app = express()
 const cors = require('cors')
 const middleware = require('./middleware')
 
-// db = require('./db')
-
 const loginRouter = require('./routes/login')
+const usersRouter = require('./routes/users')
 const topicsRouter = require('./routes/topics')
 
 app.use(cors())	// Tarviiko tätä?
@@ -17,6 +16,7 @@ app.use(middleware.tokenExtractor)
 
 // Routes
 app.use('/api/login', loginRouter)
+app.use('/api/users', usersRouter)
 app.use('/api/topics', topicsRouter)
 
 app.use(middleware.unknownEndpoint)
