@@ -2,10 +2,10 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Users = require('../model/users')
 const { SECRET } = require('../utils/config')
-// const { body, validationResult } = require('express-validator')
+const { check } = require('express-validator')
+const validationHandler = require('../middleware/validationHandler')
 
 const login = async (req, res) => {
-	//TODO: Validointi!
 	const { username, password } = req.body
 
 	const user = await Users.getByUsername(username)
@@ -35,6 +35,13 @@ const login = async (req, res) => {
 		})
 }
 
+const validatedLogin = [
+	check('username').exists().withMessage('missing username'),
+	check('password').exists().withMessage('missing password'),
+	validationHandler,
+	login,
+]
+
 module.exports = {
-	login
+	login: validatedLogin
 }
