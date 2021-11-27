@@ -8,7 +8,7 @@
 		"start": "node index",
 		"dev": "nodemon index",
 		"lint": "eslint .",
-		"build:ui": "rmdir public /s /q && cd ../client/ && npm run build --prod && xcopy /S /E /I dist ..\\server\\public"
+		"build:ui": "rmdir public /s /q 2>null && cd ../client/ && npm run build --prod && xcopy /S /E /I dist ..\\server\\public"
 	},
 	"author": "",
 	"license": "ISC",

@@ -5,7 +5,11 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"lint": "eslint ."
+		"lint": "eslint .",
+		"install": "cd ./server && npm i && cd ../client && npm i",
+		"build:ui": "cd ./server && npm run build:ui",
+		"start": "cd ./server && npm run start",
+		"start:ui": "cd ./client && npm run serve"
 	},
 	"repository": {
 		"type": "git",
