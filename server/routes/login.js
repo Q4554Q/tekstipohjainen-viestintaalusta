@@ -7,7 +7,7 @@ const { SECRET } = require('../utils/config')
 router.post('/', async (req, res) => {
 	const body = req.body
 
-	const user = await Users.findOne({ username: body.username })
+	const user = await Users.findByUsername({ username: body.username })
 	const passwordCorrect = user === null
 		? false
 		: await bcrypt.compare(body.password, user.passwordHash)

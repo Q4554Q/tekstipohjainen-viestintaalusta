@@ -7,7 +7,7 @@ USE viestintäalusta;
 
 CREATE TABLE users(
 	id INT NOT NULL AUTO_INCREMENT,
-	username VARCHAR(20),
+	username VARCHAR(20) UNIQUE,
 	password_hash VARCHAR(60),
 	PRIMARY KEY (id)
 );

@@ -1,12 +1,42 @@
-// Tänne käyttäjien tietokantahommat
+const query = require('../db')
 
-const findById = (id) => {
-	console.log(id)
-	return {
-		id: 1
+const getAll = async () => {
+	const sql = 'SELECT * FROM users'
+
+	const rows = await query(sql, [])
+	const users = rows.map(row => {
+		return {
+			id: row.id,
+			username: row.username,
+			// passwordHash: row.password_hash,
+		}
+	})
+	return users
+}
+
+const getById = async (id) => {
+	const sql = 'SELECT * FROM users WHERE id = ?'
+
+	const rows = await query(sql, [id])
+	let user = undefined
+	if (rows.length > 0) {
+		user = {
+			id: rows[0].id,
+			username: rows[0].username,
+			// passwordHash: rows[0].password_hash,
+		}
 	}
+	return user
+}
+
+const create = async (user) => {
+	console.log(user)
+	// Insert a new user with a hashed password into the db
+	return user
 }
 
 module.exports = {
-	findById,
+	getAll,
+	getById,
+	create,
 }
