@@ -29,6 +29,21 @@ const getById = async (id) => {
 	return user
 }
 
+const getByUsername = async (username) => {
+	const sql = 'SELECT * FROM users WHERE username = ?'
+
+	const rows = await query(sql, [username])
+	let user = undefined
+	if (rows.length > 0) {
+		user = {
+			id: rows[0].id,
+			username: rows[0].username,
+			passwordHash: rows[0].password_hash,
+		}
+	}
+	return user
+}
+
 const create = async (user) => {
 	const sql = 'INSERT INTO users SET username = ?, password_hash = ?'
 	const resultEvent = await query(sql, [user.username, user.passwordHash])
@@ -39,5 +54,6 @@ const create = async (user) => {
 module.exports = {
 	getAll,
 	getById,
+	getByUsername,
 	create,
 }

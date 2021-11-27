@@ -1,6 +1,6 @@
 const Users = require('../model/users')
-// const { body, validationResult } = require('express-validator')
 const bcrypt = require('bcrypt')
+// const { body, validationResult } = require('express-validator')
 
 const getAll = async (req, res) => {
 	const users = await Users.getAll()
@@ -15,7 +15,7 @@ const getById = async (req, res) => {
 }
 
 const create = async (req, res) => {
-	// Validointi!
+	//TODO: Validointi!
 	const { username, password } = req.body
 	const passwordHash = await bcrypt.hash(password, 10)
 
