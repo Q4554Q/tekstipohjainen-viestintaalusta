@@ -36,6 +36,7 @@ const getByThreadId = async (threadId) => {
 			postedTime: row.posted_time,
 		}
 	})
+	// TODO: Varmista että viestit on oikeassa järjestyksessä, ja korvaa writerId kirjoittajakohtaisilla anonyymeillä järjestysnumeroilla
 
 	return messages
 }
@@ -57,6 +58,7 @@ const getFirstInThread = async (threadId) => {
 			postedTime: row.posted_time,
 		}
 	}
+	// TODO: Korvaa writerId kirjoittajakohtaisella anonyymillä järjestysnumerolla (eli AP:lle = 1)
 
 	return message
 }

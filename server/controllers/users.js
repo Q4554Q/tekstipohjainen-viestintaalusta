@@ -10,9 +10,10 @@ const getAll = async (req, res) => {
 
 const getById = async (req, res) => {
 	const user = await Users.getById(req.params.id)
-	if (user)
-		res.json(user)
-	res.status(404).end()
+	if (!user) {
+		res.status(404).json({ error: 'a user was not found with the given id' })
+	}
+	res.json(user)
 }
 
 const create = async (req, res) => {

@@ -49,9 +49,21 @@ const create = async (thread, firstMessage) => {
 	return createdThread
 }
 
-const addMessage = async () => {
-	// Lisää uuden viestin annettuun viestiketjuun
-	return undefined
+const addMessage = async (message) => {
+	const { threadId } = message
+
+	// Check that the thread exists
+	const thread = await getById(threadId)
+	if (!thread) return undefined
+
+	// Create a new message with incremented index_in_thread
+	const messages = await Messages.getByThreadId(threadId)
+	message.indexInThread = messages.length + 1
+	await Messages.create(message)
+
+	// Return the updated thread
+	const updatedThread = await getById(threadId)
+	return updatedThread
 }
 
 module.exports = {

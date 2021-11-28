@@ -9,9 +9,10 @@ const getAll = async (req, res) => {
 
 const getById = async (req, res) => {
 	const thread = await Threads.getById(req.params.id)
-	if (thread)
-		res.json(thread)
-	res.status(404).end()
+	if (!thread) {
+		res.status(404).json({ error: 'a thread was not found with the given id' })
+	}
+	res.json(thread)
 }
 
 const create = async (req, res) => {
@@ -32,8 +33,21 @@ const create = async (req, res) => {
 }
 
 const addMessage = async (req, res) => {
-	// Lisää uuden viestin annettuun viestiketjuun
-	return undefined
+	const user = req.user
+	const { message } = req.body
+	const threadId = req.params.id
+
+	const newMessage = {
+		threadId: threadId,
+		writerId: user.id,
+		content: message,
+	}
+	const updatedThread = await Threads.addMessage(newMessage)
+
+	if (!updatedThread) {
+		res.status(404).json({ error: 'a thread was not found with the given id' })
+	}
+	res.status(201).json(updatedThread)
 }
 
 const validatedCreate = [
@@ -45,10 +59,9 @@ const validatedCreate = [
 ]
 
 const validatedAddMessage = [
-	// check('username')
-	// 	.exists()
-	// 	.isLength({ min: 3 })
-	// 	.withMessage('The username must have at least 3 characters'),
+	check('message')
+		.isLength({ min: 1, max: 350 })
+		.withMessage('The message must be between 1 and 350 characters'),
 	validationHandler,
 	addMessage,
 ]
