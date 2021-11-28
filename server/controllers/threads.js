@@ -1,6 +1,7 @@
 const Threads = require('../model/threads')
 const { check } = require('express-validator')
 const validationHandler = require('../middleware/validationHandler')
+const hideWriters = require('../utils/hideWriters')
 
 const getAll = async (req, res) => {
 	const threads = await Threads.getAll()
@@ -73,21 +74,6 @@ const validatedAddMessage = [
 	validationHandler,
 	addMessage,
 ]
-
-const hideWriters = (thread, user) => {
-	delete thread.writerId
-	thread.yourWriterId = -1
-
-	const writerIds = []
-	for (let i = 0; i < thread.messages.length; i++) {
-		let message = thread.messages[i]
-		const { writerId } = message
-		if (!writerIds.includes(writerId)) writerIds.push(writerId)
-		message.writerId = writerIds.indexOf(writerId) + 1
-
-		if (writerId === user.id) thread.yourWriterId = writerIds.indexOf(writerId) + 1
-	}
-}
 
 module.exports = {
 	getAll,

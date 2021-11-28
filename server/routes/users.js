@@ -3,7 +3,7 @@ const usersController = require('../controllers/users')
 const userExtractor = require('../middleware/userExtractor')
 
 router
-	.get('/:id', userExtractor, usersController.getById)
+	.get('/me', userExtractor, usersController.getMyProfile)
 	.get('/', userExtractor, usersController.getAll)
 	.post('/', usersController.create)
 

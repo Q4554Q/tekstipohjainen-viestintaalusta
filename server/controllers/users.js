@@ -1,22 +1,31 @@
 const Users = require('../model/users')
+const Threads = require('../model/threads')
 const bcrypt = require('bcrypt')
 const { check } = require('express-validator')
 const validationHandler = require('../middleware/validationHandler')
+const hideWriters = require('../utils/hideWriters')
 
 const getAll = async (req, res) => {
 	const users = await Users.getAll()
 	res.json(users)
 }
 
-const getById = async (req, res) => {
-	const { id } = req.params
+const getMyProfile = async (req, res) => {
+	const { id } = req.user
 	const user = await Users.getById(id)
 
 	if (!user) {
 		return res.status(404).json({ error: 'a user was not found with the given id' })
-	} else if (parseInt(id) !== req.user.id) {
-		return res.status(401).json({ error: 'you can only access your own profile' })
 	}
+
+	// Get all threads in which this user has posted
+	const threads = await Threads.getAll()
+	threads.forEach(thread => {
+		hideWriters(thread, req.user)
+		thread.messages = thread.messages.slice(0, 1)
+	})
+	user.threads = threads.filter(thread => thread.yourWriterId > 0)
+
 	res.json(user)
 }
 
@@ -46,6 +55,6 @@ const validatedCreate = [
 
 module.exports = {
 	getAll,
-	getById,
+	getMyProfile,
 	create: validatedCreate,
 }
