@@ -4,14 +4,19 @@ const validationHandler = require('../middleware/validationHandler')
 
 const getAll = async (req, res) => {
 	const threads = await Threads.getAll()
+	threads.forEach(thread => {
+		hideWriters(thread, req.user)
+		thread.messages = thread.messages.slice(0, 1)
+	})
 	res.json(threads)
 }
 
 const getById = async (req, res) => {
 	const thread = await Threads.getById(req.params.id)
 	if (!thread) {
-		res.status(404).json({ error: 'a thread was not found with the given id' })
+		return res.status(404).json({ error: 'a thread was not found with the given id' })
 	}
+	hideWriters(thread, req.user)
 	res.json(thread)
 }
 
@@ -29,6 +34,7 @@ const create = async (req, res) => {
 		content: message,
 	}
 	const createdThread = await Threads.create(newThread, firstMessage)
+	hideWriters(createdThread, req.user)
 	res.status(201).json(createdThread)
 }
 
@@ -45,8 +51,10 @@ const addMessage = async (req, res) => {
 	const updatedThread = await Threads.addMessage(newMessage)
 
 	if (!updatedThread) {
-		res.status(404).json({ error: 'a thread was not found with the given id' })
+		return res.status(404).json({ error: 'a thread was not found with the given id' })
 	}
+
+	hideWriters(updatedThread, req.user)
 	res.status(201).json(updatedThread)
 }
 
@@ -65,6 +73,21 @@ const validatedAddMessage = [
 	validationHandler,
 	addMessage,
 ]
+
+const hideWriters = (thread, user) => {
+	delete thread.writerId
+	thread.yourWriterId = -1
+
+	const writerIds = []
+	for (let i = 0; i < thread.messages.length; i++) {
+		let message = thread.messages[i]
+		const { writerId } = message
+		if (!writerIds.includes(writerId)) writerIds.push(writerId)
+		message.writerId = writerIds.indexOf(writerId) + 1
+
+		if (writerId === user.id) thread.yourWriterId = writerIds.indexOf(writerId) + 1
+	}
+}
 
 module.exports = {
 	getAll,

@@ -9,9 +9,13 @@ const getAll = async (req, res) => {
 }
 
 const getById = async (req, res) => {
-	const user = await Users.getById(req.params.id)
+	const { id } = req.params
+	const user = await Users.getById(id)
+
 	if (!user) {
-		res.status(404).json({ error: 'a user was not found with the given id' })
+		return res.status(404).json({ error: 'a user was not found with the given id' })
+	} else if (parseInt(id) !== req.user.id) {
+		return res.status(401).json({ error: 'you can only access your own profile' })
 	}
 	res.json(user)
 }

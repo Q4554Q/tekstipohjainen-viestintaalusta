@@ -9,8 +9,8 @@ const getAll = async () => {
 		return {
 			id: row.id,
 			topicId: row.topic_id,
-			writedId: row.writer_id,
-			messages: [await Messages.getFirstInThread(row.id)]
+			writerId: row.writer_id,
+			messages: await Messages.getByThreadId(row.id)
 		}
 	}))
 
@@ -28,7 +28,7 @@ const getById = async (id) => {
 			id: row.id,
 			topicId: row.topic_id,
 			writerId: row.writer_id,
-			messages: await Messages.getByThreadId(id),
+			messages: await Messages.getByThreadId(row.id),
 		}
 	}
 

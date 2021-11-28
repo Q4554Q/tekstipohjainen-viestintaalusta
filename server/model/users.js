@@ -6,7 +6,7 @@ const getAll = async () => {
 	const rows = await query(sql, [])
 	const users = rows.map(row => {
 		return {
-			id: row.id,
+			// id: row.id,
 			username: row.username,
 			// passwordHash: row.password_hash,
 		}

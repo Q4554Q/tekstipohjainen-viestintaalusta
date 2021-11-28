@@ -28,15 +28,14 @@ const getByThreadId = async (threadId) => {
 	const messages = rows.map(row => {
 		return {
 			id: row.id,
-			threadId: row.thread_id,
+			// threadId: row.thread_id,
 			writerId: row.writer_id,
-			indexInThread: row.index_in_thread,
+			// indexInThread: row.index_in_thread,
 			content: row.content,
 			score: row.score,
 			postedTime: row.posted_time,
 		}
 	})
-	// TODO: Varmista että viestit on oikeassa järjestyksessä, ja korvaa writerId kirjoittajakohtaisilla anonyymeillä järjestysnumeroilla
 
 	return messages
 }
@@ -50,15 +49,14 @@ const getFirstInThread = async (threadId) => {
 		const row = rows[0]
 		message = {
 			id: row.id,
-			threadId: row.thread_id,
+			// threadId: row.thread_id,
 			writerId: row.writer_id,
-			indexInThread: row.index_in_thread,
+			// indexInThread: row.index_in_thread,
 			content: row.content,
 			score: row.score,
 			postedTime: row.posted_time,
 		}
 	}
-	// TODO: Korvaa writerId kirjoittajakohtaisella anonyymillä järjestysnumerolla (eli AP:lle = 1)
 
 	return message
 }
