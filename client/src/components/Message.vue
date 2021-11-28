@@ -1,5 +1,5 @@
 <template>
-  <div id="message" class="container p-3 my-3 border">
+  <div id="message" class="container p-3 my-3 border" @click="$emit('message-clicked')">
 
 			<div class="row">
 				<div  class="col-sm-8">
