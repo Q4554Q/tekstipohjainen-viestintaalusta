@@ -21,7 +21,6 @@ CREATE TABLE topics(
 CREATE TABLE threads(
 	id INT NOT NULL AUTO_INCREMENT,
 	topic_id INT NOT NULL,
-	-- user_id ei käy
 	writer_id INT NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY(topic_id) REFERENCES topics(id),
@@ -31,8 +30,8 @@ CREATE TABLE threads(
 CREATE TABLE messages(
 	id INT NOT NULL AUTO_INCREMENT,
 	thread_id INT NOT NULL,
-	-- user_id ei käy
 	writer_id INT NOT NULL,
+	index_in_thread INT NOT NULL,
 	content VARCHAR(350) NOT NULL,
 	score INT DEFAULT 0,
 	posted_time DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -58,7 +57,7 @@ VALUES
 	(1, 1);
 
 INSERT INTO
-	messages(thread_id, writer_id, content)
+	messages(thread_id, writer_id, index_in_thread, content)
 VALUES
-	(1, 1, "Viesti testikäyttäjältä"),
-	(1, 1, "Toinenkin viesti vielä");
+	(1, 1, 1, "Viesti testikäyttäjältä"),
+	(1, 1, 2, "Toinenkin viesti vielä");
