@@ -1,26 +1,52 @@
 const query = require('../db')
+const Messages = require('./messages')
 
 const getAll = async () => {
-	// Hae sivutuslogiikalla n kpl viestiketjuja kaikista aikajärjestykseen järjestetyistä viestiketjuista
 	const sql = 'SELECT * FROM threads'
 
 	const rows = await query(sql, [])
-	const threads = rows.map(row => {
+	const threads = await Promise.all(rows.map(async (row) => {
 		return {
 			id: row.id,
+			topicId: row.topic_id,
+			writedId: row.writer_id,
+			messages: [await Messages.getFirstInThread(row.id)]
 		}
-	})
+	}))
+
 	return threads
 }
 
-const getById = async () => {
-	// Hae yhden viestiketjun tiedot, mukaanlukien aloitusviestin tiedot
-	return undefined
+const getById = async (id) => {
+	const sql = 'SELECT * FROM threads WHERE id = ?'
+
+	const rows = await query(sql, [id])
+	let thread = undefined
+	if (rows.length > 0) {
+		const row = rows[0]
+		thread = {
+			id: row.id,
+			topicId: row.topic_id,
+			writerId: row.writer_id,
+			messages: await Messages.getByThreadId(id),
+		}
+	}
+
+	return thread
 }
 
-const create = async () => {
-	// Luo uuden viestiketjun annetun aloitusviestin kera
-	return undefined
+const create = async (thread, firstMessage) => {
+	const sql = 'INSERT INTO threads SET topic_id = ?, writer_id = ?'
+
+	const resultEvent = await query(sql, [thread.topicId, thread.writerId])
+
+	// Add the first message to the thread
+	firstMessage.threadId = resultEvent.insertId
+	await Messages.create(firstMessage)
+
+	const createdThread = await getById(resultEvent.insertId)
+
+	return createdThread
 }
 
 const addMessage = async () => {

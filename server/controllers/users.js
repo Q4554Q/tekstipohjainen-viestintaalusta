@@ -29,18 +29,12 @@ const create = async (req, res) => {
 
 const validatedCreate = [
 	check('username')
-		.exists()
-		.isLength({ min: 3 })
-		.withMessage('The username must have at least 3 characters'),
+		.isLength({ min: 3 }).withMessage('The username must have at least 3 characters'),
 	check('password')
-		.isLength({ min: 6 })
-		.withMessage('The password must have at least 6 characters')
-		.matches(/[a-z]+/)
-		.withMessage('The password must include a lowercase letter')
-		.matches(/[A-Z]+/)
-		.withMessage('The password must include an uppercase letter')
-		.matches(/\d/)
-		.withMessage('The password must include a number'),
+		.isLength({ min: 6 }).withMessage('The password must have at least 6 characters')
+		.matches(/[a-z]+/).withMessage('The password must include a lowercase letter')
+		.matches(/[A-Z]+/).withMessage('The password must include an uppercase letter')
+		.matches(/\d/).withMessage('The password must include a number'),
 	validationHandler,
 	create,
 ]
