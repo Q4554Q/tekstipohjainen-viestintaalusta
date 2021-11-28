@@ -1,11 +1,27 @@
 <template>
-  <div id="message">
-			<small class=" text-muted"><span class="glyphicon glyphicon-time"></span>{{message_data.posted_time}}</small>
-			<p>Id: {{message_data.writer_id}}</p>
-    <p>{{message_data.content}}</p>
-			<button @click="handleUpvote()">+</button>
-			<p>Score: {{message_data.score}}</p>
-			<button @click="handleDownvote()">-</button>
+  <div id="message" class="container p-3 my-3 border">
+
+			<div class="row">
+				<div  class="col-sm-8">
+					<span class="badge rounded-pill bg-primary">{{message_data.writer_id}}</span>
+				</div>
+				<div class="col-sm-4">
+					<small class=" text-muted"><span class="glyphicon glyphicon-time"></span>{{message_data.posted_time}}</small>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-10">
+					{{message_data.content}}
+				</div>
+				<div class="col-sm-2">
+					<button type="button" class="btn btn-primary btn-sm" @click="handleUpvote()">+</button>
+					<br>
+					Score: {{message_data.score}}
+					<br>
+					<button type="button" class="btn btn-primary btn-sm" @click="handleDownvote()">-</button>
+				</div>
+			</div>
   </div>
 </template>
 
@@ -23,5 +39,7 @@ export default {
 </script>
 
 <style scoped>
-
+#message{
+	width: 800px;
+}
 </style>
