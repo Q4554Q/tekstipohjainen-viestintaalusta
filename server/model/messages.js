@@ -1,11 +1,10 @@
 const query = require('../db')
+const { GET_MESSAGE_BY_ID_WITH_SCORE,
+	GET_MESSAGES_BY_THREAD_ID_WITH_SCORE,
+	CREATE_MESSAGE } = require('../db/queries')
 
 const getById = async (id) => {
-	const sql = 'SELECT messages.*, COALESCE(SUM(amount), 0) AS score ' +
-		'FROM messages, votes ' +
-		'WHERE id = votes.message_id AND id = ?'
-
-	const rows = await query(sql, [id])
+	const rows = await query(GET_MESSAGE_BY_ID_WITH_SCORE, [id])
 	let message = undefined
 	if (rows.length > 0) {
 		const row = rows[0]
@@ -24,11 +23,7 @@ const getById = async (id) => {
 }
 
 const getByThreadId = async (threadId) => {
-	const sql = 'SELECT messages.*, COALESCE(SUM(amount), 0) AS score ' +
-		'FROM messages LEFT JOIN votes ON messages.id = votes.message_id ' +
-		'WHERE thread_id = ? GROUP BY id;'
-
-	const rows = await query(sql, [threadId])
+	const rows = await query(GET_MESSAGES_BY_THREAD_ID_WITH_SCORE, [threadId])
 	const messages = rows.map(row => {
 		return {
 			id: row.id,
@@ -43,9 +38,7 @@ const getByThreadId = async (threadId) => {
 }
 
 const create = async (message) => {
-	const sql = 'INSERT INTO messages SET thread_id = ?, writer_id = ?, index_in_thread = ?, content = ?'
-
-	const resultEvent = await query(sql, [message.threadId, message.writerId, message.indexInThread, message.content])
+	const resultEvent = await query(CREATE_MESSAGE, [message.threadId, message.writerId, message.indexInThread, message.content])
 	const createdMessage = await getById(resultEvent.insertId)
 
 	return createdMessage
