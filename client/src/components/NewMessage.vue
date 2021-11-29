@@ -1,15 +1,15 @@
 <template>
-<div id="newmessage">
-		<div id="newMessageArea" class="container p-3 my-3 border">
+<div id="newmessage" class="container p-3 my-3 border">
+		<div id="newMessageArea">
 			<b-form-textarea
 				v-model="message"
 				size="lg"
-				placeholder="Kirjoita viesti"
+				placeholder="Write a message"
 				rows="5"
 				no-resize
 				maxlength="350"
 			></b-form-textarea>
-			<button @click="handleNewMessage">Lähetä viesti</button>
+			<button @click="handleNewMessage" class="btn btn-primary btn-sm mt-3">Send message</button>
 		</div>
 </div>
 </template>
@@ -26,7 +26,7 @@ export default {
 </script>
 
 <style scoped>
-#newMessageArea {
+#newmessage {
 	max-width: 800px;
 }
 </style>

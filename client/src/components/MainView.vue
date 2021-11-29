@@ -1,9 +1,10 @@
 <template>
 	<div id="mainview">
-		<TopBar class="fixed-top" @return-clicked="changeView"/>
+		<TopBar class="fixed-top" @return-clicked="openThreadList" @newthread-clicked="openNewThread"/>
 		<div class="container p-3 bg-white"></div>
 		<ThreadList v-if="showThreadList" v-bind:threads="threads" @open-thread="openThread"/>
-		<Thread v-else v-bind:messages="messages"/>
+		<Thread v-else-if="showThread" v-bind:messages="messages"/>
+		<NewThread v-else></NewThread>
 		<p>Viimeksi klikatun threadin id: {{thread_id}}</p>
 	</div>
 </template>
@@ -12,10 +13,12 @@
 import Thread from './Thread'
 import ThreadList from './ThreadList'
 import TopBar from './TopBar'
+import NewThread from './NewThread'
 
 export default {
 	name: 'MainView',
 	components: {
+		NewThread,
 		TopBar,
 		Thread,
 		ThreadList
@@ -23,6 +26,8 @@ export default {
 	data () {
 		return {
 			showThreadList: true,
+			showNewThread: false,
+			showThread: false,
 			thread_id: null,
 			threads: [{
 				thread_id: 1,
@@ -114,12 +119,21 @@ export default {
 		}
 	},
 	methods: {
-		changeView () {
-			this.showThreadList = !this.showThreadList
+		openThreadList () {
+			this.showThreadList = true
+			this.showNewThread = false
+			this.showThread = false
 		},
 		openThread (threadId) {
 			this.thread_id = threadId
+			this.showThread = true
 			this.showThreadList = false
+			this.showNewThread = false
+		},
+		openNewThread () {
+			this.showThreadList = false
+			this.showNewThread = true
+			this.showThread = false
 		}
 	}
 }
