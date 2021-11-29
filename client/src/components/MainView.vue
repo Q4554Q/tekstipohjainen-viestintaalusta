@@ -1,6 +1,7 @@
 <template>
 	<div id="mainview">
-		<TopBar @return-clicked="changeView"/>
+		<TopBar class="fixed-top" @return-clicked="changeView"/>
+		<div class="container p-3 bg-white"></div>
 		<ThreadList v-if="showThreadList" v-bind:threads="threads" @open-thread="openThread"/>
 		<Thread v-else v-bind:messages="messages"/>
 		<p>Viimeksi klikatun threadin id: {{thread_id}}</p>
@@ -54,6 +55,39 @@ export default {
 					content: 'Kattokaa mun lankaa',
 					score: 4,
 					posted_time: '13.12.2021'
+				}
+			},
+			{
+				thread_id: 1,
+				topic: 'main',
+				writer_id: 1,
+				message: {
+					writer_id: 1,
+					content: 'Mistä saa parhaan rullakebun?',
+					score: 12,
+					posted_time: '11.12.2021'
+				}
+			},
+			{
+				thread_id: 1,
+				topic: 'main',
+				writer_id: 1,
+				message: {
+					writer_id: 1,
+					content: 'Mistä saa parhaan rullakebun?',
+					score: 12,
+					posted_time: '11.12.2021'
+				}
+			},
+			{
+				thread_id: 1,
+				topic: 'main',
+				writer_id: 1,
+				message: {
+					writer_id: 1,
+					content: 'Mistä saa parhaan rullakebun?',
+					score: 12,
+					posted_time: '11.12.2021'
 				}
 			}
 			],
