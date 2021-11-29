@@ -19,8 +19,8 @@ const vote = async (req, res) => {
 
 const validatedVote = [
 	check('amount')
-		.custom(value => value === 1 || value === -1)
-		.withMessage('The vote amount must be either 1 or -1'),
+		.custom(value => value === 1 || value === 0 || value === -1)
+		.withMessage('The vote amount must be either 1, 0 or -1'),
 	validationHandler,
 	vote,
 ]
