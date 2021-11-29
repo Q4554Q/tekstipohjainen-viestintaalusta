@@ -1,10 +1,11 @@
 const query = require('../db')
 const Messages = require('./messages')
+const { GET_ALL_THREADS,
+	GET_THREAD_BY_ID,
+	CREATE_THREAD } = require('../db/queries')
 
 const getAll = async () => {
-	const sql = 'SELECT * FROM threads'
-
-	const rows = await query(sql, [])
+	const rows = await query(GET_ALL_THREADS, [])
 	const threads = await Promise.all(rows.map(async (row) => {
 		return {
 			id: row.id,
@@ -18,9 +19,7 @@ const getAll = async () => {
 }
 
 const getById = async (id) => {
-	const sql = 'SELECT * FROM threads WHERE id = ?'
-
-	const rows = await query(sql, [id])
+	const rows = await query(GET_THREAD_BY_ID, [id])
 	let thread = undefined
 	if (rows.length > 0) {
 		const row = rows[0]
@@ -36,9 +35,7 @@ const getById = async (id) => {
 }
 
 const create = async (thread, firstMessage) => {
-	const sql = 'INSERT INTO threads SET topic_id = ?, writer_id = ?'
-
-	const resultEvent = await query(sql, [thread.topicId, thread.writerId])
+	const resultEvent = await query(CREATE_THREAD, [thread.topicId, thread.writerId])
 
 	// Add the first message to the thread
 	firstMessage.threadId = resultEvent.insertId

@@ -1,14 +1,15 @@
 const query = require('../db')
+const { GET_ALL_USERS_WITH_SCORE,
+	GET_USER_BY_ID_WITH_SCORE,
+	GET_USER_BY_USERNAME,
+	CREATE_USER } = require('../db/queries')
 
 const getAll = async () => {
-	const sql = 'SELECT * FROM users'
-
-	const rows = await query(sql, [])
+	const rows = await query(GET_ALL_USERS_WITH_SCORE, [])
 	const users = rows.map(row => {
 		return {
-			// id: row.id,
 			username: row.username,
-			// passwordHash: row.password_hash,
+			score: row.score,
 		}
 	})
 
@@ -16,16 +17,14 @@ const getAll = async () => {
 }
 
 const getById = async (id) => {
-	const sql = 'SELECT * FROM users WHERE id = ?'
-
-	const rows = await query(sql, [id])
+	const rows = await query(GET_USER_BY_ID_WITH_SCORE, [id])
 	let user = undefined
 	if (rows.length > 0) {
 		const row = rows[0]
 		user = {
 			id: row.id,
 			username: row.username,
-			// passwordHash: row.password_hash,
+			score: row.score,
 		}
 	}
 
@@ -33,9 +32,7 @@ const getById = async (id) => {
 }
 
 const getByUsername = async (username) => {
-	const sql = 'SELECT * FROM users WHERE username = ?'
-
-	const rows = await query(sql, [username])
+	const rows = await query(GET_USER_BY_USERNAME, [username])
 	let user = undefined
 	if (rows.length > 0) {
 		const row = rows[0]
@@ -50,9 +47,7 @@ const getByUsername = async (username) => {
 }
 
 const create = async (user) => {
-	const sql = 'INSERT INTO users SET username = ?, password_hash = ?'
-
-	const resultEvent = await query(sql, [user.username, user.passwordHash])
+	const resultEvent = await query(CREATE_USER, [user.username, user.passwordHash])
 	const createdUser = await getById(resultEvent.insertId)
 
 	return createdUser
