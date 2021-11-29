@@ -1,10 +1,11 @@
 <template>
 	<div id="mainview">
-		<TopBar class="fixed-top" @return-clicked="openThreadList" @newthread-clicked="openNewThread"/>
-		<div class="container p-3 bg-white"></div>
-		<ThreadList v-if="showThreadList" v-bind:threads="threads" @open-thread="openThread"/>
-		<Thread v-else-if="showThread" v-bind:messages="messages"/>
-		<NewThread v-else></NewThread>
+		<TopBar class="fixed-top" @return-clicked="openThreadList" @newthread-clicked="openNewThread" @profile-clicked="openProfile"/>
+		<div class="container pt-3 pb-2 bg-white"></div>
+		<ThreadList v-if="mainViewState === showThreadList" v-bind:threads="threads" @open-thread="openThread"/>
+		<Thread v-else-if="mainViewState === showThread" v-bind:messages="messages"/>
+		<NewThread v-else-if="mainViewState === showNewThread"></NewThread>
+		<Profile v-else-if="mainViewState === showProfile" @open-thread="openThread"/>
 		<p>Viimeksi klikatun threadin id: {{thread_id}}</p>
 	</div>
 </template>
@@ -14,6 +15,7 @@ import Thread from './Thread'
 import ThreadList from './ThreadList'
 import TopBar from './TopBar'
 import NewThread from './NewThread'
+import Profile from './Profile'
 
 export default {
 	name: 'MainView',
@@ -21,13 +23,16 @@ export default {
 		NewThread,
 		TopBar,
 		Thread,
-		ThreadList
+		ThreadList,
+		Profile
 	},
 	data () {
 		return {
-			showThreadList: true,
-			showNewThread: false,
-			showThread: false,
+			showThreadList: 0,
+			showNewThread: 1,
+			showThread: 2,
+			showProfile: 3,
+			mainViewState: 0,
 			thread_id: null,
 			threads: [{
 				thread_id: 1,
@@ -63,7 +68,7 @@ export default {
 				}
 			},
 			{
-				thread_id: 1,
+				thread_id: 4,
 				topic: 'main',
 				writer_id: 1,
 				message: {
@@ -74,7 +79,7 @@ export default {
 				}
 			},
 			{
-				thread_id: 1,
+				thread_id: 5,
 				topic: 'main',
 				writer_id: 1,
 				message: {
@@ -85,7 +90,7 @@ export default {
 				}
 			},
 			{
-				thread_id: 1,
+				thread_id: 6,
 				topic: 'main',
 				writer_id: 1,
 				message: {
@@ -120,20 +125,17 @@ export default {
 	},
 	methods: {
 		openThreadList () {
-			this.showThreadList = true
-			this.showNewThread = false
-			this.showThread = false
+			this.mainViewState = this.showThreadList
 		},
 		openThread (threadId) {
 			this.thread_id = threadId
-			this.showThread = true
-			this.showThreadList = false
-			this.showNewThread = false
+			this.mainViewState = this.showThread
 		},
 		openNewThread () {
-			this.showThreadList = false
-			this.showNewThread = true
-			this.showThread = false
+			this.mainViewState = this.showNewThread
+		},
+		openProfile () {
+			this.mainViewState = this.showProfile
 		}
 	}
 }
