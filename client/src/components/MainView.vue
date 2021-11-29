@@ -1,6 +1,6 @@
 <template>
 	<div id="mainview">
-		<button @click="changeView()">test</button>
+		<TopBar @return-clicked="changeView"/>
 		<ThreadList v-if="showThreadList" v-bind:threads="threads" @open-thread="openThread"/>
 		<Thread v-else v-bind:messages="messages"/>
 		<p>Viimeksi klikatun threadin id: {{thread_id}}</p>
@@ -10,10 +10,12 @@
 <script>
 import Thread from './Thread'
 import ThreadList from './ThreadList'
+import TopBar from './TopBar'
 
 export default {
 	name: 'MainView',
 	components: {
+		TopBar,
 		Thread,
 		ThreadList
 	},

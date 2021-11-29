@@ -1,13 +1,9 @@
 <template>
   <div id="message" class="container p-3 my-3 border" @click="$emit('message-clicked')">
 
-			<div class="row">
-				<div  class="col-sm-8">
-					<span class="badge rounded-pill bg-primary">{{message_data.writer_id}}</span>
-				</div>
-				<div class="col-sm-4">
-					<small class=" text-muted"><span class="glyphicon glyphicon-time"></span>{{message_data.posted_time}}</small>
-				</div>
+			<div class="d-flex align-items-start">
+				<span class="badge rounded-pill bg-primary mx-2">{{message_data.writer_id}}</span>
+				<small class="text-muted"><span class="glyphicon glyphicon-time mx-2"></span>{{message_data.posted_time}}</small>
 			</div>
 
 			<div class="row">
