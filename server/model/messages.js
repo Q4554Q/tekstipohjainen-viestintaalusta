@@ -13,8 +13,8 @@ const getById = async (id) => {
 			writerId: row.writer_id,
 			indexInThread: row.index_in_thread,
 			content: row.content,
-			score: row.score,
 			postedTime: row.posted_time,
+			// TODO: Scoren haku votes-taulusta
 		}
 	}
 
@@ -32,8 +32,8 @@ const getByThreadId = async (threadId) => {
 			writerId: row.writer_id,
 			// indexInThread: row.index_in_thread,
 			content: row.content,
-			score: row.score,
 			postedTime: row.posted_time,
+			// TODO: Scoren haku votes-taulusta
 		}
 	})
 
@@ -53,8 +53,8 @@ const getFirstInThread = async (threadId) => {
 			writerId: row.writer_id,
 			// indexInThread: row.index_in_thread,
 			content: row.content,
-			score: row.score,
 			postedTime: row.posted_time,
+			// TODO: Scoren haku votes-taulusta
 		}
 	}
 
@@ -70,9 +70,22 @@ const create = async (message) => {
 	return createdMessage
 }
 
+const vote = async (vote) => {
+	// Check that the message exists
+	const message = await getById(vote.messageId)
+	if (!message) return undefined
+
+	// Vote the message
+	const sql = 'INSERT INTO votes (writer_id, message_id, amount) VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE amount = ?'
+	const resultEvent = await query(sql, [vote.writerId, vote.messageId, vote.amount, vote.amount])
+
+	return resultEvent.affectedRows > 0 ? vote : undefined
+}
+
 module.exports = {
 	getById,
 	getByThreadId,
 	getFirstInThread,
 	create,
+	vote,
 }
