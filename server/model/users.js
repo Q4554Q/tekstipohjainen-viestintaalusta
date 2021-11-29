@@ -1,14 +1,15 @@
 const query = require('../db')
 
 const getAll = async () => {
-	const sql = 'SELECT * FROM users'
+	const sql = 'SELECT users.*, COALESCE(SUM(amount), 0) AS score ' +
+	'FROM users LEFT JOIN messages ON users.id = messages.writer_id LEFT JOIN votes ON messages.id = votes.message_id ' +
+	'GROUP BY users.id'
 
 	const rows = await query(sql, [])
 	const users = rows.map(row => {
 		return {
-			// id: row.id,
 			username: row.username,
-			// passwordHash: row.password_hash,
+			score: row.score,
 		}
 	})
 
@@ -16,7 +17,9 @@ const getAll = async () => {
 }
 
 const getById = async (id) => {
-	const sql = 'SELECT * FROM users WHERE id = ?'
+	const sql = 'SELECT users.*, COALESCE(SUM(amount), 0) AS score ' +
+		'FROM users LEFT JOIN messages ON users.id = messages.writer_id LEFT JOIN votes ON messages.id = votes.message_id ' +
+		'WHERE users.id = ?'
 
 	const rows = await query(sql, [id])
 	let user = undefined
@@ -25,7 +28,7 @@ const getById = async (id) => {
 		user = {
 			id: row.id,
 			username: row.username,
-			// passwordHash: row.password_hash,
+			score: row.score,
 		}
 	}
 
