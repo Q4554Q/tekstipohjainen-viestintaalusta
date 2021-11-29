@@ -54,10 +54,10 @@ VALUES
 INSERT INTO
 	threads(topic_id, writer_id)
 VALUES
-	(1, 1000);
+	(1, 1);
 
 INSERT INTO
 	messages(thread_id, writer_id, index_in_thread, content)
 VALUES
-	(1, 1000, 1, "Viesti testikäyttäjältä"),
-	(1, 1000, 2, "Toinenkin viesti vielä");
+	(1, 1, 1, "Viesti testikäyttäjältä"),
+	(1, 1, 2, "Toinenkin viesti vielä");
