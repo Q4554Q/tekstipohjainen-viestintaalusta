@@ -11,15 +11,15 @@ const getAll = async (req, res) => {
 }
 
 const getMyProfile = async (req, res) => {
-	const { id } = req.user
-	const user = await Users.getById(id)
+	const userId = req.user.id
+	const user = await Users.getById(userId)
 
 	if (!user) {
 		return res.status(404).json({ error: 'a user was not found with the given id' })
 	}
 
 	// Get all threads in which this user has posted
-	const threads = await Threads.getAll()
+	const threads = await Threads.getAll(userId)
 	threads.forEach(thread => {
 		hideWriters(thread, req.user)
 		thread.messages = thread.messages.slice(0, 1)

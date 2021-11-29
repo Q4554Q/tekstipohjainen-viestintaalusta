@@ -4,7 +4,8 @@ const validationHandler = require('../middleware/validationHandler')
 const hideWriters = require('../utils/hideWriters')
 
 const getAll = async (req, res) => {
-	const threads = await Threads.getAll()
+	const userId = req.user.id
+	const threads = await Threads.getAll(userId)
 	threads.forEach(thread => {
 		hideWriters(thread, req.user)
 		thread.messages = thread.messages.slice(0, 1)
@@ -13,7 +14,9 @@ const getAll = async (req, res) => {
 }
 
 const getById = async (req, res) => {
-	const thread = await Threads.getById(req.params.id)
+	const userId = req.user.id
+	const threadId = req.params.id
+	const thread = await Threads.getById(threadId, userId)
 	if (!thread) {
 		return res.status(404).json({ error: 'a thread was not found with the given id' })
 	}

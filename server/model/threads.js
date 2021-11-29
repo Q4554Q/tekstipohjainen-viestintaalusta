@@ -4,45 +4,37 @@ const { GET_ALL_THREADS,
 	GET_THREAD_BY_ID,
 	CREATE_THREAD } = require('../db/queries')
 
-const getAll = async () => {
+const getAll = async (userId) => {
 	const rows = await query(GET_ALL_THREADS, [])
-	const threads = await Promise.all(rows.map(async (row) => {
-		return {
-			id: row.id,
-			topicId: row.topic_id,
-			writerId: row.writer_id,
-			messages: await Messages.getByThreadId(row.id)
-		}
-	}))
-
+	const threads = await Promise.all(
+		rows.map(async (row) => rowToThread(row, userId))
+	)
 	return threads
 }
 
-const getById = async (id) => {
-	const rows = await query(GET_THREAD_BY_ID, [id])
-	let thread = undefined
+const getById = async (threadId, userId) => {
+	const rows = await query(GET_THREAD_BY_ID, [threadId])
 	if (rows.length > 0) {
-		const row = rows[0]
-		thread = {
-			id: row.id,
-			topicId: row.topic_id,
-			writerId: row.writer_id,
-			messages: await Messages.getByThreadId(row.id),
-		}
+		return rowToThread(rows[0], userId)
 	}
+	return undefined
+}
 
-	return thread
+const rowToThread = async (row, userId) => {
+	return {
+		id: row.id,
+		topicId: row.topic_id,
+		writerId: row.writer_id,
+		messages: await Messages.getByThreadId(row.id, userId),
+	}
 }
 
 const create = async (thread, firstMessage) => {
 	const resultEvent = await query(CREATE_THREAD, [thread.topicId, thread.writerId])
 
-	// Add the first message to the thread
-	firstMessage.threadId = resultEvent.insertId
-	await Messages.create(firstMessage)
+	await Messages.create({ ...firstMessage, threadId: resultEvent.insertId })
 
 	const createdThread = await getById(resultEvent.insertId)
-
 	return createdThread
 }
 
@@ -55,10 +47,8 @@ const addMessage = async (message) => {
 
 	// Create a new message with incremented index_in_thread
 	const messages = await Messages.getByThreadId(threadId)
-	message.indexInThread = messages.length + 1
-	await Messages.create(message)
+	await Messages.create({ ...message, indexInThread: messages.length + 1 })
 
-	// Return the updated thread
 	const updatedThread = await getById(threadId)
 	return updatedThread
 }
