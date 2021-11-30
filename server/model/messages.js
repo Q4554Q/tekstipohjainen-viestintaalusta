@@ -1,4 +1,4 @@
-const query = require('../db')
+const { query } = require('../db')
 const { GET_MESSAGE_BY_ID_WITH_SCORE,
 	GET_MESSAGES_BY_THREAD_ID_WITH_SCORE,
 	GET_USERS_VOTE_ON_MESSAGE,

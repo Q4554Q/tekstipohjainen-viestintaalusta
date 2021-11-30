@@ -4,9 +4,10 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "node index",
-		"dev": "nodemon index",
+		"start": "cross-env NODE_ENV=production node index",
+		"test": "cross-env NODE_ENV=test jest --verbose --runInBand",
+        "start:test": "cross-env NODE_ENV=test node index",
+		"dev": "cross-env NODE_ENV=development nodemon index",
 		"lint": "eslint .",
 		"build:ui": "rmdir public /s /q 2>null && cd ../client/ && npm run build --prod && xcopy /S /E /I dist ..\\server\\public"
 	},
@@ -24,7 +25,10 @@
 		"mysql": "^2.18.1"
 	},
 	"devDependencies": {
+		"cross-env": "^7.0.3",
 		"eslint": "^8.3.0",
-		"nodemon": "^2.0.15"
+		"jest": "^27.4.2",
+		"nodemon": "^2.0.15",
+		"supertest": "^6.1.6"
 	}
 }

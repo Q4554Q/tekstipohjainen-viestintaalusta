@@ -1,8 +1,9 @@
-const query = require('../db')
+const { query } = require('../db')
 const { GET_ALL_USERS_WITH_SCORE,
 	GET_USER_BY_ID_WITH_SCORE,
 	GET_USER_BY_USERNAME,
-	CREATE_USER } = require('../db/queries')
+	CREATE_USER,
+	DELETE_ALL_USERS } = require('../db/queries')
 
 const getAll = async () => {
 	const rows = await query(GET_ALL_USERS_WITH_SCORE, [])
@@ -53,9 +54,15 @@ const create = async (user) => {
 	return createdUser
 }
 
+// For tests only
+const deleteAll = async () => {
+	await query(DELETE_ALL_USERS, [])
+}
+
 module.exports = {
 	getAll,
 	getById,
 	getByUsername,
 	create,
+	deleteAll,
 }

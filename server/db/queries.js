@@ -23,6 +23,9 @@ const CREATE_USER =
 	'INSERT INTO users ' +
 	'SET username = ?, password_hash = ?'
 
+const DELETE_ALL_USERS =
+	'DELETE FROM users'
+
 
 // THREADS
 
@@ -69,6 +72,7 @@ module.exports = {
 	GET_USER_BY_ID_WITH_SCORE,
 	GET_USER_BY_USERNAME,
 	CREATE_USER,
+	DELETE_ALL_USERS,
 	GET_ALL_THREADS,
 	GET_THREAD_BY_ID,
 	CREATE_THREAD,

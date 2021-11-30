@@ -1,4 +1,4 @@
-const query = require('../db')
+const { query } = require('../db')
 const Messages = require('./messages')
 const { GET_ALL_THREADS,
 	GET_THREAD_BY_ID,
