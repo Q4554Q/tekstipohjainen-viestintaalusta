@@ -1,5 +1,5 @@
 <template>
-  <div id="message" class="container p-3 my-3 border" @click="$emit('message-clicked')">
+  <div id="message" class="container p-3 my-3 border rounded" @click="$emit('message-clicked')">
 
 			<div class="d-flex align-items-start">
 				<span class="badge rounded-pill bg-primary mx-2">{{message_data.writer_id}}</span>
@@ -10,7 +10,7 @@
 				<div class="col-sm-10">
 					{{message_data.content}}
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-2 text-center">
 					<button type="button" class="btn btn-primary btn-sm" @click="handleUpvote()">+</button>
 					<br>
 					Score: {{message_data.score}}

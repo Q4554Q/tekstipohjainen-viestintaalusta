@@ -5,19 +5,11 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import Message from './components/Message'
-import ThreadList from './components/ThreadList'
 import MainView from './components/MainView'
-import Thread from './components/Thread'
 
 export default {
 	name: 'App',
 	components: {
-		HelloWorld,
-		Message,
-		ThreadList,
-		Thread,
 		MainView
 	},
 	data () {
@@ -51,7 +43,6 @@ export default {
 	font-family: Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
 	color: #2c3e50;
 	margin-top: 60px;
 }

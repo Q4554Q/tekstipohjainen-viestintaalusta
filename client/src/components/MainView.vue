@@ -1,12 +1,11 @@
 <template>
 	<div id="mainview">
 		<TopBar class="fixed-top" @return-clicked="openThreadList" @newthread-clicked="openNewThread" @profile-clicked="openProfile"/>
-		<div class="container pt-3 pb-2 bg-white"></div>
+		<div class="container pt-3 mt-5"/>
 		<ThreadList v-if="mainViewState === showThreadList" v-bind:threads="threads" @open-thread="openThread"/>
 		<Thread v-else-if="mainViewState === showThread" v-bind:messages="messages"/>
 		<NewThread v-else-if="mainViewState === showNewThread"></NewThread>
 		<Profile v-else-if="mainViewState === showProfile" @open-thread="openThread"/>
-		<p>Viimeksi klikatun threadin id: {{thread_id}}</p>
 	</div>
 </template>
 

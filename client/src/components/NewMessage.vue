@@ -1,6 +1,6 @@
 <template>
-<div id="newmessage" class="container p-3 my-3 border">
-		<div id="newMessageArea">
+<div id="newmessage" class="container p-3 my-3 border rounded">
+		<div id="newMessageArea" class="text-center">
 			<b-form-textarea
 				v-model="message"
 				size="lg"

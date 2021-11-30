@@ -1,6 +1,11 @@
 <template>
 	<div id="profile">
-		Your score: {{score}}
+		<div id="profile-info" class="container pt-3 my-3 fs-5 text-left">
+			User name: {{accountName}}<br>
+			Your score: <b>{{score}}</b><br>
+			<br>
+			Threads you have posted on:
+		</div>
 		<ThreadList v-on="$listeners" v-bind:threads="threads"/>
 	</div>
 </template>
@@ -15,7 +20,8 @@ export default {
 	},
 	data () {
 		return {
-			Score: 44,
+			score: 44,
+			accountName: 'Herbertti',
 			threads: [{
 				thread_id: 1,
 				topic: 'main',
@@ -34,5 +40,7 @@ export default {
 </script>
 
 <style scoped>
-
+#profile-info{
+	width: 800px;
+}
 </style>
