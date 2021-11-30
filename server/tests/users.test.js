@@ -2,14 +2,20 @@ const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 const bcrypt = require('bcrypt')
+const Messages = require('../model/messages')
+const Threads = require('../model/threads')
 const Users = require('../model/users')
 const { conn } = require('../db')
 
-const baseUrl = '/api/users'
+const usersUrl = '/api/users'
 
 describe('when there\'s initially one user in the database', () => {
 	beforeEach(async () => {
+		await Messages.deleteAllVotes()
+		await Messages.deleteAll()
+		await Threads.deleteAll()
 		await Users.deleteAll()
+
 		const testUser = {
 			username: 'testikäyttäjä',
 			passwordHash: await bcrypt.hash('Salasana1', 10)
@@ -27,7 +33,7 @@ describe('when there\'s initially one user in the database', () => {
 			}
 
 			await api
-				.post(baseUrl)
+				.post(usersUrl)
 				.send(newUser)
 				.expect(201)
 				.expect('Content-Type', /application\/json/)
@@ -48,7 +54,7 @@ describe('when there\'s initially one user in the database', () => {
 			}
 
 			const response = await api
-				.post(baseUrl)
+				.post(usersUrl)
 				.send(newUser)
 				.expect(400)
 				.expect('Content-Type', /application\/json/)
@@ -68,7 +74,7 @@ describe('when there\'s initially one user in the database', () => {
 			}
 
 			const response = await api
-				.post(baseUrl)
+				.post(usersUrl)
 				.send(newUser)
 				.expect(422)
 				.expect('Content-Type', /application\/json/)
@@ -94,7 +100,7 @@ describe('when there\'s initially one user in the database', () => {
 
 		it('all users can be viewed', async () => {
 			const response = await api
-				.get(baseUrl)
+				.get(usersUrl)
 				.set('Authorization', token)
 				.expect(200)
 				.expect('Content-Type', /application\/json/)
@@ -105,7 +111,7 @@ describe('when there\'s initially one user in the database', () => {
 
 		it('passwordHash and id\'s are not returned', async () => {
 			const response = await api
-				.get(baseUrl)
+				.get(usersUrl)
 				.set('Authorization', token)
 				.expect(200)
 				.expect('Content-Type', /application\/json/)
@@ -116,7 +122,7 @@ describe('when there\'s initially one user in the database', () => {
 
 		it('your own profile can be viewed', async () => {
 			const response = await api
-				.get(baseUrl + '/me')
+				.get(usersUrl + '/me')
 				.set('Authorization', token)
 				.expect(200)
 				.expect('Content-Type', /application\/json/)

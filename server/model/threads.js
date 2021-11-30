@@ -2,7 +2,8 @@ const { query } = require('../db')
 const Messages = require('./messages')
 const { GET_ALL_THREADS,
 	GET_THREAD_BY_ID,
-	CREATE_THREAD } = require('../db/queries')
+	CREATE_THREAD,
+	DELETE_ALL_THREADS } = require('../db/queries')
 
 const getAll = async (userId) => {
 	const rows = await query(GET_ALL_THREADS, [])
@@ -53,9 +54,15 @@ const addMessage = async (message) => {
 	return updatedThread
 }
 
+// For tests only
+const deleteAll = async () => {
+	await query(DELETE_ALL_THREADS, [])
+}
+
 module.exports = {
 	getAll,
 	getById,
 	create,
 	addMessage,
+	deleteAll,
 }

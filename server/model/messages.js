@@ -3,7 +3,9 @@ const { GET_MESSAGE_BY_ID_WITH_SCORE,
 	GET_MESSAGES_BY_THREAD_ID_WITH_SCORE,
 	GET_USERS_VOTE_ON_MESSAGE,
 	CREATE_MESSAGE,
-	VOTE_FOR_MESSAGE } = require('../db/queries')
+	VOTE_FOR_MESSAGE,
+	DELETE_ALL_MESSAGES,
+	DELETE_ALL_VOTES } = require('../db/queries')
 
 const getById = async (id) => {
 	const rows = await query(GET_MESSAGE_BY_ID_WITH_SCORE, [id])
@@ -61,9 +63,22 @@ const vote = async (vote) => {
 	return resultEvent.affectedRows > 0 ? vote : undefined
 }
 
+// For tests only
+const deleteAll = async () => {
+	await query(DELETE_ALL_MESSAGES, [])
+}
+
+// For tests only
+//TODO: Siirrä omaan modeliin
+const deleteAllVotes = async () => {
+	await query(DELETE_ALL_VOTES, [])
+}
+
 module.exports = {
 	getById,
 	getByThreadId,
 	create,
 	vote,
+	deleteAll,
+	deleteAllVotes,
 }

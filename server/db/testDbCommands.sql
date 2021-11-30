@@ -47,3 +47,8 @@ CREATE TABLE votes(
 	FOREIGN KEY(writer_id) REFERENCES users(id),
 	FOREIGN KEY(message_id) REFERENCES messages(id)
 );
+
+INSERT INTO
+	topics(topic_name)
+VALUES
+	("Yleinen");
