@@ -3,7 +3,7 @@
 
 			<div class="d-flex align-items-start">
 				<span class="badge rounded-pill bg-primary mx-2">{{message_data.writer_id}}</span>
-				<small class="text-muted"><span class="glyphicon glyphicon-time mx-2"></span>{{message_data.posted_time}}</small>
+				<small class="text-secondary">{{message_data.posted_time}}</small>
 			</div>
 
 			<div class="row">

@@ -8,7 +8,8 @@
 				rows="5"
 				no-resize
 				maxlength="350"
-			></b-form-textarea>
+			/>
+			<div class="text-end"><small class="text-secondary"><b-icon icon="clock"/>{{message.length}}/350</small></div>
 			<button @click="handleNewThread" class="btn btn-primary btn-sm mt-3">Create thread</button>
 		</div>
 	</div>
@@ -17,6 +18,11 @@
 <script>
 export default {
 	name: 'NewThread.vue',
+	data () {
+		return {
+			message: ''
+		}
+	},
 	methods: {
 		handleNewThread () {}
 	}
