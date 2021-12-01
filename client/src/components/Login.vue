@@ -18,7 +18,7 @@
 		</div>
 		</form>
 		<div class="row">
-			<button class="btn btn-primary btn-sm mt-3" @click="$emit('login-clicked')">Create new account</button>
+			<button class="btn btn-primary btn-sm mt-3" @click="$emit('create-account-clicked')">Create new account</button>
 		</div>
 	</div>
 </template>

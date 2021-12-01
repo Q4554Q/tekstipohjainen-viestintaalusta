@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
-		<LoginView/>
-		<MainView />
+		<LoginView v-if="showLogin" @login-clicked="handleLogin()"/>
+		<MainView v-else />
 	</div>
 </template>
 
@@ -17,6 +17,7 @@ export default {
 	},
 	data () {
 		return {
+			showLogin: true,
 			messages: [{
 				writer_id: 1,
 				content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
@@ -36,6 +37,11 @@ export default {
 				posted_time: '13.12.2021'
 			}
 			]
+		}
+	},
+	methods: {
+		handleLogin () {
+			this.showLogin = false
 		}
 	}
 }
