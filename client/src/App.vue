@@ -1,15 +1,18 @@
 <template>
 	<div id="app">
+		<LoginView/>
 		<MainView />
 	</div>
 </template>
 
 <script>
 import MainView from './components/MainView'
+import LoginView from './components/LoginView'
 
 export default {
 	name: 'App',
 	components: {
+		LoginView,
 		MainView
 	},
 	data () {
