@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<LoginView v-if="showLogin" @login-clicked="handleLogin()"/>
+		<LoginView v-if="showLogin" @login-clicked="handleLogin"/>
 		<MainView v-else />
 	</div>
 </template>
@@ -18,6 +18,7 @@ export default {
 	data () {
 		return {
 			showLogin: true,
+			token: '',
 			messages: [{
 				writer_id: 1,
 				content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
@@ -40,8 +41,9 @@ export default {
 		}
 	},
 	methods: {
-		handleLogin () {
+		handleLogin (token) {
 			this.showLogin = false
+			this.token = token
 		}
 	}
 }
