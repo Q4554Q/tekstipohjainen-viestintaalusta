@@ -13,7 +13,7 @@
 				<div class="col-sm-2 text-center">
 					<button type="button" class="btn btn-primary btn-sm" @click="handleUpvote()"><UpvoteIcon id="vote-icons"/></button>
 					<br>
-					Score: {{message_data.score}}
+					<b>{{message_data.score}}</b>
 					<br>
 					<button type="button" class="btn btn-primary btn-sm" @click="handleDownvote()"><DownvoteIcon id="vote-icons"/></button>
 				</div>

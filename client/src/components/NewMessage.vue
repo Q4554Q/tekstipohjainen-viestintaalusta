@@ -10,14 +10,17 @@
 				maxlength="350"
 			/>
 			<div class="text-end"><small class="text-secondary">{{message.length}}/350</small></div>
-			<button @click="handleNewMessage" class="btn btn-primary btn-sm mt-3">Send message</button>
+			<button @click="handleNewMessage" class="btn btn-primary btn-sm mt-3">Send message  <SendmessageIcon id="send-message-icon"/></button>
 		</div>
 </div>
 </template>
 
 <script>
+import SendmessageIcon from '../assets/SendmessageIcon'
+
 export default {
 	name: 'NewMessage.vue',
+	components: { SendmessageIcon },
 	data () {
 		return {
 			message: ''
@@ -34,5 +37,10 @@ export default {
 <style scoped>
 #newmessage {
 	max-width: 800px;
+}
+#send-message-icon{
+	fill: white;
+	height: 1.5em;
+	width: 1.5em;
 }
 </style>
