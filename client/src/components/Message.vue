@@ -3,7 +3,7 @@
 
 			<div class="d-flex align-items-start">
 				<span class="badge rounded-pill bg-primary mx-2">{{message_data.writer_id}}</span>
-				<small class="text-secondary">{{message_data.posted_time}}</small>
+				<Clock id="clock-icon" /> <small class="text-secondary">{{message_data.posted_time}}</small>
 			</div>
 
 			<div class="row">
@@ -11,19 +11,25 @@
 					{{message_data.content}}
 				</div>
 				<div class="col-sm-2 text-center">
-					<button type="button" class="btn btn-primary btn-sm" @click="handleUpvote()">+</button>
+					<button type="button" class="btn btn-primary btn-sm" @click="handleUpvote()"><UpvoteIcon id="vote-icons"/></button>
 					<br>
 					Score: {{message_data.score}}
 					<br>
-					<button type="button" class="btn btn-primary btn-sm" @click="handleDownvote()">-</button>
+					<button type="button" class="btn btn-primary btn-sm" @click="handleDownvote()"><DownvoteIcon id="vote-icons"/></button>
 				</div>
 			</div>
   </div>
 </template>
 
 <script>
+
+import Clock from '../assets/Clock'
+import UpvoteIcon from '../assets/UpvoteIcon'
+import DownvoteIcon from '../assets/DownvoteIcon'
+
 export default {
 	name: 'Message',
+	components: { Clock, UpvoteIcon, DownvoteIcon },
 	props: {
 		message_data: Object
 	},
@@ -37,5 +43,16 @@ export default {
 <style scoped>
 #message{
 	width: 800px;
+}
+
+#clock-icon{
+	margin-top: 0.3em;
+	width: 0.7em;
+	height: 0.7em;
+	fill: #777;
+}
+
+#vote-icons{
+	fill: white;
 }
 </style>
