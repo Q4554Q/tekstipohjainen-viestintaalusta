@@ -5,11 +5,14 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "cross-env NODE_ENV=production node index",
-		"test": "cross-env NODE_ENV=test jest --verbose --runInBand",
-        "start:test": "cross-env NODE_ENV=test node index",
 		"dev": "cross-env NODE_ENV=development nodemon index",
 		"lint": "eslint .",
-		"build:ui": "rmdir public /s /q 2>null && cd ../client/ && npm run build --prod && xcopy /S /E /I dist ..\\server\\public"
+		"test": "concurrently --kill-others \"npm run start:test\" \"npm run jest\"",
+		"start:test": "cross-env NODE_ENV=test node index",
+		"jest": "cross-env NODE_ENV=test jest --verbose --runInBand",
+		"build:ui": "rmdir public /s /q 2>null && cd ../client/ && npm run build --prod && xcopy /S /E /I dist ..\\server\\public",
+		"create-db": "cross-env NODE_ENV=development node ./db/initDatabase",
+		"create-db:test": "cross-env NODE_ENV=test node ./db/initDatabase"
 	},
 	"author": "",
 	"license": "ISC",
@@ -25,6 +28,7 @@
 		"mysql": "^2.18.1"
 	},
 	"devDependencies": {
+		"concurrently": "^6.4.0",
 		"cross-env": "^7.0.3",
 		"eslint": "^8.3.0",
 		"jest": "^27.4.2",

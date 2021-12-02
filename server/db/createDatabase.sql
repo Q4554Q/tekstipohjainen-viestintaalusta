@@ -1,9 +1,8 @@
--- SQL-komentoja copy-pastettavaksi, näillä saa tehtyä oikeanlaisen testitietokannan
-DROP DATABASE IF EXISTS viestintäalusta_testikanta;
+DROP DATABASE IF EXISTS viestintäalusta;
 
-CREATE DATABASE viestintäalusta_testikanta;
+CREATE DATABASE viestintäalusta;
 
-USE viestintäalusta_testikanta;
+USE viestintäalusta;
 
 CREATE TABLE users(
 	id INT NOT NULL AUTO_INCREMENT,

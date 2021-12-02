@@ -4,12 +4,13 @@
 	"description": "Tekstipohjainen viestintäalusta: Ryhmän 3 projekti Web-projekti -kurssia varten.",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"lint": "eslint .",
 		"install": "cd ./server && npm i && cd ../client && npm i",
-		"build:ui": "cd ./server && npm run build:ui",
+		"create-db": "cd ./server && npm run create-db && npm run create-db:test && cd ..",
+		"build:ui": "cd ./server && npm run build:ui && cd ..",
 		"start": "cd ./server && npm run start",
-		"start:ui": "cd ./client && npm run serve"
+		"start:ui": "cd ./client && npm run serve",
+		"lint": "eslint .",
+		"test:server": "cd ./server && npm run test && cd .."
 	},
 	"repository": {
 		"type": "git",
