@@ -27,6 +27,12 @@ module.exports.DELETE_ALL_USERS =
 	'DELETE FROM users'
 
 
+// TOPICS
+
+module.exports.GET_ALL_TOPICS =
+	'SELECT * FROM topics'
+
+
 // THREADS
 
 module.exports.GET_ALL_THREADS =

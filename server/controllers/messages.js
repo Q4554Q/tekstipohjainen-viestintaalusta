@@ -8,13 +8,13 @@ const vote = async (req, res) => {
 		messageId: req.params.id,
 		amount: req.body.amount,
 	}
-	const createdVote = await Messages.vote(newVote)
+	const updatedMessage = await Messages.vote(newVote)
 
-	if (!createdVote) {
+	if (!updatedMessage) {
 		return res.status(404).json({ error: 'a message was not found with the given id' })
 	}
 
-	res.status(200).json(createdVote)
+	res.status(200).json(updatedMessage)
 }
 
 const validatedVote = [
