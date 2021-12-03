@@ -58,9 +58,10 @@ const vote = async (vote) => {
 	if (!message) return undefined
 
 	// Vote the message
-	const resultEvent = await query(VOTE_FOR_MESSAGE, [vote.writerId, vote.messageId, vote.amount, vote.amount])
+	await query(VOTE_FOR_MESSAGE, [vote.writerId, vote.messageId, vote.amount, vote.amount])
 
-	return resultEvent.affectedRows > 0 ? vote : undefined
+	const updatedMessage = await getById(vote.messageId)
+	return updatedMessage
 }
 
 // For tests only

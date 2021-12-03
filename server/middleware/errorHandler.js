@@ -15,9 +15,10 @@ const errorHandler = (error, req, res, _next) => {
 			return res.status(400).json({ error: 'Duplicate entry' })
 		case 'ER_NO_REFERENCED_ROW_2':
 			return res.status(400).json({ error: 'Unknown id' })
+		case 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD':
+			return res.status(400).json({ error: 'Unknown id' })
 	}
 
-	logger.error(error)
 	res.status(500).json({ error: 'Unknown server error' })
 }
 
