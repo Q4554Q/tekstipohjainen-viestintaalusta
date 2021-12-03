@@ -1,4 +1,5 @@
 const { query } = require('../db')
+const Topics = require('./topics')
 const Messages = require('./messages')
 const { GET_ALL_THREADS,
 	GET_THREAD_BY_ID,
@@ -24,7 +25,7 @@ const getById = async (threadId, userId) => {
 const rowToThread = async (row, userId) => {
 	return {
 		id: row.id,
-		topicId: row.topic_id,
+		topic: await Topics.getById(row.topic_id),
 		writerId: row.writer_id,
 		messages: await Messages.getByThreadId(row.id, userId),
 	}

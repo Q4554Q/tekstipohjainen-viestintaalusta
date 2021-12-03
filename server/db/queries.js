@@ -32,6 +32,10 @@ module.exports.DELETE_ALL_USERS =
 module.exports.GET_ALL_TOPICS =
 	'SELECT * FROM topics'
 
+module.exports.GET_TOPIC_BY_ID =
+	`SELECT * FROM topics
+	WHERE id = ?`
+
 
 // THREADS
 
