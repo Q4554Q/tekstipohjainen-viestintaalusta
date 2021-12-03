@@ -39,8 +39,18 @@ module.exports.GET_TOPIC_BY_ID =
 
 // THREADS
 
+// Sorts the threads by their latest message's posted_time
 module.exports.GET_ALL_THREADS =
-	'SELECT * FROM threads'
+	`SELECT * FROM threads, (
+		SELECT DISTINCT thread_id, posted_time FROM (
+			SELECT *, RANK() OVER (PARTITION BY thread_id
+			ORDER BY posted_time DESC) dest_rank
+			FROM messages
+		) ranked_messages
+		WHERE ranked_messages.dest_rank = 1
+	) latest_post
+	WHERE threads.id = latest_post.thread_id
+	ORDER BY posted_time DESC`
 
 module.exports.GET_THREAD_BY_ID =
 	`SELECT * FROM threads
