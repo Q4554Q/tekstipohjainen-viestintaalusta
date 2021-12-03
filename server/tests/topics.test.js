@@ -1,35 +1,18 @@
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
-const Users = require('../model/users')
-const Threads = require('../model/threads')
-const Messages = require('../model/messages')
-const Topics = require('../model/topics')
 const { conn } = require('../db')
 
-const loginUrl = '/api/login'
-const usersUrl = '/api/users'
-const topicsUrl = '/api/topics'
+const { topicsUrl, testUsers, resetDatabase, createUser, loginUser } = require('./helpers')
+const Topics = require('../model/topics')
 
 describe('when there is initially a topic and a logged in user', () => {
-	const user = {
-		username: 'testikäyttäjä',
-		password: 'Salasana1'
-	}
-	let token = ''
+	let loggedInUser
 
 	beforeEach(async () => {
-		await Messages.deleteAllVotes()
-		await Messages.deleteAll()
-		await Threads.deleteAll()
-		await Users.deleteAll()
-
-		await api.post(usersUrl).send(user)
-
-		const response = await api
-			.post(loginUrl)
-			.send(user)
-		token = 'bearer ' + response.body.token
+		await resetDatabase()
+		await createUser(testUsers[0])
+		loggedInUser = await loginUser(testUsers[0])
 	})
 
 	it('all topics can be viewed', async () => {
@@ -37,7 +20,7 @@ describe('when there is initially a topic and a logged in user', () => {
 
 		const response = await api
 			.get(topicsUrl)
-			.set('Authorization', token)
+			.set('Authorization', loggedInUser.token)
 			.expect(200)
 			.expect('Content-Type', /application\/json/)
 

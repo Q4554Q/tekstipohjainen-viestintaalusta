@@ -11,8 +11,8 @@
 		"start:test": "cross-env NODE_ENV=test node index",
 		"jest": "cross-env NODE_ENV=test jest --verbose --runInBand",
 		"build:ui": "rmdir public /s /q 2>null && cd ../client/ && npm run build --prod && xcopy /S /E /I dist ..\\server\\public",
-		"create-db": "cross-env NODE_ENV=development node ./db/initDatabase",
-		"create-db:test": "cross-env NODE_ENV=test node ./db/initDatabase"
+		"create-db": "cross-env NODE_ENV=development node ./db/createDatabase",
+		"create-db:test": "cross-env NODE_ENV=test node ./db/createDatabase"
 	},
 	"author": "",
 	"license": "ISC",

@@ -1,26 +1,16 @@
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
-const bcrypt = require('bcrypt')
-const Messages = require('../model/messages')
-const Threads = require('../model/threads')
 const Users = require('../model/users')
 const { conn } = require('../db')
 
-const usersUrl = '/api/users'
+const { usersUrl, testUsers, resetDatabase, createUser, loginUser } = require('./helpers')
 
-describe('when there\'s initially one user in the database', () => {
+describe('when there are initially two users in the database', () => {
 	beforeEach(async () => {
-		await Messages.deleteAllVotes()
-		await Messages.deleteAll()
-		await Threads.deleteAll()
-		await Users.deleteAll()
-
-		const testUser = {
-			username: 'testikäyttäjä',
-			passwordHash: await bcrypt.hash('Salasana1', 10)
-		}
-		await Users.create(testUser)
+		await resetDatabase()
+		await createUser(testUsers[0])
+		await createUser(testUsers[1])
 	})
 
 	describe('addition of a new user', () => {
@@ -29,7 +19,7 @@ describe('when there\'s initially one user in the database', () => {
 
 			const newUser = {
 				username: 'saku',
-				password: 'Salainen1'
+				password: 'Salain3n1'
 			}
 
 			await api
@@ -86,49 +76,48 @@ describe('when there\'s initially one user in the database', () => {
 		})
 	})
 
-	describe('and the user is logged in', () => {
-		let token = ''
-		let testUser = {
-			username: 'testikäyttäjä',
-			password: 'Salasana1'
-		}
+	describe('and a user is logged in', () => {
+		let loggedInUser
 
 		beforeEach(async () => {
-			const response = await api.post('/api/login').send(testUser)
-			token = 'bearer ' + response.body.token
+			loggedInUser = await loginUser(testUsers[0])
 		})
 
 		it('all users can be viewed', async () => {
 			const response = await api
 				.get(usersUrl)
-				.set('Authorization', token)
+				.set('Authorization', loggedInUser.token)
 				.expect(200)
 				.expect('Content-Type', /application\/json/)
 
-			expect(response.body).toHaveLength(1)
-			expect(response.body[0].username).toBe(testUser.username)
+			expect(response.body).toHaveLength(2)
+			response.body.forEach((user, i) => {
+				expect(user.username).toBe(testUsers[i].username)
+				expect(user.score).toBeDefined()
+			})
 		})
 
 		it('passwordHash and id\'s are not returned', async () => {
 			const response = await api
 				.get(usersUrl)
-				.set('Authorization', token)
+				.set('Authorization', loggedInUser.token)
 				.expect(200)
 				.expect('Content-Type', /application\/json/)
 
-			expect(response.body[0].passwordHash).not.toBeDefined()
-			expect(response.body[0].id).not.toBeDefined()
+			const user = response.body[0]
+			expect(user.passwordHash).not.toBeDefined()
+			expect(user.id).not.toBeDefined()
 		})
 
 		it('your own profile can be viewed', async () => {
 			const response = await api
 				.get(usersUrl + '/me')
-				.set('Authorization', token)
+				.set('Authorization', loggedInUser.token)
 				.expect(200)
 				.expect('Content-Type', /application\/json/)
 
 			const yourProfile = response.body
-			expect(yourProfile.username).toBe(testUser.username)
+			expect(yourProfile.username).toBe(testUsers[0].username)
 			expect(yourProfile.score).toBe(0)
 			expect(yourProfile.threads).toHaveLength(0)
 		})
