@@ -7,7 +7,7 @@
 		"start": "cross-env NODE_ENV=production node index",
 		"dev": "cross-env NODE_ENV=development nodemon index",
 		"lint": "eslint .",
-		"test": "concurrently --kill-others \"npm run start:test\" \"npm run jest\"",
+		"test": "npm run create-db:test && concurrently --kill-others \"npm run start:test\" \"npm run jest\"",
 		"start:test": "cross-env NODE_ENV=test node index",
 		"jest": "cross-env NODE_ENV=test jest --verbose --runInBand",
 		"build:ui": "rmdir public /s /q 2>null && cd ../client/ && npm run build --prod && xcopy /S /E /I dist ..\\server\\public",

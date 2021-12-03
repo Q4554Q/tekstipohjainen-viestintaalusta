@@ -135,7 +135,7 @@ describe('when there are initially two users and a thread by user1 with a second
 			const thread = response.body[0]
 			expect(response.body).toHaveLength(1)
 			expect(thread.id).toBeDefined()
-			expect(thread.topicId).toBe(1)
+			expect(thread.topic.id).toBe(1)
 			expect(thread.messages).toHaveLength(1)	// Only the first message is shown
 			expect(thread.yourWriterId).toBe(1)
 		})
@@ -149,7 +149,7 @@ describe('when there are initially two users and a thread by user1 with a second
 
 			const thread = response.body
 			expect(thread.id).toBe(createdThread.id)
-			expect(thread.topicId).toBe(1)
+			expect(thread.topic.id).toBe(1)
 			expect(thread.messages).toHaveLength(2)
 			expect(thread.yourWriterId).toBe(1)
 		})
@@ -212,12 +212,12 @@ describe('when there are initially two users and a thread by user1 with a second
 				.expect(200)
 				.expect('Content-Type', /application\/json/)
 
-			const returnedVote = response.body
-			expect(returnedVote.amount).toBe(newVote.amount)
+			const returnedMessage = response.body
+			expect(returnedMessage.score).toBe(messageAtStart.score + newVote.amount)
 
 			const threadAtEnd = await Threads.getById(createdThread.id, loggedInUser.id)
 			const messageAtEnd = threadAtEnd.messages[0]
-			expect(messageAtEnd.score).toBe(messageAtStart.score + 1)
+			expect(messageAtEnd.score).toBe(messageAtStart.score + newVote.amount)
 			expect(messageAtEnd.vote).toBe(newVote.amount)
 		})
 

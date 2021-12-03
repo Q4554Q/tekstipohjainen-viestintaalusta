@@ -7,7 +7,7 @@ VALUES
 INSERT INTO
 	topics(topic_name)
 VALUES
-	("Yleinen");
+	("yleinen");
 
 INSERT INTO
 	threads(topic_id, writer_id)

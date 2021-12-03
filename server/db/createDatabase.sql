@@ -50,4 +50,4 @@ CREATE TABLE votes(
 INSERT INTO
 	topics(topic_name)
 VALUES
-	("Yleinen");
+	("yleinen");
