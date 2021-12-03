@@ -12,7 +12,12 @@ const userExtractor = async (req, res, next) => {
 	if (!decodedToken.id) {
 		return res.status(401).json({ error: 'token missing or invalid' })
 	}
+
 	const user = await Users.getById(decodedToken.id)
+	if (!user.id) {
+		return res.status(401).json({ error: 'the user you\'re logged in as doesn\'t exist' })
+	}
+
 	req.user = user
 
 	next()
