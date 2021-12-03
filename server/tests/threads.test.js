@@ -1,7 +1,9 @@
 const supertest = require('supertest')
+const each = require('jest-each').default
 const app = require('../app')
 const api = supertest(app)
 const Users = require('../model/users')
+const Topics = require('../model/topics')
 const Threads = require('../model/threads')
 const Messages = require('../model/messages')
 const { conn } = require('../db')
@@ -23,6 +25,7 @@ describe('when there are initially two users and a thread by user1 with a second
 	let loggedInUser = undefined
 	let token = ''
 	let createdThread = undefined
+	let topics
 
 	beforeEach(async () => {
 		await Messages.deleteAllVotes()
@@ -56,6 +59,8 @@ describe('when there are initially two users and a thread by user1 with a second
 			content: 'Toinen testiviesti',
 		}
 		await Threads.addMessage(newMessage)
+
+		topics = await Topics.getAll()
 	})
 
 	describe('and the user is not logged in', () => {
@@ -135,7 +140,8 @@ describe('when there are initially two users and a thread by user1 with a second
 			const thread = response.body[0]
 			expect(response.body).toHaveLength(1)
 			expect(thread.id).toBeDefined()
-			expect(thread.topic.id).toBe(1)
+			expect(thread.topic.id).toBe(topics[0].id)
+			expect(thread.topic.name).toBe(topics[0].name)
 			expect(thread.messages).toHaveLength(1)	// Only the first message is shown
 			expect(thread.yourWriterId).toBe(1)
 		})
@@ -149,7 +155,8 @@ describe('when there are initially two users and a thread by user1 with a second
 
 			const thread = response.body
 			expect(thread.id).toBe(createdThread.id)
-			expect(thread.topic.id).toBe(1)
+			expect(thread.topic.id).toBe(topics[0].id)
+			expect(thread.topic.name).toBe(topics[0].name)
 			expect(thread.messages).toHaveLength(2)
 			expect(thread.yourWriterId).toBe(1)
 		})
@@ -157,21 +164,63 @@ describe('when there are initially two users and a thread by user1 with a second
 		it('a new thread can be created', async () => {
 			const threadsAtStart = await Threads.getAll(loggedInUser.id)
 
-			const newMessage = {
-				'message': 'Toinen testilanka'
+			const newThread = {
+				'message': 'Toinen testilanka',
+				'topicId': 1,
 			}
 			const response = await api
 				.post(threadsUrl)
 				.set('Authorization', token)
-				.send(newMessage)
+				.send(newThread)
 				.expect(201)
 				.expect('Content-Type', /application\/json/)
 
 			const createdThread = response.body
-			expect(createdThread.messages[0].content).toBe(newMessage.message)
+			expect(createdThread.messages[0].content).toBe(newThread.message)
 
 			const threadsAtEnd = await Threads.getAll(loggedInUser.id)
 			expect(threadsAtEnd).toHaveLength(threadsAtStart.length + 1)
+		})
+
+		it('empty message won\'t create a new thread', async () => {
+			const threadsAtStart = await Threads.getAll(loggedInUser.id)
+
+			const newThread = {
+				'message': '',
+			}
+			const response = await api
+				.post(threadsUrl)
+				.set('Authorization', token)
+				.send(newThread)
+				.expect(422)
+				.expect('Content-Type', /application\/json/)
+
+			expect(response.body.errors).toHaveLength(1)
+			expect(response.body.errors[0].msg).toBe('The message must be between 1 and 350 characters')
+
+			const threadsAtEnd = await Threads.getAll()
+			expect(threadsAtEnd).toHaveLength(threadsAtStart.length)
+		})
+
+		it('thread cannot be created with a non existing topic id', async () => {
+			const threadsAtStart = await Threads.getAll(loggedInUser.id)
+
+			const newThread = {
+				'message': 'Toinen testilanka',
+				'topicId': 2
+			}
+			const response = await api
+				.post(threadsUrl)
+				.set('Authorization', token)
+				.send(newThread)
+				.expect(422)
+				.expect('Content-Type', /application\/json/)
+
+			expect(response.body.errors).toHaveLength(1)
+			expect(response.body.errors[0].msg).toBe('No topic was found with this id')
+
+			const threadsAtEnd = await Threads.getAll()
+			expect(threadsAtEnd).toHaveLength(threadsAtStart.length)
 		})
 
 		it('a new message can be posted', async () => {
@@ -239,6 +288,27 @@ describe('when there are initially two users and a thread by user1 with a second
 
 			const userAtEnd = await Users.getById(loggedInUser.id)
 			expect(userAtEnd.score).toBe(userAtStart.score + 2)
+		})
+
+		each([
+			[-2, true],
+			[-1, false],
+			[0, false],
+			[1, false],
+			[2, true],
+		]).test('voting with amount %s fails: %s', async (amount, fails) => {
+			const threadAtStart = await Threads.getById(createdThread.id, loggedInUser.id)
+			const messageAtStart = threadAtStart.messages[0]
+
+			const newVote = {
+				'amount': amount
+			}
+			await api
+				.post(`${messagesUrl}/${messageAtStart.id}`)
+				.set('Authorization', token)
+				.send(newVote)
+				.expect(fails ? 422 : 200)
+				.expect('Content-Type', /application\/json/)
 		})
 	})
 
