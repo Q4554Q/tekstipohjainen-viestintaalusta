@@ -1,4 +1,5 @@
 const supertest = require('supertest')
+const each = require('jest-each').default
 const app = require('../app')
 const api = supertest(app)
 const Topics = require('../model/topics')
@@ -155,6 +156,41 @@ describe('when there are initially two users and a thread by user1 with a second
 
 			const threadAtEnd = await Threads.getById(testThreads[0].id, loggedInUser.id)
 			expect(threadAtEnd.messages).toHaveLength(threadAtStart.messages.length + 1)
+		})
+
+		each([
+			[0, 5, [0, 1, 2, 3, 4]],
+			[2, 2, [2, 3]],
+			[2, 1, [2]],
+			[4, 5, [4]],
+		]).test('threads are sent correctly paginated with offset: %s and limit: %s', async (offset, limit, returnedThreadIndexes) => {
+			testThreads.push(await createThread(loggedInUser.id))
+			testThreads.push(await createThread(loggedInUser.id))
+			testThreads.push(await createThread(loggedInUser.id))
+			testThreads.push(await createThread(loggedInUser.id))
+			const threadsAtStart = await Threads.getAll(0, 1000, loggedInUser.id)
+
+			const response = await api
+				.get(`${threadsUrl}?offset=${offset}&limit=${limit}`)
+				.set('Authorization', loggedInUser.token)
+
+			const returnedThreads = response.body
+			for (let i = 0; i < returnedThreads.length || i < returnedThreadIndexes.length; i++) {
+				const thread = returnedThreads[i]
+				const threadAtStart = threadsAtStart[returnedThreadIndexes[i]]
+				expect(thread.id).toBe(threadAtStart.id)
+			}
+		})
+
+		it('incorrect pagination values return an error ', async () => {
+			const offset = 'a'
+			const limit = 'b'
+			const response = await api
+				.get(`${threadsUrl}?offset=${offset}&limit=${limit}`)
+				.set('Authorization', loggedInUser.token)
+				.expect(422)
+
+			expect(response.body.errors).toHaveLength(2)
 		})
 	})
 
