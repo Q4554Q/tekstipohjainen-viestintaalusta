@@ -49,7 +49,7 @@ export default {
 					message: this.message
 				}, {
 					headers: {
-						Authorization: 'bearer {token}'
+						Authorization: `bearer ${this.token}`
 					}
 				})
 
