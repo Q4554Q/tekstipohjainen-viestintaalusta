@@ -1,7 +1,7 @@
 <template>
 <div id="loginview">
 	<Login v-if="showLogin" @create-account-clicked="handleCreateAccount()" v-on="$listeners"/>
-	<CreateAccount v-else />
+	<CreateAccount v-else @return-clicked="handleCloseCreateAccount()"/>
 </div>
 </template>
 
@@ -22,6 +22,9 @@ export default {
 		},
 		handleCreateAccount () {
 			this.showLogin = false
+		},
+		handleCloseCreateAccount () {
+			this.showLogin = true
 		}
 	}
 }
