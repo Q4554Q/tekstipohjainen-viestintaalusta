@@ -47,14 +47,14 @@ describe('when there are initially two users and a thread by user1 with a second
 		})
 
 		it('a thread cannot be created', async () => {
-			const threadsAtStart = await Threads.getAll(loggedInUser.id)
+			const threadsAtStart = await Threads.getAll(0, 1000, loggedInUser.id)
 
 			const message = 'Toinen viestiketju'
 			const response = await postThread('', { message }, 401)
 
 			expect(response.body.error).toBe('token missing or invalid')
 
-			const threadsAtEnd = await Threads.getAll(loggedInUser.id)
+			const threadsAtEnd = await Threads.getAll(0, 1000, loggedInUser.id)
 			expect(threadsAtEnd).toHaveLength(threadsAtStart.length)
 		})
 
@@ -99,7 +99,7 @@ describe('when there are initially two users and a thread by user1 with a second
 		})
 
 		it('a new thread can be created', async () => {
-			const threadsAtStart = await Threads.getAll(loggedInUser.id)
+			const threadsAtStart = await Threads.getAll(0, 1000, loggedInUser.id)
 
 			const message = 'Toinen viestiketju'
 			const topicId = 1
@@ -109,12 +109,12 @@ describe('when there are initially two users and a thread by user1 with a second
 			expect(createdThread.messages[0].content).toBe(message)
 			expect(createdThread.topic.id).toBe(topicId)
 
-			const threadsAtEnd = await Threads.getAll(loggedInUser.id)
+			const threadsAtEnd = await Threads.getAll(0, 1000, loggedInUser.id)
 			expect(threadsAtEnd).toHaveLength(threadsAtStart.length + 1)
 		})
 
 		it('empty message won\'t create a new thread', async () => {
-			const threadsAtStart = await Threads.getAll(loggedInUser.id)
+			const threadsAtStart = await Threads.getAll(0, 1000, loggedInUser.id)
 
 			const message = ''
 			const response = await postThread('', { message }, 422)
@@ -122,12 +122,12 @@ describe('when there are initially two users and a thread by user1 with a second
 			expect(response.body.errors).toHaveLength(1)
 			expect(response.body.errors[0].msg).toBe('The message must be between 1 and 350 characters')
 
-			const threadsAtEnd = await Threads.getAll()
+			const threadsAtEnd = await Threads.getAll(0, 1000, loggedInUser.id)
 			expect(threadsAtEnd).toHaveLength(threadsAtStart.length)
 		})
 
 		it('thread cannot be created with a non existing topic id', async () => {
-			const threadsAtStart = await Threads.getAll(loggedInUser.id)
+			const threadsAtStart = await Threads.getAll(0, 1000, loggedInUser.id)
 
 			const message = 'Toinen viestiketju'
 			const topicId = 2
@@ -136,7 +136,7 @@ describe('when there are initially two users and a thread by user1 with a second
 			expect(response.body.errors).toHaveLength(1)
 			expect(response.body.errors[0].msg).toBe('No topic was found with this id')
 
-			const threadsAtEnd = await Threads.getAll()
+			const threadsAtEnd = await Threads.getAll(0, 1000, loggedInUser.id)
 			expect(threadsAtEnd).toHaveLength(threadsAtStart.length)
 		})
 
@@ -188,7 +188,7 @@ describe('when there are initially two users and a thread by user1 with a second
 	const getThread = async (threadId, expectedCode) => {
 		const url = threadId
 			? `${threadsUrl}/${threadId}`
-			: threadsUrl
+			: `${threadsUrl}?offset=0&limit=1000`
 
 		return await api
 			.get(url)

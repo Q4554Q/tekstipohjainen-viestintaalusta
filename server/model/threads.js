@@ -6,8 +6,8 @@ const { GET_ALL_THREADS,
 	CREATE_THREAD,
 	DELETE_ALL_THREADS } = require('../db/queries')
 
-const getAll = async (userId) => {
-	const rows = await query(GET_ALL_THREADS, [])
+const getAll = async (offset, limit, userId) => {
+	const rows = await query(GET_ALL_THREADS, [offset, limit])
 	const threads = await Promise.all(
 		rows.map(async (row) => rowToThread(row, userId))
 	)

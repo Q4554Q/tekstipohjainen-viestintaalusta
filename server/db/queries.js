@@ -50,7 +50,8 @@ module.exports.GET_ALL_THREADS =
 		WHERE ranked_messages.dest_rank = 1
 	) latest_post
 	WHERE threads.id = latest_post.thread_id
-	ORDER BY posted_time DESC`
+	ORDER BY posted_time DESC
+	LIMIT ?,?`
 
 module.exports.GET_THREAD_BY_ID =
 	`SELECT * FROM threads

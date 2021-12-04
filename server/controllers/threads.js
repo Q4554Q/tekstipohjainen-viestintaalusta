@@ -1,18 +1,20 @@
 const Threads = require('../model/threads')
 const Topics = require('../model/topics')
-const { check } = require('express-validator')
+const { check, query } = require('express-validator')
 const validationHandler = require('../middleware/validationHandler')
 const hideWriters = require('../utils/hideWriters')
 
 const getAll = async (req, res) => {
 	const userId = req.user.id
-	let threads = await Threads.getAll(userId)
+	const offset = parseInt(req.query.offset || 0)
+	const limit = parseInt(req.query.limit || 100)
 
-	// Filter by topic id or name
-	const topic = req.query.topic
-	if (topic) {
-		console.log(topic)
-		threads = threads.filter(thread => thread.topic.id.toString() === topic || thread.topic.name === topic)
+	let threads = await Threads.getAll(offset, limit, userId)
+
+	// Filter by topic id
+	const topicId = req.query.topic_id
+	if (topicId) {
+		threads = threads.filter(thread => thread.topic.id.toString() === topicId)
 	}
 
 	threads.forEach(thread => {
@@ -72,6 +74,23 @@ const addMessage = async (req, res) => {
 	res.status(201).json(updatedThread)
 }
 
+const validatedGetAll = [
+	query('offset')
+		.isInt({ min: 0 })
+		.optional()
+		.withMessage('The pagination offset must be a positive integer'),
+	query('limit')
+		.isInt({ min: 0 })
+		.optional()
+		.withMessage('The pagination limit must be a positive integer'),
+	query('topic_id')
+		.isInt({ min: 0 })
+		.optional()
+		.withMessage('The topic id must be a positive integer'),
+	validationHandler,
+	getAll,
+]
+
 const validatedCreate = [
 	check('message')
 		.isLength({ min: 1, max: 350 })
@@ -98,7 +117,7 @@ const validatedAddMessage = [
 ]
 
 module.exports = {
-	getAll,
+	getAll: validatedGetAll,
 	getById,
 	create: validatedCreate,
 	addMessage: validatedAddMessage,
