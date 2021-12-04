@@ -4,7 +4,7 @@
 		<div class="container pt-3 mt-5"/>
 		<ThreadList v-if="mainViewState === showThreadList" v-bind:threads="threads" @open-thread="openThread"/>
 		<Thread v-else-if="mainViewState === showThread" v-bind:messages="messages"/>
-		<NewThread v-else-if="mainViewState === showNewThread"></NewThread>
+		<NewThread v-else-if="mainViewState === showNewThread" v-bind:token="token" @thread-created="openThreadList"></NewThread>
 		<Profile v-else-if="mainViewState === showProfile" @open-thread="openThread"/>
 	</div>
 </template>
@@ -24,6 +24,9 @@ export default {
 		Thread,
 		ThreadList,
 		Profile
+	},
+	props: {
+		token: String
 	},
 	data () {
 		return {

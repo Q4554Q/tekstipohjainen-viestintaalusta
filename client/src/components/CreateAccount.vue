@@ -28,6 +28,12 @@
 				Return
 			</button>
 		</div>
+		<div v-if="pending" class="row justify-content-center">
+			<b-spinner variant="primary" class="mt-3"></b-spinner>
+		</div>
+		<b-alert v-model="error" variant="danger" class="mt-3">
+			{{ errorMessage }}
+		</b-alert>
 	</div>
 </template>
 
