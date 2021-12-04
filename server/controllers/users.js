@@ -1,7 +1,7 @@
 const Users = require('../model/users')
 const Threads = require('../model/threads')
 const bcrypt = require('bcrypt')
-const { check } = require('express-validator')
+const { check, query } = require('express-validator')
 const validationHandler = require('../middleware/validationHandler')
 const hideWriters = require('../utils/hideWriters')
 
@@ -13,13 +13,15 @@ const getAll = async (req, res) => {
 const getMyProfile = async (req, res) => {
 	const userId = req.user.id
 	const user = await Users.getById(userId)
+	const offset = parseInt(req.query.offset || 0)
+	const limit = parseInt(req.query.limit || 100)
 
 	if (!user) {
 		return res.status(404).json({ error: 'a user was not found with the given id' })
 	}
 
 	// Get all threads in which this user has posted
-	const threads = await Threads.getAll(userId)
+	const threads = await Threads.getAll(offset, limit, userId)
 	threads.forEach(thread => {
 		hideWriters(thread, req.user)
 		thread.messages = thread.messages.slice(0, 1)
@@ -41,6 +43,19 @@ const create = async (req, res) => {
 	res.status(201).json(createdUser)
 }
 
+const validatedGetMyProfile = [
+	query('offset')
+		.isInt({ min: 0 })
+		.optional()
+		.withMessage('The pagination offset must be a positive integer'),
+	query('limit')
+		.isInt({ min: 0 })
+		.optional()
+		.withMessage('The pagination limit must be a positive integer'),
+	validationHandler,
+	getMyProfile,
+]
+
 const validatedCreate = [
 	check('username')
 		.isLength({ min: 3 }).withMessage('The username must have at least 3 characters'),
@@ -55,6 +70,6 @@ const validatedCreate = [
 
 module.exports = {
 	getAll,
-	getMyProfile,
+	getMyProfile: validatedGetMyProfile,
 	create: validatedCreate,
 }
