@@ -1,7 +1,7 @@
 <template>
 	<div id="thread">
 		<message v-for="message in data.messages" :key="message.id" v-bind:message_data="message"></message>
-		<NewMessage></NewMessage>
+		<NewMessage :threadId="this.threadId" :token="token"></NewMessage>
 	</div>
 </template>
 

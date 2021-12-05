@@ -17,6 +17,7 @@
 
 <script>
 import SendmessageIcon from '../assets/SendmessageIcon'
+import axios from 'axios'
 
 export default {
 	name: 'NewMessage.vue',
@@ -26,9 +27,36 @@ export default {
 			message: ''
 		}
 	},
+	props: {
+		threadId: Number,
+		token: String
+	},
 	methods: {
-		handleNewMessage () {
-			// otetaan message ja luodaan uusi Message-olio
+		async handleNewMessage () {
+			this.pending = true
+			this.error = 0
+
+			try {
+				await axios.post('/api/threads/' + this.threadId, {
+					message: this.message
+				}, {
+					headers: {
+						Authorization: `bearer ${this.token}`
+					}
+				})
+
+				this.$emit('message-created')
+				this.error = 0
+			} catch (error) {
+				this.error = 5
+				if (error.response) {
+					this.errorMessage = error.response.data.error
+				} else {
+					this.errorMessage = error.message
+				}
+			}
+			this.pending = false
+			this.message = ''
 		}
 	}
 }
