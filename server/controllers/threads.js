@@ -19,6 +19,7 @@ const getAll = async (req, res) => {
 
 	threads.forEach(thread => {
 		hideWriters(thread, req.user)
+		thread.numMessages = thread.messages.length
 		thread.messages = thread.messages.slice(0, 1)
 	})
 
