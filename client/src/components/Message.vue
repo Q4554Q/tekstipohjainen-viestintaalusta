@@ -2,8 +2,8 @@
   <div id="message" class="container p-3 my-3 border rounded" @click="$emit('message-clicked')">
 
 			<div class="d-flex align-items-start">
-				<span class="badge rounded-pill bg-primary mx-3">{{message_data.writer_id}}</span>
-				<Clock id="clock-icon" /> <small class="text-secondary">{{message_data.posted_time}}</small>
+				<span class="badge rounded-pill bg-primary mx-3">{{message_data.writerId}}</span>
+				<Clock id="clock-icon"/><small class="text-secondary">  {{message_data.postedTime}}</small>
 			</div>
 
 			<div class="row">

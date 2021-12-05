@@ -88,15 +88,13 @@ export default {
 
 			try {
 				const { data } = await axios.get('/api/threads', {
-					offset: '',
-					limit: ''
-				}, {
 					headers: {
 						Authorization: `bearer ${this.token}`
 					}
 				})
 
 				this.threads = data
+				console.log(this.threads)
 
 				this.error = 0
 			} catch (error) {
