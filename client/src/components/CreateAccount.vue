@@ -66,9 +66,9 @@ export default {
 					password: this.password
 				})
 
-				console.log(data)
-
 				this.error = 0
+
+				this.$emit("return-clicked")
 			} catch (error) {
 				this.error = 5
 				if (error.response) {
