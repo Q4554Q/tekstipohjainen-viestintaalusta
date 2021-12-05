@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<LoginView v-if="showLogin" @login-clicked="handleLogin"/>
-		<MainView v-else v-bind:token="token"/>
+		<MainView v-else v-bind:token="token" @logout-clicked="handleLogout"/>
 	</div>
 </template>
 
@@ -21,11 +21,26 @@ export default {
 			token: ''
 		}
 	},
+	created() {
+		const token = localStorage.getItem('TOKEN')
+		if (token) {
+			this.setToken(token)
+		}
+	},
 	methods: {
 		handleLogin (token) {
-			this.showLogin = false
+			this.setToken(token)
+		},
+		handleLogout () {
+			this.setToken('')
+		},
+		setToken (token) {
 			this.token = token
-		}
+			window.accessToken = token
+			localStorage.setItem('TOKEN', token)
+
+			this.showLogin = token === ''
+		},
 	}
 }
 </script>

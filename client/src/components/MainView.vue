@@ -6,7 +6,7 @@
 		<ThreadList v-if="mainViewState === showThreadList" v-bind:threads="threads" @open-thread="openThread"/>
 		<Thread v-else-if="mainViewState === showThread" v-bind:messages="messages"/>
 		<NewThread v-else-if="mainViewState === showNewThread" v-bind:token="token" @thread-created="openThreadList"/>
-		<Profile v-else-if="mainViewState === showProfile" v-bind:token="token" @open-thread="openThread"/>
+		<Profile v-else-if="mainViewState === showProfile" v-bind:token="token" @open-thread="openThread" v-on="$listeners"/>
 	</div>
 </template>
 

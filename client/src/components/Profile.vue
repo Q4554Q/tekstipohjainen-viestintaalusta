@@ -3,6 +3,7 @@
 		<div id="profile-info" class="container pt-3 my-3 fs-5 text-left">
 			User name: {{data.username}}<br>
 			Your score: <b>{{data.score}}</b><br>
+			<button type="button" class="btn bg-primary btn-sm text-white my-3" @click="$emit('logout-clicked')">Log out</button>
 			<br>
 			Threads you have posted on:
 		</div>
