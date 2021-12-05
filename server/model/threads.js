@@ -23,11 +23,13 @@ const getById = async (threadId, userId) => {
 }
 
 const rowToThread = async (row, userId) => {
+	const messages = await Messages.getByThreadId(row.id, userId)
 	return {
 		id: row.id,
 		topic: await Topics.getById(row.topic_id),
 		writerId: row.writer_id,
-		messages: await Messages.getByThreadId(row.id, userId),
+		messages: messages,
+		numMessages: messages.length,
 	}
 }
 
