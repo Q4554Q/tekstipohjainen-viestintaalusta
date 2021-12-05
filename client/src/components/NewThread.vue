@@ -64,6 +64,7 @@ export default {
 				}
 			}
 			this.pending = false
+			console.log(this.token)
 		}
 	}
 }
