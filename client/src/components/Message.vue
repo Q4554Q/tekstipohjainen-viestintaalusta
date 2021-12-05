@@ -47,7 +47,7 @@ export default {
 			this.error = 0
 
 			try {
-				await axios.post('/api/messages/' + this.message_data.id, { amount: '1' }, {
+				await axios.post('/api/messages/' + this.message_data.id, { amount: 1 }, {
 					headers: {
 						Authorization: `bearer ${window.accessToken}`
 					}
@@ -69,7 +69,7 @@ export default {
 			this.error = 0
 
 			try {
-				await axios.post('/api/messages/' + this.message_data.id, { amount: '-' }, {
+				await axios.post('/api/messages/' + this.message_data.id, { amount: -1 }, {
 					headers: {
 						Authorization: `bearer ${window.accessToken}`
 					}
