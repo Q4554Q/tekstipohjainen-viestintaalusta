@@ -16,7 +16,6 @@ import ThreadList from './ThreadList'
 import TopBar from './TopBar'
 import NewThread from './NewThread'
 import Profile from './Profile'
-import axios from 'axios'
 
 export default {
 	name: 'MainView',
@@ -44,13 +43,9 @@ export default {
 			threads: []
 		}
 	},
-	created () {
-		this.getThreads()
-	},
 	methods: {
 		openThreadList () {
 			this.mainViewState = this.showThreadList
-			this.getThreads()
 		},
 		openThread (threadId) {
 			this.threadId = threadId
@@ -61,31 +56,6 @@ export default {
 		},
 		openProfile () {
 			this.mainViewState = this.showProfile
-		},
-		async getThreads () {
-			this.pending = true
-			this.error = 0
-
-			try {
-				const { data } = await axios.get('/api/threads', {
-					headers: {
-						Authorization: `bearer ${this.token}`
-					}
-				})
-
-				this.threads = data
-				console.log(this.threads)
-
-				this.error = 0
-			} catch (error) {
-				this.error = 5
-				if (error.response) {
-					this.errorMessage = error.response.data.error
-				} else {
-					this.errorMessage = error.message
-				}
-			}
-			this.pending = false
 		}
 	}
 }
