@@ -4,7 +4,7 @@
 				@profile-clicked="openProfile"/>
 		<div class="container pt-3 mt-5"/>
 		<ThreadList v-if="mainViewState === showThreadList" v-bind:threads="threads" @open-thread="openThread"/>
-		<Thread v-else-if="mainViewState === showThread" v-bind:messages="messages"/>
+		<Thread v-else-if="mainViewState === showThread" v-bind:threadId="threadId" v-bind:token="token"/>
 		<NewThread v-else-if="mainViewState === showNewThread" v-bind:token="token" @thread-created="openThreadList"/>
 		<Profile v-else-if="mainViewState === showProfile" v-bind:token="token" @open-thread="openThread" v-on="$listeners"/>
 	</div>
@@ -40,28 +40,8 @@ export default {
 			pending: false,
 			error: 0,
 			errorMessage: '',
-			thread_id: null,
-			threads: {},
-			messages: [
-				{
-					writer_id: 1,
-					content: 'Äiti mä oon internetissä',
-					score: 12,
-					posted_time: '13.12.2021'
-				},
-				{
-					writer_id: 2,
-					content: 'EBIN TROLORLROR',
-					score: -3,
-					posted_time: '13.12.2021'
-				},
-				{
-					writer_id: 666,
-					content: '@2 on apina!',
-					score: 4,
-					posted_time: '13.12.2021'
-				}
-			]
+			threadId: null,
+			threads: []
 		}
 	},
 	created () {
@@ -73,7 +53,7 @@ export default {
 			this.getThreads()
 		},
 		openThread (threadId) {
-			this.thread_id = threadId
+			this.threadId = threadId
 			this.mainViewState = this.showThread
 		},
 		openNewThread () {

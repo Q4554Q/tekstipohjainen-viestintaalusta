@@ -1,6 +1,6 @@
 <template>
 	<div id="thread">
-		<message v-for="message in messages" :key="message.posted_time" v-bind:message_data="message"></message>
+		<message v-for="message in data.messages" :key="message.id" v-bind:message_data="message"></message>
 		<NewMessage></NewMessage>
 	</div>
 </template>
@@ -9,6 +9,7 @@
 
 import Message from './Message'
 import NewMessage from './NewMessage'
+import axios from 'axios'
 
 export default {
 	name: 'Thread',
@@ -16,8 +17,44 @@ export default {
 		Message,
 		NewMessage
 	},
+	data () {
+		return {
+			data: {}
+		}
+	},
 	props: {
-		messages: Array
+		threadId: Number,
+		token: String
+	},
+	methods: {
+		async getThreadsById (threadId) {
+			this.pending = true
+			this.error = 0
+
+			try {
+				const { data } = await axios.get('/api/threads/' + threadId, {
+					headers: {
+						Authorization: `bearer ${this.token}`
+					}
+				})
+
+				this.data = data
+				console.log(this.data)
+
+				this.error = 0
+			} catch (error) {
+				this.error = 5
+				if (error.response) {
+					this.errorMessage = error.response.data.error
+				} else {
+					this.errorMessage = error.message
+				}
+			}
+			this.pending = false
+		}
+	},
+	created () {
+		this.getThreadsById(this.threadId)
 	}
 }
 

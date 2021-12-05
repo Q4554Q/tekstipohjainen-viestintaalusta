@@ -7,7 +7,7 @@
 			</div>
 
 			<div class="row">
-				<div class="col-sm-10 px-5 py-3">
+				<div class="col-sm-10 px-5 py-3 text-break">
 					{{message_data.content}}
 				</div>
 				<div class="col-sm-2 text-center">
