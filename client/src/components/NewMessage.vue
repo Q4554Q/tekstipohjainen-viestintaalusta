@@ -1,5 +1,5 @@
 <template>
-<div id="newmessage" class="container p-3 my-3 border rounded">
+<div id="newmessage" class="container p-3 my-3 rounded-3">
 		<div id="newMessageArea" class="text-center">
 			<b-form-textarea
 				v-model="message"
@@ -10,7 +10,7 @@
 				maxlength="350"
 			/>
 			<div class="text-end"><small class="text-secondary">{{message.length}}/350</small></div>
-			<button @click="handleNewMessage" class="btn btn-primary btn-sm mt-3">Send message  <SendmessageIcon id="send-message-icon"/></button>
+			<button @click="handleNewMessage" class="btn btn-sm mt-3">Send message  <SendmessageIcon id="send-message-icon"/></button>
 		</div>
 </div>
 </template>
@@ -63,9 +63,24 @@ export default {
 <style scoped>
 #newmessage {
 	max-width: 800px;
+	background-color: #2e2e2e;
+	color:#d1d1d1;
+}
+textarea {
+	background-color: #2e2e2e;
+	color:#d1d1d1;
+}
+textarea:focus {
+	background-color: #2e2e2e;
+	color:#d1d1d1;
+}
+button {
+	background-color: #2e2e2e;
+	color: #8ed1c6;
+	border-color: #8ed1c6;
 }
 #send-message-icon{
-	fill: white;
+	fill: #8ed1c6;
 	height: 1.5em;
 	width: 1.5em;
 }

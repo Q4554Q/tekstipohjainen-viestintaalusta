@@ -1,9 +1,9 @@
 <template>
 	<div id="profile">
-		<div id="profile-info" class="container pt-3 my-3 fs-5 text-left">
+		<div id="profile-info" class="container pt-3 my-3 fs-5 text-left rounded-3">
 			User name: {{data.username}}<br>
 			Your score: <b>{{data.score}}</b><br>
-			<button type="button" class="btn bg-primary btn-sm text-white my-3" @click="$emit('logout-clicked')">Log out</button>
+			<button type="button" class="btn btn-sm my-3" @click="$emit('logout-clicked')">Log out</button>
 			<br>
 			Threads you have posted on:
 		</div>
@@ -67,5 +67,12 @@ export default {
 <style scoped>
 #profile-info{
 	width: 800px;
+	color:#8ed1c6;
+	background-color: #2e2e2e;
+}
+
+button {
+	color: #8ed1c6;
+	border-color: #8ed1c6;
 }
 </style>

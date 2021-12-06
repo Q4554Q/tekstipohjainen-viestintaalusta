@@ -1,13 +1,13 @@
 <template>
-	<div id="create-account" class="container p-3 my-3">
+	<div id="create-account" class="container p-5 my-3 rounded-3">
 		<form class="align-items-center" @submit.prevent>
-			<div class="row">
+			<div class="row pb-1 fw-bold" id="username">
 				User name:
 			</div>
 			<div class="row">
 				<input v-model="username" placeholder="User name">
 			</div>
-			<div class="row mt-3">
+			<div class="row mt-3 pb-1 fw-bold" id="password">
 				Password:
 			</div>
 			<div class="row">
@@ -18,6 +18,7 @@
 					type="submit"
 					value="Create Account"
 					class="btn btn-primary btn-sm mt-3"
+					id="createaccountbutton"
 					@click="createAccount"
 				/>
 			</div>
@@ -68,7 +69,7 @@ export default {
 
 				this.error = 0
 
-				this.$emit("return-clicked")
+				this.$emit('return-clicked')
 			} catch (error) {
 				this.error = 5
 				if (error.response) {
@@ -85,15 +86,32 @@ export default {
 
 <style scoped>
 #create-account {
-	width: 150px;
+	width: 300px;
+	background-color: #2e2e2e;
 }
 
 input {
-	width: 150px;
+	width: 300px;
+}
+
+#username, #password {
+	color: #8ed1c6;
+}
+
+button {
+	color: #8ed1c6;
+	border-color: #8ed1c6;
+	background-color: #2e2e2e;
+}
+
+#createaccountbutton {
+	color: #8ed1c6;
+	border-color: #8ed1c6;
+	background-color: #2e2e2e;
 }
 
 #back-icon{
-	fill: white;
+	fill: #8ed1c6;
 	height: 1em;
 	width: 1em;
 }

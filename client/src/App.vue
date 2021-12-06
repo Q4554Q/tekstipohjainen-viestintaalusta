@@ -21,7 +21,7 @@ export default {
 			token: ''
 		}
 	},
-	created() {
+	created () {
 		const token = localStorage.getItem('TOKEN')
 		if (token) {
 			this.setToken(token)
@@ -40,7 +40,7 @@ export default {
 			localStorage.setItem('TOKEN', token)
 
 			this.showLogin = token === ''
-		},
+		}
 	}
 }
 </script>
@@ -52,5 +52,10 @@ export default {
 	-moz-osx-font-smoothing: grayscale;
 	color: #2c3e50;
 	margin-top: 60px;
+	background: rgba(30,30,30,50);
+
+}
+html {
+	background: rgba(30,30,30,50);
 }
 </style>

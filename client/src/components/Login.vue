@@ -1,11 +1,12 @@
 <template>
-    <div id="login" class="container p-3 my-3">
+    <div id="login" class="container p-5 my-3 rounded-3 align-items-center">
+					<h1 class="fs-2">Account login</h1>
         <form class="align-items-center" @submit.prevent>
-            <div class="row">Username:</div>
+            <div class="row pb-1 fw-bold" id="username">Username:</div>
             <div class="row">
                 <input v-model="username" placeholder="Username" pattern="^[A-Za-z0-9]{3,}$"/>
             </div>
-            <div class="row mt-3">Password:</div>
+            <div class="row mt-3 pb-1 fw-bold" id="password">Password:</div>
             <div class="row">
                 <input v-model="password" type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$" />
             </div>
@@ -14,6 +15,7 @@
                     type="submit"
                     value="Log in"
                     class="btn btn-primary btn-sm mt-3"
+																				id="loginbutton"
                     @click="login"
                 />
             </div>
@@ -83,9 +85,31 @@ export default {
 
 <style scoped>
 #login {
-    width: 150px;
+    width: 300px;
+				background-color: #2e2e2e;
 }
+
 input {
-    width: 150px;
+    width: 300px;
+}
+
+button {
+	color: #8ed1c6;
+	border-color: #8ed1c6;
+	background-color: #2e2e2e;
+}
+
+#loginbutton {
+	color: #8ed1c6;
+	border-color: #8ed1c6;
+	background-color: #2e2e2e;
+}
+
+h1 {
+	color: #8ed1c6;
+}
+
+#username, #password {
+	color: #8ed1c6;
 }
 </style>

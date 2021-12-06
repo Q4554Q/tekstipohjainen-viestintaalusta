@@ -1,10 +1,10 @@
 <template>
-	<div id="message" class="container px-3 my-3 border rounded" @click="$emit('message-clicked')">
+	<div id="message" class="container px-3 my-3 rounded-3" @click="$emit('message-clicked')">
 		<div class="row">
 			<div class="col-sm-10 px-5 pt-4 text-break">
 				<div class="row">
 					<div class="d-flex align-items-start mb-1">
-						<span class="badge rounded-pill bg-primary">{{ message_data.writerId }}</span>
+						<span class="badge rounded-pill" id="writerid">{{ message_data.writerId }}</span>
 						<Clock id="clock-icon"/>
 						<small class="text-secondary"> {{ message_data.postedTime }}</small>
 					</div>
@@ -21,7 +21,7 @@
 					</button>
 				</div>
 				<div class="row">
-					<span id="score" class="fw-bold fs-4">{{ message_data.score }}</span>
+					<span id="score" class="fw-bold fs-4 text-white">{{ message_data.score }}</span>
 				</div>
 				<div class="row">
 					<button type="button" class="btn btn-xs" @click="handleDownvote">
@@ -110,6 +110,8 @@ export default {
 <style scoped>
 #message {
 	width: 800px;
+	background-color: #2e2e2e;
+	color:#8ed1c6;
 }
 
 #clock-icon {
@@ -122,9 +124,14 @@ export default {
 }
 
 #upvote, #downvote {
-	fill: #4285F4;
+	fill: #8ed1c6;
 	width: 2.5em;
 	height: 2.5em;
+}
+
+#writerid {
+	background-color: #8ed1c6;
+	color: #2e2e2e;
 }
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<div id="new-thread" class="container p-3 my-3 border rounded">
+	<div id="new-thread" class="container p-3 my-3 rounded-3">
 		<div id="newthreadfield" class="text-center">
 			<b-form-textarea
 				v-model="message"
@@ -10,7 +10,7 @@
 				maxlength="350"
 			/>
 			<div class="text-end"><small class="text-secondary"><b-icon icon="clock"/>{{message.length}}/350</small></div>
-			<button @click="createNewThread" class="btn btn-primary btn-sm mt-3">Create thread <SendmessageIcon id="send-message-icon"/></button>
+			<button @click="createNewThread" class="btn btn-sm mt-3">Create thread <SendmessageIcon id="send-message-icon"/></button>
 		</div>
 		<div v-if="pending" class="row justify-content-center">
 			<b-spinner variant="primary" class="mt-3"></b-spinner>
@@ -49,7 +49,7 @@ export default {
 					message: this.message
 				}, {
 					headers: {
-						Authorization: `bearer ${this.token}`
+						Authorization: `bearer ${window.accessToken}`
 					}
 				})
 
@@ -64,7 +64,6 @@ export default {
 				}
 			}
 			this.pending = false
-			console.log(this.token)
 		}
 	}
 }
@@ -73,10 +72,24 @@ export default {
 <style scoped>
 #new-thread {
 	max-width: 800px;
+	background-color: #2e2e2e;
+	color:#d1d1d1;
 }
-
+textarea {
+	background-color: #2e2e2e;
+	color:#d1d1d1;
+}
+textarea:focus {
+	background-color: #2e2e2e;
+	color:#d1d1d1;
+}
+button {
+	background-color: #2e2e2e;
+	color: #8ed1c6;
+	border-color: #8ed1c6;
+}
 #send-message-icon{
-	fill: white;
+	fill: #8ed1c6;
 	height: 1.5em;
 	width: 1.5em;
 }
