@@ -28,8 +28,7 @@ export default {
 		}
 	},
 	props: {
-		threadId: Number,
-		token: String
+		threadId: Number
 	},
 	methods: {
 		async handleNewMessage () {
@@ -41,11 +40,10 @@ export default {
 					message: this.message
 				}, {
 					headers: {
-						Authorization: `bearer ${this.token}`
+						Authorization: `bearer ${window.accessToken}`
 					}
-				})
+				}).then(response => { this.$emit('update-thread', response.data) })
 
-				this.$emit('message-created')
 				this.error = 0
 			} catch (error) {
 				this.error = 5
