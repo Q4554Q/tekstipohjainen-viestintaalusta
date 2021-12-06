@@ -1,7 +1,7 @@
 <template>
 	<div id="thread-list">
 			<OpeningMessage v-for="thread in threadData" :key="thread.id" v-bind:messageData="thread.messages[0]"
-							v-bind:numMessages="thread.numMessages"
+							v-bind:numMessages="thread.numMessages" v-bind:writerIdInThread="thread.yourWriterId"
 							@message-clicked="$emit('open-thread', thread.id)"/>
 	</div>
 </template>
