@@ -1,6 +1,6 @@
 <template>
-	<div id="message" class="container px-3 my-3 rounded-3" @click="$emit('message-clicked')">
-		<div class="row">
+	<div id="message" class="container my-3 rounded-3" @click="$emit('message-clicked')">
+		<div class="row" :id="computedId">
 			<div class="col-sm-10 px-5 pt-4 text-break">
 				<div class="row">
 					<div class="d-flex align-items-start mb-1">
@@ -29,7 +29,6 @@
 					</button>
 				</div>
 			</div>
-
 		</div>
 	</div>
 </template>
@@ -45,7 +44,8 @@ export default {
 	name: 'Message',
 	components: { Clock, UpvoteIcon, DownvoteIcon },
 	props: {
-		message_data: Object
+		message_data: Object,
+		writerIdInThread: Number
 	},
 	data () {
 		return {
@@ -103,6 +103,15 @@ export default {
 			}
 			this.pending = false
 		}
+	},
+	computed: {
+		computedId () {
+			if (this.writerIdInThread === this.message_data.writerId) {
+				return 'border'
+			} else {
+				return 'defaultId'
+			}
+		}
 	}
 }
 </script>
@@ -138,6 +147,18 @@ button:focus {
 	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
 	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
 	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
+}
+
+#border {
+	border-width: 10px;
+	border-style: solid;
+	border-color: transparent transparent transparent #757575;
+}
+
+#defaultId {
+	border-width: 10px;
+	border-style: solid;
+	border-color: transparent transparent transparent transparent;
 }
 
 </style>

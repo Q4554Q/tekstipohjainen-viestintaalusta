@@ -1,6 +1,6 @@
 <template>
 	<div id="thread">
-		<message v-for="message in data.messages" :key="message.id" v-bind:message_data="message"></message>
+		<message v-for="message in data.messages" :key="message.id" v-bind:writerIdInThread="data.yourWriterId" v-bind:message_data="message"></message>
 		<NewMessage :threadId="this.threadId" :token="token" @update-thread="updateThread"></NewMessage>
 	</div>
 </template>
@@ -40,7 +40,7 @@ export default {
 
 				this.data = data
 				console.log(this.data)
-
+				console.log(this.data.yourWriterId)
 				this.error = 0
 			} catch (error) {
 				this.error = 5

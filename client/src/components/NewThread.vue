@@ -10,7 +10,7 @@
 				maxlength="350"
 			/>
 			<div class="text-end"><small class="text-secondary"><b-icon icon="clock"/>{{message.length}}/350</small></div>
-			<button @click="createNewThread" class="btn btn-sm mt-3">Create thread <SendmessageIcon id="send-message-icon"/></button>
+			<button @click="createNewThread" class="btn btn-sm">Create thread <SendmessageIcon id="send-message-icon"/></button>
 		</div>
 		<div v-if="pending" class="row justify-content-center">
 			<b-spinner variant="primary" class="mt-3"></b-spinner>
