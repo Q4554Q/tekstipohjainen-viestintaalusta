@@ -4,11 +4,11 @@
         <form class="align-items-center" @submit.prevent>
             <div class="row pb-1 fw-bold" id="username">Username:</div>
             <div class="row">
-                <input v-model="username" placeholder="Username" pattern="^[A-Za-z0-9]{3,}$"/>
+                <input v-model="username" placeholder="Username"/>
             </div>
             <div class="row mt-3 pb-1 fw-bold" id="password">Password:</div>
             <div class="row">
-                <input v-model="password" type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$" />
+                <input v-model="password" type="password" />
             </div>
             <div class="row">
                 <input

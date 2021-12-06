@@ -5,15 +5,15 @@
 				Username:
 			</div>
 			<div class="row" id="usernamecontainer">
-				<input v-model="username" placeholder="Username">
+				<input v-model="username" placeholder="Username" pattern="^[A-Za-z0-9\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]{3,}$">
 				<span class="usernametooltip">Username must contain at least 3 characters, and only letters or numbers</span>
 			</div>
 			<div class="row mt-3 pb-1 fw-bold" id="password">
 				Password:
 			</div>
 			<div class="row" id="passwordcontainer">
-				<input v-model="password" type="password">
-				<span class="passwordtooltip">Password must contain at least 6 characters, at least 1 number and 1 uppercase character</span>
+				<input v-model="password" type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$">
+				<span class="passwordtooltip">Password must contain at least 6 characters, at least 1 number and at least 1 uppercase character</span>
 			</div>
 			<div class="row">
 				<input
