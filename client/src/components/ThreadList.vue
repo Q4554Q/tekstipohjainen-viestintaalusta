@@ -1,17 +1,19 @@
 <template>
 	<div id="thread-list">
-			<Message v-for="thread in threadData" :key="thread.id" v-bind:message_data="thread.messages[0]"  @message-clicked="$emit('open-thread', thread.id)"/>
+			<OpeningMessage v-for="thread in threadData" :key="thread.id" v-bind:messageData="thread.messages[0]"
+							v-bind:numMessages="thread.numMessages"
+							@message-clicked="$emit('open-thread', thread.id)"/>
 	</div>
 </template>
 
 <script>
-import Message from './Message'
+import OpeningMessage from './OpeningMessage'
 import axios from 'axios'
 
 export default {
 	name: 'ThreadList',
 	components: {
-		Message
+		OpeningMessage
 	},
 	data () {
 		return {
