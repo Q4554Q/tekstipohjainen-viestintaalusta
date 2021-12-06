@@ -51,7 +51,7 @@ export default {
 					headers: {
 						Authorization: `bearer ${window.accessToken}`
 					}
-				})
+				}).then(response => { this.message_data.score = response.data.score })
 
 				this.error = 0
 			} catch (error) {
@@ -73,7 +73,7 @@ export default {
 					headers: {
 						Authorization: `bearer ${window.accessToken}`
 					}
-				})
+				}).then(response => { this.message_data.score = response.data.score })
 
 				this.error = 0
 			} catch (error) {
