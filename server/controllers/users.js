@@ -59,7 +59,7 @@ const validatedGetMyProfile = [
 const validatedCreate = [
 	check('username')
 		.isLength({ min: 3 }).withMessage('The username must have at least 3 characters')
-    .matches(/^[A-Za-z0-9]+$/).withMessage('The username must only contain letters and numbers'),
+		.matches(/^[A-Za-z0-9\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]+$/).withMessage('The username must only contain letters and numbers'),
 	check('password')
 		.isLength({ min: 6 }).withMessage('The password must have at least 6 characters')
 		.matches(/[a-z]+/).withMessage('The password must include a lowercase letter')
