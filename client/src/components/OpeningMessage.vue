@@ -9,7 +9,7 @@
 			<div class="col-sm-10 px-5 py-3 text-break">
 				{{ messageData.content }}
 			</div>
-			<div class="col-sm-2 m-auto fw-bold fs-3">
+			<div class="col-sm-1 m-auto fw-bold fs-3 text-right " id="score">
 				{{ messageData.score }}
 			</div>
 		</div>
@@ -49,6 +49,11 @@ export default {
 
 #message-icon{
 	margin-right: 1em;
+}
+
+#score {
+	text-align: right;
+	padding-right: 1em;
 }
 
 </style>
