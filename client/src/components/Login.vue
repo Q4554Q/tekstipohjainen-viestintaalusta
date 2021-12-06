@@ -3,11 +3,11 @@
         <form class="align-items-center" @submit.prevent>
             <div class="row">Username:</div>
             <div class="row">
-                <input v-model="username" placeholder="Username" />
+                <input v-model="username" placeholder="Username" pattern="^[A-Za-z0-9]{3,}$"/>
             </div>
             <div class="row mt-3">Password:</div>
             <div class="row">
-                <input v-model="password" type="password" />
+                <input v-model="password" type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$" />
             </div>
             <div class="row">
                 <input
@@ -36,49 +36,49 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios'
 
 export default {
-    name: "Login",
-    data() {
-        return {
-            username: "",
-            password: "",
-            token: null,
-            pending: false,
-            error: 0,
-            errorMessage: "",
-        };
-    },
-    methods: {
-        async login() {
-            this.pending = true;
-            this.error = 0;
+	name: 'Login',
+	data () {
+		return {
+			username: '',
+			password: '',
+			token: null,
+			pending: false,
+			error: 0,
+			errorMessage: ''
+		}
+	},
+	methods: {
+		async login () {
+			this.pending = true
+			this.error = 0
 
-            try {
-                const { data } = await axios.post("/api/login", {
-                    username: this.username,
-                    password: this.password,
-                });
-                this.token = data.token;
+			try {
+				const { data } = await axios.post('/api/login', {
+					username: this.username,
+					password: this.password
+				})
+				this.token = data.token
 
-                this.error = 0;
+				this.error = 0
 
-                this.$emit("login-clicked", this.token);
-            } catch (error) {
-                this.token = null;
+				this.$emit('login-clicked', this.token)
+			} catch (error) {
+				this.token = null
 
-                this.error = 5;
-                if (error.response) {
-                    this.errorMessage = error.response.data.error;
-                } else {
-                    this.errorMessage = error.message;
-                }
-            }
-            this.pending = false;
-        },
-    },
-};
+				this.error = 5
+				if (error.response) {
+					this.errorMessage = error.response.data.error
+				} else {
+					this.errorMessage = error.message
+				}
+			}
+			this.pending = false
+		}
+	}
+}
 </script>
 
 <style scoped>
