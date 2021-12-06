@@ -4,9 +4,9 @@
 	"description": "Tekstipohjainen viestintäalusta: Ryhmän 3 projekti Web-projekti -kurssia varten.",
 	"main": "index.js",
 	"scripts": {
-		"install": "cd ./server && npm i && cd ../client && npm i",
+		"install": "cd ./server && npm i && cd ../client && npm i && cd ..",
 		"create-db": "cd ./server && npm run create-db && npm run create-db:test && cd ..",
-		"build:ui": "cd ./server && npm run build:ui && cd ..",
+		"build:ui": "cd ./client && npm run build --prod && npx copyfiles -u 1 dist/* dist/css/* dist/js/* ../server/public && cd ..",
 		"start": "cd ./server && npm run start",
 		"start:ui": "cd ./client && npm run serve",
 		"lint": "eslint .",

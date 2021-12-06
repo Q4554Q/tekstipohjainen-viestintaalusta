@@ -4,19 +4,18 @@ Ryhmä 5: Sami Huoppila, Saku Myyryläinen ja Elmo Vahvaselkä
 
 ## Projektin alustus
 
-Tee seuraavat vaiheet. Komennot ajetaan projektin juuressa, ellei toisin mainita.
+Tee seuraavat vaiheet. Kaikki npm-komennot ajetaan projektin juuressa.
 
 1. `npm install` Asentaa riippuvuudet.
 2. Luo server-kansioon .env tiedosto, jossa annat tietokannan parametrit, sekä salausavaimen JsonWebTokenia varten:
-	- DB_HOST=localhost
-	- DB_USERNAME=*KÄYTTÄJÄTUNNUS*
-	- DB_PASSWORD=*SALASANA*
-	- DB_NAME=*TIETOKANNAN NIMI*
-	- SECRET=461984yv1strjnkandouwi98ghio
+	- DB_HOST=*Tietokannan url*
+	- DB_USERNAME=*Käyttäjätunnus*
+	- DB_PASSWORD=*Salasana*
+	- DB_NAME=*Tietokannan nimi*
+	- SECRET=*JsonWebToken salausavain, laita satunnaisia merkkejä*
 3. `npm create-db` Luo tarvittavat tietokannat.
-4. Client-kansiossa: `npm run build`
-5. Kopioi dist-kansion sisältö server-kansion alle public-kansioon.
-6. `npm start` Käynnistää serverin, joka myös tarjoilee käyttöliittymän.
+4. `npm run build:ui` Buildaa käyttöliittymän ja kopioi dist-kansion serverin public-kansioon.
+5. `npm start` Käynnistää serverin, joka myös tarjoilee käyttöliittymän.
 
 Testit voi ajaa komennolla `npm run test:server`. Toistaiseksi testit on tehty vain serveripuolelle. Komento hyödyntää concurrently-kirjastoa, joka käynnistää serverin testimoodissa rinnakkain Jestin testiajon kanssa.
 
@@ -35,4 +34,4 @@ Testit voi ajaa komennolla `npm run test:server`. Toistaiseksi testit on tehty v
 | /api/threads/:id  | POST        | kyllä                    | "message"                    |                 | päivitetyn viestiketjun, johon on luotu uusi viesti.                                                                                                    |
 | /api/messages/:id | POST        | kyllä                    | "amount"                     |                 | viestin, jonka score on päivittynyt annetun äänen verran.                                                                                               |
 
-\* Autentikoiduissa reiteissä vaaditaan kyselyn mukana *Authentication*-header, jonka arvona *bearer {token}*. Token on login-reitistä saatava access token.
+\* Autentikoiduissa reiteissä vaaditaan kyselyn mukana *Authorization*-header, jonka arvona *bearer \<token\>* (ilman kulmasulkeita). Tokenin saa login-reitin paluuarvona onnistuneen sisäänkirjautumisen tuloksena.
