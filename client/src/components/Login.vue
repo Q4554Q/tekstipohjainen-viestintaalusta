@@ -22,7 +22,7 @@
         </form>
         <div class="row">
             <button
-                class="btn btn-primary btn-sm mt-3"
+                class="btn btn-sm mt-3"
                 @click="$emit('create-account-clicked')"
             >
                 Create new account
@@ -97,6 +97,10 @@ button {
 	color: #8ed1c6;
 	border-color: #8ed1c6;
 	background-color: #2e2e2e;
+}
+
+button:hover {
+	color: #8ed1c6;
 }
 
 #loginbutton {
