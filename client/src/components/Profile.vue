@@ -70,7 +70,9 @@ export default {
 	color:#8ed1c6;
 	background-color: #2e2e2e;
 }
-
+button:hover {
+	color: #8ed1c6;
+}
 button {
 	color: #8ed1c6;
 	border-color: #8ed1c6;

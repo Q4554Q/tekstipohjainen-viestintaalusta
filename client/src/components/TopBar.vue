@@ -37,6 +37,11 @@ button {
 	background-color: #2e2e2e;
 	color: #8ed1c6;
 }
+button:focus {
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
+	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
+}
 #newthreadbutton {
 	border-color: #8ed1c6;
 }
@@ -44,5 +49,8 @@ button {
 	fill: #8ed1c6;
 	height: 1.5em;
 	width: 1.5em;
+}
+button:hover {
+	color: #8ed1c6;
 }
 </style>

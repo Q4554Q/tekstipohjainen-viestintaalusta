@@ -69,15 +69,32 @@ export default {
 textarea {
 	background-color: #2e2e2e;
 	color:#d1d1d1;
+	border-color: #8ed1c6;
+	outline: 0;
 }
 textarea:focus {
 	background-color: #2e2e2e;
 	color:#d1d1d1;
+	border-color: #8ed1c6;
+	outline: 0;
+
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
+	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
+
 }
 button {
 	background-color: #2e2e2e;
 	color: #8ed1c6;
 	border-color: #8ed1c6;
+}
+button:focus {
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
+	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
+}
+button:hover {
+	color: #8ed1c6;
 }
 #send-message-icon{
 	fill: #8ed1c6;
