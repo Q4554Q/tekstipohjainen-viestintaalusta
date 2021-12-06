@@ -2,16 +2,18 @@
 	<div id="create-account" class="container p-5 my-3 rounded-3">
 		<form class="align-items-center" @submit.prevent>
 			<div class="row pb-1 fw-bold" id="username">
-				User name:
+				Username:
 			</div>
-			<div class="row">
-				<input v-model="username" placeholder="User name">
+			<div class="row" id="usernamecontainer">
+				<input v-model="username" placeholder="Username">
+				<span class="usernametooltip">Username must contain at least 3 characters, and only letters or numbers</span>
 			</div>
 			<div class="row mt-3 pb-1 fw-bold" id="password">
 				Password:
 			</div>
-			<div class="row">
+			<div class="row" id="passwordcontainer">
 				<input v-model="password" type="password">
+				<span class="passwordtooltip">Password must contain at least 6 characters, at least 1 number and 1 uppercase character</span>
 			</div>
 			<div class="row">
 				<input
@@ -114,5 +116,44 @@ button {
 	fill: #8ed1c6;
 	height: 1em;
 	width: 1em;
+}
+
+#usernamecontainer, #passwordcontainer {
+	position:relative;
+}
+
+#usernamecontainer:hover .usernametooltip, #passwordcontainer:hover .passwordtooltip {
+	visibility: visible;
+	opacity: 1;
+}
+
+#usernamecontainer .usernametooltip, #passwordcontainer .passwordtooltip {
+	visibility: hidden;
+	width: 200px;
+	background-color: #747474;
+	text-align: center;
+	padding: 1em;
+	border-radius: 6px;
+	color: #8ed1c6;
+	font-size: small;
+
+	position: absolute;
+	z-index: 1;
+	top: -5px;
+	left: 125%;
+	margin-left: -50px;
+
+	opacity: 0;
+	transition: opacity 0.3s;
+}
+#usernamecontainer .usernametooltip::after, #passwordcontainer .passwordtooltip::after {
+	content: "";
+	position: absolute;
+	top: 13%;
+	right: 100%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: transparent #747474 transparent transparent;
 }
 </style>
