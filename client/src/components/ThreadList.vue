@@ -2,6 +2,7 @@
 	<div id="thread-list">
 			<OpeningMessage v-for="thread in threadData" :key="thread.id" v-bind:messageData="thread.messages[0]"
 							v-bind:numMessages="thread.numMessages" v-bind:writerIdInThread="thread.yourWriterId"
+							v-bind:threadId="thread.id"
 							@message-clicked="$emit('open-thread', thread.id)"/>
 	</div>
 </template>

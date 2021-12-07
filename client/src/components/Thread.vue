@@ -40,7 +40,7 @@ export default {
 
 				this.data = data
 				console.log(this.data)
-				console.log(this.data.yourWriterId)
+
 				this.error = 0
 			} catch (error) {
 				this.error = 5

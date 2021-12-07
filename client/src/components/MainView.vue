@@ -2,7 +2,7 @@
 	<div id="mainview">
 		<TopBar class="fixed-top" @return-clicked="openThreadList" @newthread-clicked="openNewThread"
 				@profile-clicked="openProfile"/>
-		<div class="container pt-3 mt-5"/>
+		<div class="container pt-4 mt-5"/>
 		<ThreadList v-if="mainViewState === showThreadList" v-bind:threads="threads" @open-thread="openThread"/>
 		<Thread v-else-if="mainViewState === showThread" v-bind:threadId="threadId" v-bind:token="token"/>
 		<NewThread v-else-if="mainViewState === showNewThread" v-bind:token="token" @thread-created="openThreadList"/>

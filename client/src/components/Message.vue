@@ -103,7 +103,7 @@ export default {
 			}
 			this.pending = false
 		},
-		sliceDate (date) {
+		getTimeDiff (date) {
 			const dateArray = []
 
 			dateArray.push(date.slice(0, 4)) 	// YYYY
@@ -113,7 +113,35 @@ export default {
 			dateArray.push(date.slice(14, 16))// mm
 			dateArray.push(date.slice(17, 19))// ss
 
-			return dateArray
+			const currentDate = new Date()
+			const comparableDate = new Date(dateArray[0] + '-' + dateArray[1] + '-' + dateArray[2] +
+				'T' + dateArray[3] + ':' + dateArray[4] + ':' + dateArray[5])
+			const differenceInMs = currentDate - comparableDate
+			const differenceInSeconds = differenceInMs / 1000
+			const differenceInMinutes = differenceInSeconds / 60
+			const differenceInHours = differenceInMinutes / 60
+			const differenceInDays = differenceInHours / 24
+
+			if (differenceInDays > 365) {
+				if (Math.floor(differenceInDays / 365) === 1) return 'A year ago'
+				else { return Math.floor(differenceInDays / 365) + ' years ago' }
+			} else if (differenceInDays > 30) {
+				if (Math.floor(differenceInDays / 30) === 1) return 'A month ago'
+				else { return Math.floor(differenceInDays / 30) + ' months ago' }
+			} else if (differenceInDays >= 1) {
+				if (Math.floor(differenceInDays) === 1) return 'A day ago'
+				else { return Math.floor(differenceInDays) + ' days ago' }
+			} else if (differenceInHours >= 1) {
+				if (Math.floor(differenceInHours) === 1) return 'An hour ago'
+				else { return Math.floor(differenceInHours) + ' hours ago' }
+			} else if (differenceInMinutes >= 1) {
+				if (Math.floor(differenceInMinutes) === 1) return 'A minute ago'
+				else { return Math.floor(differenceInMinutes) + ' minutes ago' }
+			} else if (differenceInSeconds >= 5) {
+				return Math.floor(differenceInSeconds) + ' seconds ago'
+			} else {
+				return 'Just now'
+			}
 		}
 	},
 	computed: {
@@ -132,31 +160,7 @@ export default {
 			}
 		},
 		computedTime () {
-			const slicedDate = this.sliceDate(this.message_data.postedTime)
-			const currentDate = new Date()
-			const comparableDate = new Date(slicedDate[0] + '-' + slicedDate[1] + '-' + slicedDate[2] +
-																																				'T' + slicedDate[3] + ':' + slicedDate[4] + ':' + slicedDate[5])
-			const differenceInMs = currentDate - comparableDate
-			const differenceInSeconds = differenceInMs / 1000
-			const differenceInMinutes = differenceInSeconds / 60
-			const differenceInHours = differenceInMinutes / 60
-			const differenceInDays = differenceInHours / 24
-
-			if (differenceInDays > 365) {
-				return Math.floor(differenceInDays / 365) + ' years ago'
-			} else if (differenceInDays > 30) {
-				return Math.floor(differenceInDays / 30) + ' months ago'
-			} else if (differenceInDays >= 1) {
-				return Math.floor(differenceInDays) + ' days ago'
-			} else if (differenceInHours >= 1) {
-				return Math.floor(differenceInHours) + ' hours ago'
-			} else if (differenceInMinutes >= 1) {
-				return Math.floor(differenceInMinutes) + ' minutes ago'
-			} else if (differenceInSeconds >= 5) {
-				return Math.floor(differenceInSeconds) + ' seconds ago'
-			} else {
-				return 'Just now'
-			}
+			return this.getTimeDiff(this.message_data.postedTime)
 		}
 	}
 }

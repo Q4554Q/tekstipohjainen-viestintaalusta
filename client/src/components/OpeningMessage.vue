@@ -19,6 +19,7 @@
 		<div class="d-flex align-items-start mx-4 mt-1">
 			<MessageIcon id="message-icon"/>
 			<span class="fw-bold text-white"> {{ numMessages }}</span>
+			<small class="text-secondary mx-4">Last post {{computedLatestMsgTime}}</small>
 		</div>
 	</div>
 </template>
@@ -27,6 +28,7 @@
 import Clock from '../assets/Clock'
 import MessageIcon from '../assets/MessageIcon'
 import StarIcon from '../assets/StarIcon'
+import axios from 'axios'
 
 export default {
 	name: 'OpeningMessage',
@@ -34,10 +36,41 @@ export default {
 	props: {
 		messageData: Object,
 		numMessages: Number,
-		writerIdInThread: Number
+		writerIdInThread: Number,
+		threadId: Number,
+		lastMessage: Object
+	},
+	data () {
+		return {
+			data: {}
+		}
 	},
 	methods: {
-		sliceDate (date) {
+		async getThreadsById (threadId) {
+			this.pending = true
+			this.error = 0
+
+			try {
+				const { data } = await axios.get('/api/threads/' + threadId, {
+					headers: {
+						Authorization: `bearer ${window.accessToken}`
+					}
+				})
+
+				this.data = data
+
+				this.error = 0
+			} catch (error) {
+				this.error = 5
+				if (error.response) {
+					this.errorMessage = error.response.data.error
+				} else {
+					this.errorMessage = error.message
+				}
+			}
+			this.pending = false
+		},
+		getTimeDiff (date) {
 			const dateArray = []
 
 			dateArray.push(date.slice(0, 4)) 	// YYYY
@@ -47,15 +80,9 @@ export default {
 			dateArray.push(date.slice(14, 16))// mm
 			dateArray.push(date.slice(17, 19))// ss
 
-			return dateArray
-		}
-	},
-	computed: {
-		computedTime () {
-			const slicedDate = this.sliceDate(this.messageData.postedTime)
 			const currentDate = new Date()
-			const comparableDate = new Date(slicedDate[0] + '-' + slicedDate[1] + '-' + slicedDate[2] +
-				'T' + slicedDate[3] + ':' + slicedDate[4] + ':' + slicedDate[5])
+			const comparableDate = new Date(dateArray[0] + '-' + dateArray[1] + '-' + dateArray[2] +
+				'T' + dateArray[3] + ':' + dateArray[4] + ':' + dateArray[5])
 			const differenceInMs = currentDate - comparableDate
 			const differenceInSeconds = differenceInMs / 1000
 			const differenceInMinutes = differenceInSeconds / 60
@@ -63,21 +90,45 @@ export default {
 			const differenceInDays = differenceInHours / 24
 
 			if (differenceInDays > 365) {
-				return Math.floor(differenceInDays / 365) + ' years ago'
+				if (Math.floor(differenceInDays / 365) === 1) return 'A year ago'
+				else { return Math.floor(differenceInDays / 365) + ' years ago' }
 			} else if (differenceInDays > 30) {
-				return Math.floor(differenceInDays / 30) + ' months ago'
+				if (Math.floor(differenceInDays / 30) === 1) return 'A month ago'
+				else { return Math.floor(differenceInDays / 30) + ' months ago' }
 			} else if (differenceInDays >= 1) {
-				return Math.floor(differenceInDays) + ' days ago'
+				if (Math.floor(differenceInDays) === 1) return 'A day ago'
+				else { return Math.floor(differenceInDays) + ' days ago' }
 			} else if (differenceInHours >= 1) {
-				return Math.floor(differenceInHours) + ' hours ago'
+				if (Math.floor(differenceInHours) === 1) return 'An hour ago'
+				else { return Math.floor(differenceInHours) + ' hours ago' }
 			} else if (differenceInMinutes >= 1) {
-				return Math.floor(differenceInMinutes) + ' minutes ago'
+				if (Math.floor(differenceInMinutes) === 1) return 'A minute ago'
+				else { return Math.floor(differenceInMinutes) + ' minutes ago' }
 			} else if (differenceInSeconds >= 5) {
 				return Math.floor(differenceInSeconds) + ' seconds ago'
 			} else {
 				return 'Just now'
 			}
 		}
+	},
+	computed: {
+		computedTime () {
+			if (this.data.messages !== undefined) {
+				return this.getTimeDiff(this.messageData.postedTime)
+			} else {
+				return ''
+			}
+		},
+		computedLatestMsgTime () {
+			if (this.data.messages !== undefined) {
+				return this.getTimeDiff(this.data.messages.at(-1).postedTime)
+			} else {
+				return ''
+			}
+		}
+	},
+	created () {
+		this.getThreadsById(this.threadId)
 	}
 }
 </script>
