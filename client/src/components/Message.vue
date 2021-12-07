@@ -6,7 +6,7 @@
 					<div class="d-flex align-items-start mb-1">
 						<span class="badge rounded-pill" id="writerid">{{ computedWriterId }}</span>
 						<Clock id="clock-icon"/>
-						<small class="text-secondary"> {{ message_data.postedTime }}</small>
+						<small class="text-secondary"> {{ computedTime }}</small>
 					</div>
 				</div>
 				<div class="row p-3">
@@ -102,6 +102,18 @@ export default {
 				}
 			}
 			this.pending = false
+		},
+		sliceDate (date) {
+			const dateArray = []
+
+			dateArray.push(date.slice(0, 4)) 	// YYYY
+			dateArray.push(date.slice(5, 7)) 	// MM
+			dateArray.push(date.slice(8, 10))	// DD
+			dateArray.push(date.slice(11, 13))// hh
+			dateArray.push(date.slice(14, 16))// mm
+			dateArray.push(date.slice(17, 19))// ss
+
+			return dateArray
 		}
 	},
 	computed: {
@@ -117,6 +129,33 @@ export default {
 				return 'AP'
 			} else {
 				return this.message_data.writerId - 1
+			}
+		},
+		computedTime () {
+			const slicedDate = this.sliceDate(this.message_data.postedTime)
+			const currentDate = new Date()
+			const comparableDate = new Date(slicedDate[0] + '-' + slicedDate[1] + '-' + slicedDate[2] +
+																																				'T' + slicedDate[3] + ':' + slicedDate[4] + ':' + slicedDate[5])
+			const differenceInMs = currentDate - comparableDate
+			const differenceInSeconds = differenceInMs / 1000
+			const differenceInMinutes = differenceInSeconds / 60
+			const differenceInHours = differenceInMinutes / 60
+			const differenceInDays = differenceInHours / 24
+
+			if (differenceInDays > 365) {
+				return Math.floor(differenceInDays / 365) + ' years ago'
+			} else if (differenceInDays > 30) {
+				return Math.floor(differenceInDays / 30) + ' months ago'
+			} else if (differenceInDays >= 1) {
+				return Math.floor(differenceInDays) + ' days ago'
+			} else if (differenceInHours >= 1) {
+				return Math.floor(differenceInHours) + ' hours ago'
+			} else if (differenceInMinutes >= 1) {
+				return Math.floor(differenceInMinutes) + ' minutes ago'
+			} else if (differenceInSeconds >= 5) {
+				return Math.floor(differenceInSeconds) + ' seconds ago'
+			} else {
+				return 'Just now'
 			}
 		}
 	}
