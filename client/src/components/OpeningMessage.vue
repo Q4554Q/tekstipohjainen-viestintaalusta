@@ -121,7 +121,7 @@ export default {
 		},
 		computedLatestMsgTime () {
 			if (this.data.messages !== undefined) {
-				return this.getTimeDiff(this.data.messages.at(-1).postedTime)
+				return this.getTimeDiff(this.data.messages.at(-1).postedTime).toLowerCase()
 			} else {
 				return ''
 			}
