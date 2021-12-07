@@ -4,7 +4,7 @@
 			<div class="col-sm-10 px-5 pt-4 text-break">
 				<div class="row">
 					<div class="d-flex align-items-start mb-1">
-						<span class="badge rounded-pill" id="writerid">{{ message_data.writerId }}</span>
+						<span class="badge rounded-pill" id="writerid">{{ computedWriterId }}</span>
 						<Clock id="clock-icon"/>
 						<small class="text-secondary"> {{ message_data.postedTime }}</small>
 					</div>
@@ -110,6 +110,13 @@ export default {
 				return 'border'
 			} else {
 				return 'defaultId'
+			}
+		},
+		computedWriterId () {
+			if (this.message_data.writerId === 1) {
+				return 'AP'
+			} else {
+				return this.message_data.writerId - 1
 			}
 		}
 	}
