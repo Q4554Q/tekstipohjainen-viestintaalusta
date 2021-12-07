@@ -8,7 +8,6 @@ const conn = mysql.createPool({
 	user: DB_USERNAME,
 	password: DB_PASSWORD,
 	database: DB_NAME,
-	timezone: 'utc',
 })
 
 const query = util.promisify(conn.query).bind(conn)

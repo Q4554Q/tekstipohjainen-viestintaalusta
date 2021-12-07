@@ -112,10 +112,10 @@ export default {
 			dateArray.push(date.slice(11, 13))// hh
 			dateArray.push(date.slice(14, 16))// mm
 			dateArray.push(date.slice(17, 19))// ss
+			--dateArray[1]	// Month is zero based
 
-			const currentDate = new Date()
-			const comparableDate = new Date(dateArray[0] + '-' + dateArray[1] + '-' + dateArray[2] +
-				'T' + dateArray[3] + ':' + dateArray[4] + ':' + dateArray[5])
+			const currentDate = Date.now()
+			const comparableDate = Date.UTC(dateArray[0], dateArray[1], dateArray[2], dateArray[3], dateArray[4], dateArray[5])
 			const differenceInMs = currentDate - comparableDate
 			const differenceInSeconds = differenceInMs / 1000
 			const differenceInMinutes = differenceInSeconds / 60
