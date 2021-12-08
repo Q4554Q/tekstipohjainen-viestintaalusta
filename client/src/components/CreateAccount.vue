@@ -2,7 +2,7 @@
 	<div id="create-account" class="container p-5 my-3 rounded-3">
 		<h1 class="fs-4">Create a new account</h1>
 		<form class="align-items-center" @submit.prevent>
-			<div class="row pb-1 fw-bold" id="username">
+			<div class="row pb-1 mt-5 fw-bold" id="username">
 				Username:
 			</div>
 			<div class="row" id="usernamecontainer">
@@ -11,20 +11,20 @@
 				<span
 					class="usernametooltip">Username must contain at least 3 characters, and only letters or numbers</span>
 			</div>
-			<div class="row mt-3 pb-1 fw-bold" id="password">
+			<div class="row mt-4 pb-1 fw-bold" id="password">
 				Password:
 			</div>
 			<div class="row" id="passwordcontainer">
 				<input v-model="password" type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$">
 				<span class="passwordtooltip">Password must contain at least 6 characters, at least 1 number and at least 1 uppercase character</span>
 			</div>
-			<div class="row mt-3 pb-1 fw-bold" id="password2">
+			<div class="row mt-4 pb-1 fw-bold" id="password2">
 				Re-enter your Password:
 			</div>
 			<div class="row" id="passwordcontainer2">
 				<input v-model="password2" type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$">
 			</div>
-			<div class="row">
+			<div class="row mt-4">
 				<input
 					type="submit"
 					value="Create Account"
@@ -34,7 +34,7 @@
 				/>
 			</div>
 		</form>
-		<div class="row">
+		<div class="row mt-4">
 			<button class="btn btn-sm mt-3" @click="$emit('return-clicked')">
 				<BackIcon id="back-icon"/>
 				Return
