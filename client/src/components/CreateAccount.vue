@@ -70,7 +70,31 @@ export default {
 	},
 	methods: {
 		async createAccount () {
-			if (this.password === this.password2) {
+			if (this.username.length < 3) {
+				this.error = 5
+				this.errorMessage = 'Username must be longer than 3 characters.'
+			} else if (!(/^[A-Za-z0-9\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]*$/.test(this.username))) {
+				this.error = 5
+				this.errorMessage = 'Username must only contain letters or numbers.'
+			} else if (this.password.length < 6) {
+				this.error = 5
+				this.errorMessage = 'Password must be at least 6 characters long.'
+			} else if (!(/[a-z]+/.test(this.password))) {
+				this.error = 5
+				this.errorMessage = 'Password must contain a lowercase letter.'
+			} else if (!(/[0-9]/.test(this.password))) {
+				this.error = 5
+				this.errorMessage = 'Password must contain a number.'
+			} else if (this.password === '' || this.password2 === '') {
+				this.error = 5
+				this.errorMessage = 'Please fill both password fields.'
+			} else if (this.password !== this.password2) {
+				this.error = 5
+				this.errorMessage = 'Passwords don\'t match!'
+			} else if (!(/[A-Z]+/.test(this.password))) {
+				this.error = 5
+				this.errorMessage = 'Password must contain an uppercase letter.'
+			} else {
 				this.pending = true
 				this.error = 0
 
@@ -92,12 +116,6 @@ export default {
 					}
 				}
 				this.pending = false
-			} else if (this.password === '' || this.password2 === '') {
-				this.error = 5
-				this.errorMessage = 'Please fill both password fields.'
-			} else {
-				this.error = 5
-				this.errorMessage = 'passwords don\'t match!'
 			}
 		}
 	}
