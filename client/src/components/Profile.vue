@@ -1,13 +1,20 @@
 <template>
 	<div id="profile">
-		<div id="profile-info" class="container pt-3 my-3 fs-5 text-left rounded-3">
-			User name: {{data.username}}<br>
-			Your score: <b>{{data.score}}</b><br>
-			<button type="button" class="btn btn-sm my-3" @click="$emit('logout-clicked')">Log out</button>
-			<br>
-			Threads you have posted on:
+		<div id="profile-info" class="container p-3 my-3 fs-5 text-left rounded-3">
+			<div class="row row py-2 px-4">
+				User name: {{data.username}}
+			</div>
+			<div class="row py-2 px-4 d-inline-block">
+				Your score: <b>{{data.score}}</b>
+			</div>
+			<div class="row py-2 px-4">
+				<button type="button" class="btn fw-bold w-10 my-3" @click="$emit('logout-clicked')">Log out</button>
+			</div>
+			<div class="row py-2 px-4">
+				Threads you have posted on:
+			</div>
 		</div>
-		<ThreadList v-on="$listeners" v-bind:threads="data.threads"/>
+		<ThreadList v-on="$listeners" :threadData="data.threads"/>
 	</div>
 </template>
 
@@ -19,9 +26,6 @@ export default {
 	name: 'Profile',
 	components: {
 		ThreadList
-	},
-	props: {
-		token: String
 	},
 	data () {
 		return {
@@ -39,7 +43,7 @@ export default {
 			try {
 				const { data } = await axios.get('/api/users/me', {
 					headers: {
-						Authorization: `bearer ${this.token}`
+						Authorization: `bearer ${window.accessToken}`
 					}
 				})
 
@@ -66,7 +70,7 @@ export default {
 
 <style scoped>
 #profile-info{
-	width: 800px;
+	max-width: 800px;
 	color:#8ed1c6;
 	background-color: #2e2e2e;
 }
@@ -74,6 +78,7 @@ button:hover {
 	color: #8ed1c6;
 }
 button {
+	max-width: 150px;
 	color: #8ed1c6;
 	border-color: #8ed1c6;
 }

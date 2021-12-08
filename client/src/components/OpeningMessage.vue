@@ -1,38 +1,41 @@
 <template>
-	<div id="message" class="container p-3 my-3 rounded-3" @click="$emit('message-clicked')">
-		<StarIcon v-if="writerIdInThread === messageData.writerId" id="star-icon"/>
-
-		<div class="d-flex align-items-start mx-4 my-1">
-			<Clock id="clock-icon"/>
-			<small class="text-secondary"> {{ computedTime }}</small>
-		</div>
+	<div class="container p-3 my-3 rounded-3" @click="$emit('message-clicked')" :id="computedId">
 
 		<div class="row">
-			<div class="col-sm-10 px-5 ml-1 py-3 text-break">
-				{{ messageData.content }}
+			<div class="col-sm-10 px-3 text-break">
+				<div class="row">
+					<div class="d-flex align-items-start my-1">
+						<Clock id="clock-icon"/>
+						<small class="text-secondary"> {{ computedTime }}</small>
+					</div>
+				</div>
+				<div class="row p-3">
+					{{ messageData.content }}
+				</div>
+				<div class="row pt-3">
+					<div class="d-flex align-items-start mt-1">
+						<MessageIcon id="message-icon"/>
+						<span class="fw-bold text-white"> {{ numMessages }}</span>
+						<small class="text-secondary mx-4">Last post {{ computedLatestMsgTime }}</small>
+					</div>
+				</div>
 			</div>
 			<div class="col-sm-1 m-auto fw-bold fs-3 text-right text-white" id="score">
 				{{ messageData.score }}
 			</div>
 		</div>
 
-		<div class="d-flex align-items-start mx-4 mt-1">
-			<MessageIcon id="message-icon"/>
-			<span class="fw-bold text-white"> {{ numMessages }}</span>
-			<small class="text-secondary mx-4">Last post {{computedLatestMsgTime}}</small>
-		</div>
 	</div>
 </template>
 
 <script>
 import Clock from '../assets/Clock'
 import MessageIcon from '../assets/MessageIcon'
-import StarIcon from '../assets/StarIcon'
 import axios from 'axios'
 
 export default {
 	name: 'OpeningMessage',
-	components: { StarIcon, Clock, MessageIcon },
+	components: { Clock, MessageIcon },
 	props: {
 		messageData: Object,
 		numMessages: Number,
@@ -91,19 +94,29 @@ export default {
 
 			if (differenceInDays > 365) {
 				if (Math.floor(differenceInDays / 365) === 1) return 'A year ago'
-				else { return Math.floor(differenceInDays / 365) + ' years ago' }
+				else {
+					return Math.floor(differenceInDays / 365) + ' years ago'
+				}
 			} else if (differenceInDays > 30) {
 				if (Math.floor(differenceInDays / 30) === 1) return 'A month ago'
-				else { return Math.floor(differenceInDays / 30) + ' months ago' }
+				else {
+					return Math.floor(differenceInDays / 30) + ' months ago'
+				}
 			} else if (differenceInDays >= 1) {
 				if (Math.floor(differenceInDays) === 1) return 'A day ago'
-				else { return Math.floor(differenceInDays) + ' days ago' }
+				else {
+					return Math.floor(differenceInDays) + ' days ago'
+				}
 			} else if (differenceInHours >= 1) {
 				if (Math.floor(differenceInHours) === 1) return 'An hour ago'
-				else { return Math.floor(differenceInHours) + ' hours ago' }
+				else {
+					return Math.floor(differenceInHours) + ' hours ago'
+				}
 			} else if (differenceInMinutes >= 1) {
 				if (Math.floor(differenceInMinutes) === 1) return 'A minute ago'
-				else { return Math.floor(differenceInMinutes) + ' minutes ago' }
+				else {
+					return Math.floor(differenceInMinutes) + ' minutes ago'
+				}
 			} else if (differenceInSeconds >= 5) {
 				return Math.floor(differenceInSeconds) + ' seconds ago'
 			} else {
@@ -125,6 +138,13 @@ export default {
 			} else {
 				return ''
 			}
+		},
+		computedId () {
+			if (this.writerIdInThread === this.messageData.writerId) {
+				return 'border'
+			} else {
+				return 'message'
+			}
 		}
 	},
 	created () {
@@ -135,6 +155,18 @@ export default {
 
 <style scoped>
 #message {
+	border-width: 10px;
+	border-style: solid;
+	border-color: transparent transparent transparent transparent;
+	width: 800px;
+	background-color: #2e2e2e;
+	color: #8ed1c6;
+}
+
+#border {
+	border-width: 10px;
+	border-style: solid;
+	border-color: transparent transparent transparent #757575;
 	width: 800px;
 	background-color: #2e2e2e;
 	color: #8ed1c6;
@@ -145,7 +177,7 @@ export default {
 	margin-right: 0.5em;
 	width: 0.7em;
 	height: 0.7em;
-	fill: #FFF;
+	fill: #757575;
 }
 
 #message-icon {
@@ -156,15 +188,6 @@ export default {
 #score {
 	text-align: right;
 	padding-right: 1em;
-}
-
-#star-icon {
-	float: left;
-	width: 1.5em;
-	height: 1.5em;
-	margin-left: -0.5em;
-	margin-top: -0.5em;
-	fill: #8ed1c6;
 }
 
 </style>
