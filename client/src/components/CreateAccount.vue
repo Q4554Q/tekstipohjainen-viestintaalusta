@@ -152,11 +152,11 @@ button:hover {
 #usernamecontainer .usernametooltip, #passwordcontainer .passwordtooltip {
 	visibility: hidden;
 	width: 200px;
-	background-color: #747474;
+	background-color: #8ed1c6;
 	text-align: center;
 	padding: 1em;
 	border-radius: 6px;
-	color: #8ed1c6;
+	color: #2e2e2e;
 	font-size: small;
 
 	position: absolute;
@@ -166,7 +166,7 @@ button:hover {
 	margin-left: -50px;
 
 	opacity: 0;
-	transition: opacity 0.3s;
+	transition: opacity 0.3s
 }
 
 #usernamecontainer .usernametooltip::after, #passwordcontainer .passwordtooltip::after {
@@ -177,6 +177,6 @@ button:hover {
 	margin-left: -5px;
 	border-width: 5px;
 	border-style: solid;
-	border-color: transparent #747474 transparent transparent;
+	border-color: transparent #8ed1c6 transparent transparent;
 }
 </style>
