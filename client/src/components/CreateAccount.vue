@@ -103,7 +103,6 @@ export default {
 						username: this.username,
 						password: this.password
 					})
-
 					this.error = 0
 
 					this.$emit('return-clicked')
