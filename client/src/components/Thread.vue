@@ -23,8 +23,7 @@ export default {
 		}
 	},
 	props: {
-		threadId: Number,
-		token: String
+		threadId: Number
 	},
 	methods: {
 		async getThreadsById (threadId) {
@@ -34,7 +33,7 @@ export default {
 			try {
 				const { data } = await axios.get('/api/threads/' + threadId, {
 					headers: {
-						Authorization: `bearer ${this.token}`
+						Authorization: `bearer ${window.accessToken}`
 					}
 				})
 

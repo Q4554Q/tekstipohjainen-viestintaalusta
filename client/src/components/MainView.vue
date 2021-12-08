@@ -4,7 +4,7 @@
 				@profile-clicked="openProfile"/>
 		<div class="container pt-4 mt-5"/>
 		<ThreadList v-if="mainViewState === showThreadList" :threadData="threads" @open-thread="openThread"/>
-		<Thread v-else-if="mainViewState === showThread" :threadId="threadId" v-bind:token="token"/>
+		<Thread v-else-if="mainViewState === showThread" :threadId="threadId" />
 		<NewThread v-else-if="mainViewState === showNewThread" @thread-created="openThreadList"/>
 		<Profile v-else-if="mainViewState === showProfile" @open-thread="openThread" v-on="$listeners"/>
 	</div>
