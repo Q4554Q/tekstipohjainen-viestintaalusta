@@ -1,6 +1,6 @@
 <template>
-	<div id="message" class="container my-3 rounded-3" @click="$emit('message-clicked')">
-		<div class="row" :id="computedId">
+	<div :id="computedId" class="container my-3 rounded-3" @click="$emit('message-clicked')">
+		<div class="row">
 			<div class="col-sm-10 px-5 pt-4 text-break">
 				<div class="row">
 					<div class="d-flex align-items-start mb-1">
@@ -116,6 +116,11 @@ export default {
 			const currentDate = new Date()
 			const comparableDate = new Date(dateArray[0] + '-' + dateArray[1] + '-' + dateArray[2] +
 				'T' + dateArray[3] + ':' + dateArray[4] + ':' + dateArray[5])
+
+			console.log('Current date: ' + currentDate)
+			console.log('Comparable date: ' + comparableDate)
+			console.log(this.message_data.postedTime)
+
 			const differenceInMs = currentDate - comparableDate
 			const differenceInSeconds = differenceInMs / 1000
 			const differenceInMinutes = differenceInSeconds / 60
@@ -149,7 +154,7 @@ export default {
 			if (this.writerIdInThread === this.message_data.writerId) {
 				return 'border'
 			} else {
-				return 'defaultId'
+				return 'message'
 			}
 		},
 		computedWriterId () {
@@ -168,6 +173,18 @@ export default {
 
 <style scoped>
 #message {
+	border-width: 10px;
+	border-style: solid;
+	border-color: transparent transparent transparent transparent;
+	width: 800px;
+	background-color: #2e2e2e;
+	color:#8ed1c6;
+}
+
+#border {
+	border-width: 10px;
+	border-style: solid;
+	border-color: transparent transparent transparent #757575;
 	width: 800px;
 	background-color: #2e2e2e;
 	color:#8ed1c6;
@@ -197,18 +214,6 @@ button:focus {
 	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
 	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
 	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
-}
-
-#border {
-	border-width: 10px;
-	border-style: solid;
-	border-color: transparent transparent transparent #757575;
-}
-
-#defaultId {
-	border-width: 10px;
-	border-style: solid;
-	border-color: transparent transparent transparent transparent;
 }
 
 </style>
