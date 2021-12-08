@@ -1,7 +1,5 @@
 <template>
-	<div id="message" class="container p-3 my-3 rounded-3" @click="$emit('message-clicked')">
-		<StarIcon v-if="writerIdInThread === messageData.writerId" id="star-icon"/>
-
+	<div class="container p-3 my-3 rounded-3" @click="$emit('message-clicked')" :id="computedId">
 		<div class="d-flex align-items-start mx-4 my-1">
 			<Clock id="clock-icon"/>
 			<small class="text-secondary"> {{ computedTime }}</small>
@@ -27,12 +25,11 @@
 <script>
 import Clock from '../assets/Clock'
 import MessageIcon from '../assets/MessageIcon'
-import StarIcon from '../assets/StarIcon'
 import axios from 'axios'
 
 export default {
 	name: 'OpeningMessage',
-	components: { StarIcon, Clock, MessageIcon },
+	components: { Clock, MessageIcon },
 	props: {
 		messageData: Object,
 		numMessages: Number,
@@ -125,6 +122,13 @@ export default {
 			} else {
 				return ''
 			}
+		},
+		computedId () {
+			if (this.writerIdInThread === this.messageData.writerId) {
+				return 'border'
+			} else {
+				return 'message'
+			}
 		}
 	},
 	created () {
@@ -135,6 +139,18 @@ export default {
 
 <style scoped>
 #message {
+	border-width: 10px;
+	border-style: solid;
+	border-color: transparent transparent transparent transparent;
+	width: 800px;
+	background-color: #2e2e2e;
+	color: #8ed1c6;
+}
+
+#border {
+	border-width: 10px;
+	border-style: solid;
+	border-color: transparent transparent transparent #757575;
 	width: 800px;
 	background-color: #2e2e2e;
 	color: #8ed1c6;
