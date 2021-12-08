@@ -3,10 +3,10 @@
 		<TopBar class="fixed-top" @return-clicked="openThreadList" @newthread-clicked="openNewThread"
 				@profile-clicked="openProfile"/>
 		<div class="container pt-4 mt-5"/>
-		<ThreadList v-if="mainViewState === showThreadList" v-bind:threads="threads" @open-thread="openThread"/>
-		<Thread v-else-if="mainViewState === showThread" v-bind:threadId="threadId" v-bind:token="token"/>
-		<NewThread v-else-if="mainViewState === showNewThread" v-bind:token="token" @thread-created="openThreadList"/>
-		<Profile v-else-if="mainViewState === showProfile" v-bind:token="token" @open-thread="openThread" v-on="$listeners"/>
+		<ThreadList v-if="mainViewState === showThreadList" :threadData="threads" @open-thread="openThread"/>
+		<Thread v-else-if="mainViewState === showThread" :threadId="threadId" v-bind:token="token"/>
+		<NewThread v-else-if="mainViewState === showNewThread" @thread-created="openThreadList"/>
+		<Profile v-else-if="mainViewState === showProfile" @open-thread="openThread" v-on="$listeners"/>
 	</div>
 </template>
 
@@ -16,6 +16,7 @@ import ThreadList from './ThreadList'
 import TopBar from './TopBar'
 import NewThread from './NewThread'
 import Profile from './Profile'
+import axios from 'axios'
 
 export default {
 	name: 'MainView',
@@ -45,6 +46,7 @@ export default {
 	},
 	methods: {
 		openThreadList () {
+			this.getThreads()
 			this.mainViewState = this.showThreadList
 		},
 		openThread (threadId) {
@@ -56,7 +58,35 @@ export default {
 		},
 		openProfile () {
 			this.mainViewState = this.showProfile
+		},
+		async getThreads () {
+			this.pending = true
+			this.error = 0
+
+			try {
+				const { data } = await axios.get('/api/threads', {
+					headers: {
+						Authorization: `bearer ${window.accessToken}`
+					}
+				})
+
+				this.threads = data
+				console.log(this.threadData)
+
+				this.error = 0
+			} catch (error) {
+				this.error = 5
+				if (error.response) {
+					this.errorMessage = error.response.data.error
+				} else {
+					this.errorMessage = error.message
+				}
+			}
+			this.pending = false
 		}
+	},
+	created () {
+		this.getThreads()
 	}
 }
 </script>
