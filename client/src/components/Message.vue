@@ -16,16 +16,16 @@
 
 			<div class="col-sm-2 text-center d-flex flex-column m-auto">
 				<div class="row">
-					<button type="button" class="btn btn-xs" @click="handleUpvote">
-						<UpvoteIcon id="upvote"/>
+					<button type="button" class="btn btn-xs" id="upvotebutton" @click="handleUpvote">
+						<UpvoteIcon :id="computedUpVoteIcon"/>
 					</button>
 				</div>
 				<div class="row">
 					<span id="score" class="fw-bold fs-4 text-white">{{ message_data.score }}</span>
 				</div>
 				<div class="row">
-					<button type="button" class="btn btn-xs" @click="handleDownvote">
-						<DownvoteIcon id="downvote"/>
+					<button type="button" class="btn btn-xs" id="downvotebutton" @click="handleDownvote">
+						<DownvoteIcon :id="computedDownVoteIcon"/>
 					</button>
 				</div>
 			</div>
@@ -174,6 +174,20 @@ export default {
 		},
 		computedTime () {
 			return this.getTimeDiff(this.message_data.postedTime)
+		},
+		computedUpVoteIcon () {
+			if (this.message_data.vote === 1) {
+				return 'upvoted'
+			} else {
+				return 'notupvoted'
+			}
+		},
+		computedDownVoteIcon () {
+			if (this.message_data.vote === -1) {
+				return 'downvoted'
+			} else {
+				return 'notdownvoted'
+			}
 		}
 	}
 }
@@ -207,8 +221,14 @@ export default {
 	fill: #777;
 }
 
-#upvote, #downvote {
+#notupvoted, #notdownvoted {
 	fill: #8ed1c6;
+	width: 2.5em;
+	height: 2.5em;
+}
+
+#upvoted, #downvoted {
+	fill: #666666;
 	width: 2.5em;
 	height: 2.5em;
 }
@@ -218,10 +238,14 @@ export default {
 	color: #2e2e2e;
 }
 
-button:focus {
+button:focus:not(#downvotebutton, #upvotebutton) {
 	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
 	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
 	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
+}
+
+#downvotebutton, #upvotebutton {
+	box-shadow: none;
 }
 
 </style>
