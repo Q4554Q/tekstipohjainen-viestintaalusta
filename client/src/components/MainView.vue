@@ -76,6 +76,11 @@ export default {
 				this.error = 0
 			} catch (error) {
 				this.error = 5
+
+				if (error.response.status === 401) {
+					this.$emit('logout-clicked')
+				}
+
 				if (error.response) {
 					this.errorMessage = error.response.data.error
 				} else {
