@@ -58,14 +58,21 @@ export default {
 		async handleUpvote () {
 			this.pending = true
 			this.error = 0
+			let amount = 1
+
+			if (this.message_data.vote === 1) {
+				amount = 0
+			}
 
 			try {
-				await axios.post('/api/messages/' + this.message_data.id, { amount: 1 }, {
+				await axios.post('/api/messages/' + this.message_data.id, { amount: amount }, {
 					headers: {
 						Authorization: `bearer ${window.accessToken}`
 					}
 				}).then(response => {
+					console.log(response.data)
 					this.message_data.score = response.data.score
+					this.message_data.vote = response.data.vote
 				})
 
 				this.error = 0
@@ -82,14 +89,21 @@ export default {
 		async handleDownvote () {
 			this.pending = true
 			this.error = 0
+			let amount = -1
+
+			if (this.message_data.vote === -1) {
+				amount = 0
+			}
 
 			try {
-				await axios.post('/api/messages/' + this.message_data.id, { amount: -1 }, {
+				await axios.post('/api/messages/' + this.message_data.id, { amount: amount }, {
 					headers: {
 						Authorization: `bearer ${window.accessToken}`
 					}
 				}).then(response => {
+					console.log(response.data)
 					this.message_data.score = response.data.score
+					this.message_data.vote = response.data.vote
 				})
 
 				this.error = 0
