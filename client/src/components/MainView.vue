@@ -27,9 +27,6 @@ export default {
 		ThreadList,
 		Profile
 	},
-	props: {
-		token: String
-	},
 	data () {
 		return {
 			showThreadList: 0,
@@ -71,7 +68,7 @@ export default {
 				})
 
 				this.threads = data
-				console.log(this.threadData)
+				console.log(this.threads)
 
 				this.error = 0
 			} catch (error) {
