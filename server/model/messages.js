@@ -7,10 +7,10 @@ const { GET_MESSAGE_BY_ID_WITH_SCORE,
 	DELETE_ALL_MESSAGES,
 	DELETE_ALL_VOTES } = require('../db/queries')
 
-const getById = async (id) => {
+const getById = async (id, userID) => {
 	const rows = await query(GET_MESSAGE_BY_ID_WITH_SCORE, [id])
 	if (rows.length > 0) {
-		return rowToMessage(rows[0], undefined)
+		return rowToMessage(rows[0], userID)
 	}
 	return undefined
 }
@@ -52,15 +52,15 @@ const create = async (message) => {
 	return createdMessage
 }
 
-const vote = async (vote) => {
+const vote = async (vote, userID) => {
 	// Check that the message exists
-	const message = await getById(vote.messageId)
+	const message = await getById(vote.messageId, userID)
 	if (!message) return undefined
 
 	// Vote the message
 	await query(VOTE_FOR_MESSAGE, [vote.writerId, vote.messageId, vote.amount, vote.amount])
 
-	const updatedMessage = await getById(vote.messageId)
+	const updatedMessage = await getById(vote.messageId, userID)
 	return updatedMessage
 }
 

@@ -8,7 +8,7 @@ const vote = async (req, res) => {
 		messageId: req.params.id,
 		amount: req.body.amount,
 	}
-	const updatedMessage = await Messages.vote(newVote)
+	const updatedMessage = await Messages.vote(newVote, req.user.id)
 
 	if (!updatedMessage) {
 		return res.status(404).json({ error: 'a message was not found with the given id' })
