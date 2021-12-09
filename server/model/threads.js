@@ -29,6 +29,7 @@ const rowToThread = async (row, userId) => {
 		topic: await Topics.getById(row.topic_id),
 		writerId: row.writer_id,
 		messages: messages,
+		latestPostedTime: row.posted_time,
 		numMessages: messages.length,
 	}
 }
