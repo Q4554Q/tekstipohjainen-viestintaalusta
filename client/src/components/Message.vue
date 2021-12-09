@@ -70,7 +70,6 @@ export default {
 						Authorization: `bearer ${window.accessToken}`
 					}
 				}).then(response => {
-					console.log(response.data)
 					this.message_data.score = response.data.score
 					this.message_data.vote = response.data.vote
 				})
@@ -101,7 +100,6 @@ export default {
 						Authorization: `bearer ${window.accessToken}`
 					}
 				}).then(response => {
-					console.log(response.data)
 					this.message_data.score = response.data.score
 					this.message_data.vote = response.data.vote
 				})
