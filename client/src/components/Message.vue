@@ -115,11 +115,7 @@ export default {
 
 			const currentDate = new Date()
 			const comparableDate = new Date(dateArray[0] + '-' + dateArray[1] + '-' + dateArray[2] +
-				'T' + dateArray[3] + ':' + dateArray[4] + ':' + dateArray[5])
-
-			console.log('Current date: ' + currentDate)
-			console.log('Comparable date: ' + comparableDate)
-			console.log(this.message_data.postedTime)
+				'T' + dateArray[3] + ':' + dateArray[4] + ':' + dateArray[5] + '.000+00:00')
 
 			const differenceInMs = currentDate - comparableDate
 			const differenceInSeconds = differenceInMs / 1000
