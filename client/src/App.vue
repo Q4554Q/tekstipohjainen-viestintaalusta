@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<LoginView v-if="showLogin" @login-clicked="handleLogin"/>
-		<MainView v-else v-bind:token="token" @logout-clicked="handleLogout"/>
+		<MainView v-else @logout-clicked="handleLogout"/>
 	</div>
 </template>
 
