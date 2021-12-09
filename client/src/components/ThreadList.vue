@@ -2,7 +2,7 @@
 	<div id="thread-list">
 			<OpeningMessage v-for="thread in threadData" :key="thread.id" :messageData="thread.messages[0]"
 							:numMessages="thread.numMessages" :writerIdInThread="thread.yourWriterId"
-							:threadId="thread.id"
+							:threadId="thread.id" :latestPost="thread.latestPostedTime"
 							@message-clicked="$emit('open-thread', thread.id)"/>
 	</div>
 </template>

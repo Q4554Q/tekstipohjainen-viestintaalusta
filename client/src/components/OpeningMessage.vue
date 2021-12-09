@@ -31,7 +31,6 @@
 <script>
 import Clock from '../assets/Clock'
 import MessageIcon from '../assets/MessageIcon'
-import axios from 'axios'
 
 export default {
 	name: 'OpeningMessage',
@@ -41,38 +40,10 @@ export default {
 		numMessages: Number,
 		writerIdInThread: Number,
 		threadId: Number,
-		lastMessage: Object
-	},
-	data () {
-		return {
-			data: {}
-		}
+		lastMessage: Object,
+		latestPost: String
 	},
 	methods: {
-		async getThreadsById (threadId) {
-			this.pending = true
-			this.error = 0
-
-			try {
-				const { data } = await axios.get('/api/threads/' + threadId, {
-					headers: {
-						Authorization: `bearer ${window.accessToken}`
-					}
-				})
-
-				this.data = data
-
-				this.error = 0
-			} catch (error) {
-				this.error = 5
-				if (error.response) {
-					this.errorMessage = error.response.data.error
-				} else {
-					this.errorMessage = error.message
-				}
-			}
-			this.pending = false
-		},
 		getTimeDiff (date) {
 			const dateArray = []
 
@@ -127,15 +98,15 @@ export default {
 	},
 	computed: {
 		computedTime () {
-			if (this.data.messages !== undefined) {
+			if (this.messageData !== undefined) {
 				return this.getTimeDiff(this.messageData.postedTime)
 			} else {
 				return ''
 			}
 		},
 		computedLatestMsgTime () {
-			if (this.data.messages !== undefined) {
-				return this.getTimeDiff(this.data.messages.at(-1).postedTime).toLowerCase()
+			if (this.messageData !== undefined) {
+				return this.getTimeDiff(this.latestPost).toLowerCase()
 			} else {
 				return ''
 			}
@@ -147,9 +118,6 @@ export default {
 				return 'message'
 			}
 		}
-	},
-	created () {
-		this.getThreadsById(this.threadId)
 	}
 }
 </script>
