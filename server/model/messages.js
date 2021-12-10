@@ -79,6 +79,10 @@ const vote = async (vote, userID) => {
 	await query(VOTE_FOR_MESSAGE, [vote.writerId, vote.messageId, vote.amount, vote.amount])
 
 	const updatedMessage = await getById(vote.messageId, userID)
+	delete updatedMessage.writerId
+	delete updatedMessage.content
+	delete updatedMessage.postedTime
+
 	return updatedMessage
 }
 
