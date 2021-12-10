@@ -61,6 +61,11 @@ module.exports.CREATE_THREAD =
 	`INSERT INTO threads
 	SET topic_id = ?, writer_id = ?`
 
+module.exports.SET_THREAD_REMOVED =
+	`UPDATE threads
+	SET removed = 1
+	WHERE id = ?`
+
 module.exports.DELETE_ALL_THREADS =
 	'DELETE FROM threads'
 

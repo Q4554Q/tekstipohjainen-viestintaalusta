@@ -4,10 +4,12 @@ const Messages = require('./messages')
 const { GET_ALL_THREADS,
 	GET_THREAD_BY_ID,
 	CREATE_THREAD,
+	SET_THREAD_REMOVED,
 	DELETE_ALL_THREADS } = require('../db/queries')
 
 const getAll = async (offset, limit, userId) => {
-	const rows = await query(GET_ALL_THREADS, [offset, limit])
+	let rows = await query(GET_ALL_THREADS, [offset, limit])
+	rows = rows.filter(row => row.removed === 0)
 	const threads = await Promise.all(
 		rows.map(async (row) => rowToThread(row, userId))
 	)
@@ -16,7 +18,7 @@ const getAll = async (offset, limit, userId) => {
 
 const getById = async (threadId, userId) => {
 	const rows = await query(GET_THREAD_BY_ID, [threadId])
-	if (rows.length > 0) {
+	if (rows.length > 0 && !rows[0].removed) {
 		return rowToThread(rows[0], userId)
 	}
 	return undefined
@@ -43,6 +45,10 @@ const create = async (thread, firstMessage) => {
 	return createdThread
 }
 
+const remove = async (threadId) => {
+	await query(SET_THREAD_REMOVED, [threadId])
+}
+
 const addMessage = async (message) => {
 	const { threadId } = message
 
@@ -67,6 +73,7 @@ module.exports = {
 	getAll,
 	getById,
 	create,
+	remove,
 	addMessage,
 	deleteAll,
 }

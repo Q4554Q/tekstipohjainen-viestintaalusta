@@ -21,6 +21,7 @@ CREATE TABLE threads(
 	id INT NOT NULL AUTO_INCREMENT,
 	topic_id INT NOT NULL,
 	writer_id INT NOT NULL,
+	removed INT NOT NULL DEFAULT 0,
 	PRIMARY KEY (id),
 	FOREIGN KEY(topic_id) REFERENCES topics(id),
 	FOREIGN KEY(writer_id) REFERENCES users(id)

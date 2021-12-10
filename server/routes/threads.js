@@ -7,5 +7,6 @@ router
 	.get('/', userExtractor, threadsController.getAll)
 	.post('/:id', userExtractor, threadsController.addMessage)
 	.post('/', userExtractor, threadsController.create)
+	.delete('/:id', userExtractor, threadsController.remove)
 
 module.exports = router

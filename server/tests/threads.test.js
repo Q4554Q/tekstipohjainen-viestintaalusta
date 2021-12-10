@@ -141,6 +141,18 @@ describe('when there are initially two users and a thread by user1 with a second
 			expect(threadsAtEnd).toHaveLength(threadsAtStart.length)
 		})
 
+		it('own thread can be deleted', async () => {
+			const threadsAtStart = await Threads.getAll(0, 1000, loggedInUser.id)
+
+			await api
+				.delete(`${threadsUrl}/${threadsAtStart[0].id}`)
+				.set('Authorization', loggedInUser.token)
+				.expect(200)
+
+			const threadsAtEnd = await Threads.getAll(0, 1000, loggedInUser.id)
+			expect(threadsAtEnd).toHaveLength(threadsAtStart.length - 1)
+		})
+
 		it('a new message can be posted', async () => {
 			const threadAtStart = await Threads.getById(testThreads[0].id, loggedInUser.id)
 
@@ -213,6 +225,20 @@ describe('when there are initially two users and a thread by user1 with a second
 	describe('and user2 is logged in', () => {
 		beforeEach(async () => {
 			loggedInUser = await loginUser(testUsers[1])
+		})
+
+		it('another user\'s thread cannot be deleted', async () => {
+			const threadsAtStart = await Threads.getAll(0, 1000, loggedInUser.id)
+
+			const response = await api
+				.delete(`${threadsUrl}/${threadsAtStart[0].id}`)
+				.set('Authorization', loggedInUser.token)
+				.expect(401)
+
+			expect(response.body.error).toBe('you can only remove your own threads')
+
+			const threadsAtEnd = await Threads.getAll(0, 1000, loggedInUser.id)
+			expect(threadsAtEnd).toHaveLength(threadsAtStart.length)
 		})
 
 		it('writer id is shown correctly in a new thread', async () => {

@@ -54,6 +54,20 @@ const create = async (req, res) => {
 	res.status(201).json(createdThread)
 }
 
+const remove = async (req, res) => {
+	const threadId = req.params.id
+	const threadToRemove = await Threads.getById(threadId, req.user.id)
+
+	if (!threadToRemove) {
+		return res.status(404).json({ error: 'a thread was not found with the given id' })
+	} else if (threadToRemove.writerId !== req.user.id) {
+		return res.status(401).json({ error: 'you can only remove your own threads' })
+	}
+
+	await Threads.remove(threadId)
+	res.status(200).end()
+}
+
 const addMessage = async (req, res) => {
 	const user = req.user
 	const { message } = req.body
@@ -120,5 +134,6 @@ module.exports = {
 	getAll: validatedGetAll,
 	getById,
 	create: validatedCreate,
+	remove,
 	addMessage: validatedAddMessage,
 }
