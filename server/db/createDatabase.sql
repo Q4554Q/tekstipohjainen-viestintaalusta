@@ -33,6 +33,7 @@ CREATE TABLE messages(
 	index_in_thread INT NOT NULL,
 	content VARCHAR(350) NOT NULL,
 	posted_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+	removed INT NOT NULL DEFAULT 0,
 	PRIMARY KEY (id),
 	FOREIGN KEY(thread_id) REFERENCES threads(id),
 	FOREIGN KEY(writer_id) REFERENCES users(id)

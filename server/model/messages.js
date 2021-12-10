@@ -3,14 +3,15 @@ const { GET_MESSAGE_BY_ID_WITH_SCORE,
 	GET_MESSAGES_BY_THREAD_ID_WITH_SCORE,
 	GET_USERS_VOTE_ON_MESSAGE,
 	CREATE_MESSAGE,
+	SET_MESSAGE_REMOVED,
 	VOTE_FOR_MESSAGE,
 	DELETE_ALL_MESSAGES,
 	DELETE_ALL_VOTES } = require('../db/queries')
 
-const getById = async (id, userID) => {
+const getById = async (id, userId) => {
 	const rows = await query(GET_MESSAGE_BY_ID_WITH_SCORE, [id])
-	if (rows.length > 0) {
-		return rowToMessage(rows[0], userID)
+	if (rows.length > 0 && rows[0].id) {
+		return rowToMessage(rows[0], userId)
 	}
 	return undefined
 }
@@ -24,6 +25,16 @@ const getByThreadId = async (threadId, userId) => {
 }
 
 const rowToMessage = async (row, userId) => {
+	if (row.removed) {
+		return {
+			id: row.id,
+			writerId: row.writer_id,
+			postedTime: row.posted_time,
+			score: row.score,
+			removed: row.removed,
+		}
+	}
+
 	return {
 		id: row.id,
 		writerId: row.writer_id,
@@ -52,6 +63,13 @@ const create = async (message) => {
 	return createdMessage
 }
 
+const remove = async (messageId) => {
+	await query(SET_MESSAGE_REMOVED, [messageId])
+	const removedMessage = await getById(messageId, undefined)
+
+	return removedMessage
+}
+
 const vote = async (vote, userID) => {
 	// Check that the message exists
 	const message = await getById(vote.messageId, userID)
@@ -70,7 +88,6 @@ const deleteAll = async () => {
 }
 
 // For tests only
-//TODO: Siirrä omaan modeliin
 const deleteAllVotes = async () => {
 	await query(DELETE_ALL_VOTES, [])
 }
@@ -79,6 +96,7 @@ module.exports = {
 	getById,
 	getByThreadId,
 	create,
+	remove,
 	vote,
 	deleteAll,
 	deleteAllVotes,

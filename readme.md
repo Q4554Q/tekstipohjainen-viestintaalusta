@@ -33,5 +33,6 @@ Testit voi ajaa komennolla `npm run test:server`. Toistaiseksi testit on tehty v
 | /api/threads      | POST        | kyllä                    | "message", "topicId"         |                 | annettuun aihealueeseen luodun viestiketjun, jossa mukana annettu aloitusviesti. Aihealue on valinnainen, ilman sitä ketju luodaan oletusaihealueeseen. |
 | /api/threads/:id  | POST        | kyllä                    | "message"                    |                 | päivitetyn viestiketjun, johon on luotu uusi viesti.                                                                                                    |
 | /api/messages/:id | POST        | kyllä                    | "amount"                     |                 | viestin, jonka score on päivittynyt annetun äänen verran.                                                                                               |
+| /api/messages/:id | DELETE      | kyllä                    | -                            |                 | poistetun viestin, jolle on asetettu removed = 1.                                                                                               |
 
 \* Autentikoiduissa reiteissä vaaditaan kyselyn mukana *Authorization*-header, jonka arvona *bearer \<token\>* (ilman kulmasulkeita). Tokenin saa login-reitin paluuarvona onnistuneen sisäänkirjautumisen tuloksena.

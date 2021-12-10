@@ -86,6 +86,12 @@ module.exports.CREATE_MESSAGE =
 	`INSERT INTO messages
 	SET thread_id = ?, writer_id = ?, index_in_thread = ?, content = ?`
 
+module.exports.SET_MESSAGE_REMOVED =
+	`UPDATE messages
+	SET removed = 1
+	WHERE id = ?`
+
+
 module.exports.VOTE_FOR_MESSAGE =
 	`INSERT INTO votes (writer_id, message_id, amount)
 	VALUES(?, ?, ?)

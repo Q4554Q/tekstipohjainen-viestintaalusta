@@ -50,6 +50,10 @@ const loginUser = async (user) => {
 }
 
 const createThread = async (writerId) => {
+	// Needed so that multiple thread's aren't created at the same time
+	// and retrieved from the db in a messed up order
+	await sleep(1000)
+
 	const newThread = {
 		topicId: 1,
 		writerId: writerId
@@ -67,6 +71,12 @@ const postMessage = async (writerId, threadId) => {
 		threadId: threadId,
 		writerId: writerId,
 		content: 'Testiviesti',
+	})
+}
+
+function sleep(ms) {
+	return new Promise((resolve) => {
+		setTimeout(resolve, ms)
 	})
 }
 

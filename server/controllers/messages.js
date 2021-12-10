@@ -17,6 +17,20 @@ const vote = async (req, res) => {
 	res.status(200).json(updatedMessage)
 }
 
+const remove = async (req, res) => {
+	const messageId = req.params.id
+	const messageToRemove = await Messages.getById(messageId, req.user.id)
+
+	if (!messageToRemove) {
+		return res.status(404).json({ error: 'a message was not found with the given id' })
+	} else if (messageToRemove.writerId !== req.user.id) {
+		return res.status(401).json({ error: 'you can only remove your own messages' })
+	}
+
+	const removedMessage = await Messages.remove(messageId)
+	res.json(removedMessage)
+}
+
 const validatedVote = [
 	check('amount')
 		.custom(value => value === 1 || value === 0 || value === -1)
@@ -27,4 +41,5 @@ const validatedVote = [
 
 module.exports = {
 	vote: validatedVote,
+	remove,
 }

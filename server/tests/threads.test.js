@@ -6,7 +6,7 @@ const Topics = require('../model/topics')
 const Threads = require('../model/threads')
 const { conn } = require('../db')
 
-const { threadsUrl, testUsers, resetDatabase, createUser, loginUser, createThread, postMessage } = require('./helpers')
+const { threadsUrl, testUsers, resetDatabase, createUser, loginUser, createThread, postMessage, messagesUrl } = require('./helpers')
 let topics
 
 beforeAll(async () => {
@@ -192,6 +192,22 @@ describe('when there are initially two users and a thread by user1 with a second
 
 			expect(response.body.errors).toHaveLength(2)
 		})
+
+		it('own message can be deleted', async () => {
+			const threadsAtStart = await Threads.getAll(0, 1000, loggedInUser.id)
+
+			const response = await api
+				.delete(`${messagesUrl}/${threadsAtStart[0].messages[1].id}`)
+				.set('Authorization', loggedInUser.token)
+
+			const returnedMessage = response.body
+			expect(returnedMessage.removed).toBe(1)
+			expect(returnedMessage.content).not.toBeDefined()
+
+			const threadsAtEnd = await Threads.getAll(0, 1000, loggedInUser.id)
+			const messageAtEnd = threadsAtEnd[0].messages[1]
+			expect(messageAtEnd.removed).toBe(1)
+		})
 	})
 
 	describe('and user2 is logged in', () => {
@@ -218,6 +234,17 @@ describe('when there are initially two users and a thread by user1 with a second
 			expect(updatedThread.yourWriterId).toBe(2)
 			expect(updatedThread.messages[2].writerId).toBe(2)
 			expect(updatedThread.messages[0].writerId).toBe(1)
+		})
+
+		it('another user\'s message cannot be deleted', async () => {
+			const threadsAtStart = await Threads.getAll(0, 1000, loggedInUser.id)
+
+			const response = await api
+				.delete(`${messagesUrl}/${threadsAtStart[0].messages[1].id}`)
+				.set('Authorization', loggedInUser.token)
+				.expect(401)
+
+			expect(response.body.error).toBe('you can only remove your own messages')
 		})
 	})
 
