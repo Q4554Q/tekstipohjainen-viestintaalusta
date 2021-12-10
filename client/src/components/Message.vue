@@ -9,21 +9,24 @@
 						<small class="text-secondary"> {{ computedTime }}</small>
 					</div>
 				</div>
-				<div class="row p-3">
+				<div v-if="message_data.removed" class="row p-3 removed">
+					{{ "Viesti poistettu" }}
+				</div>
+				<div v-else class="row p-3">
 					{{ message_data.content }}
 				</div>
 			</div>
 
 			<div class="col-sm-2 text-center d-flex flex-column m-auto">
-				<div class="row">
+				<div v-if="!message_data.removed" class="row">
 					<button type="button" class="btn btn-xs" id="upvotebutton" @click="handleUpvote">
 						<UpvoteIcon :id="computedUpVoteIcon"/>
 					</button>
 				</div>
 				<div class="row">
-					<span id="score" class="fw-bold fs-4 text-white">{{ message_data.score }}</span>
+					<span id="score" class="fw-bold fs-4" v-bind:class="{ 'text-white': !message_data.removed, 'removed': message_data.removed }">{{ message_data.score }}</span>
 				</div>
-				<div class="row">
+				<div v-if="!message_data.removed" class="row">
 					<button type="button" class="btn btn-xs" id="downvotebutton" @click="handleDownvote">
 						<DownvoteIcon :id="computedDownVoteIcon"/>
 					</button>
@@ -246,6 +249,10 @@ button:focus:not(#downvotebutton, #upvotebutton) {
 
 #downvotebutton, #upvotebutton {
 	box-shadow: none;
+}
+
+.removed {
+	color: #666666;
 }
 
 </style>
