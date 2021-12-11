@@ -10,7 +10,10 @@
 		"start": "cd ./server && npm run start",
 		"start:ui": "cd ./client && npm run serve",
 		"lint": "eslint .",
-		"test:server": "cd ./server && npm run test && cd .."
+		"test:server": "cd ./server && npm run test && cd ..",
+		"deploy": "git push heroku main",
+        "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
+        "logs:prod": "heroku logs --tail"
 	},
 	"repository": {
 		"type": "git",
