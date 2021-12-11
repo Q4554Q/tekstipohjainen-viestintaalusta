@@ -1,7 +1,7 @@
 <template>
 	<div id="thread">
-		<message v-for="message in data.messages" :key="message.id" v-bind:writerIdInThread="data.yourWriterId" v-bind:message_data="message"></message>
-		<NewMessage :threadId="this.threadId" @update-thread="updateThread"></NewMessage>
+		<message v-for="message in data.messages" :key="message.id" :writerIdInThread="data.yourWriterId" :message_data="message"/>
+		<NewMessage :threadId="this.threadId" @update-thread="updateThread"/>
 	</div>
 </template>
 
@@ -26,7 +26,12 @@ export default {
 		threadId: Number
 	},
 	methods: {
-		async getThreadsById (threadId) {
+		/**
+		 * Used to get data from the server for a thread with a specific id.
+		 * @param threadId Id of the thread.
+		 * @returns {Promise<void>}
+		 */
+		async getThreadDataById (threadId) {
 			this.pending = true
 			this.error = 0
 
@@ -51,12 +56,16 @@ export default {
 			}
 			this.pending = false
 		},
-		updateThread (messages) {
-			this.data = messages
+		/**
+		 * Used to update data on the thread.
+		 * @param data is an object that contains all necessary data for the thread.
+		 */
+		updateThread (data) {
+			this.data = data
 		}
 	},
 	created () {
-		this.getThreadsById(this.threadId)
+		this.getThreadDataById(this.threadId)
 	}
 }
 
