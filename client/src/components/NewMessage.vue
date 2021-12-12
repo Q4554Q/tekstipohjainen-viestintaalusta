@@ -31,6 +31,10 @@ export default {
 		threadId: Number
 	},
 	methods: {
+		/**
+			* Sends the contents of a new message to the database.
+			* @returns {Promise<void>}
+			*/
 		async handleNewMessage () {
 			this.pending = true
 			this.error = 0

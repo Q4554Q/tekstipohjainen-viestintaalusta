@@ -44,6 +44,11 @@ export default {
 		latestPost: String
 	},
 	methods: {
+		/**
+			* Calculates the time difference between the time a message was posted and current time.
+			* @param date The date the message was posted.
+			* @returns {string} Time difference as a string
+			*/
 		getTimeDiff (date) {
 			const dateArray = []
 
@@ -97,6 +102,10 @@ export default {
 		}
 	},
 	computed: {
+		/**
+			* Sets the time elapsed since this thread was posted.
+			* @returns {string} Time elapsed as a string.
+			*/
 		computedTime () {
 			if (this.messageData !== undefined) {
 				return this.getTimeDiff(this.messageData.postedTime)
@@ -104,6 +113,10 @@ export default {
 				return ''
 			}
 		},
+		/**
+			* Sets the time elapsed since the last message in this thread was posted.
+			* @returns {string} Time elapsed as a string.
+			*/
 		computedLatestMsgTime () {
 			if (this.messageData !== undefined) {
 				return this.getTimeDiff(this.latestPost).toLowerCase()
@@ -111,6 +124,11 @@ export default {
 				return ''
 			}
 		},
+		/**
+			* Sets the ID of a component based on if the thread was created by the currently
+			* logged in user. Styling of the component is based on this ID.
+			* @returns {string} ID.
+			*/
 		computedId () {
 			if (this.writerIdInThread === this.messageData.writerId) {
 				return 'border'

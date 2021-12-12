@@ -69,6 +69,11 @@ export default {
 		}
 	},
 	methods: {
+		/**
+			* Validates the password and username clientside and sends them to the database if they're valid.
+			* If the password or username are invalid, then this sets an error to describe what is invalid.
+			* @returns {Promise<void>}
+			*/
 		async createAccount () {
 			if (this.username.length < 3) {
 				this.error = 5

@@ -42,20 +42,38 @@ export default {
 		}
 	},
 	methods: {
+		/**
+			* Sets the mainViewState to equal a value which makes the v-if condition in ThreadList true.
+			*/
 		openThreadList () {
 			this.getThreads()
 			this.mainViewState = this.showThreadList
 		},
+		/**
+			* Sets the mainViewState to equal a value which makes the v-if condition in Thread true.
+			* @param threadId Id of the thread that opens
+			*/
 		openThread (threadId) {
 			this.threadId = threadId
 			this.mainViewState = this.showThread
 		},
+		/**
+			* Sets the mainViewState to equal a value which makes the v-if condition in NewThread true.
+			*/
 		openNewThread () {
 			this.mainViewState = this.showNewThread
 		},
+		/**
+			* Sets the mainViewState to equal a value which makes the v-if condition in Profile true.
+			*/
 		openProfile () {
 			this.mainViewState = this.showProfile
 		},
+		/**
+			* Gets all of the threads that will be shown in ThreadList from the database and saves them
+			* into this components' data.
+			* @returns {Promise<void>}
+			*/
 		async getThreads () {
 			this.pending = true
 			this.error = 0
@@ -87,6 +105,9 @@ export default {
 			this.pending = false
 		}
 	},
+	/**
+		* Calls the getThreads function when the MainView component is created
+		*/
 	created () {
 		this.getThreads()
 	}

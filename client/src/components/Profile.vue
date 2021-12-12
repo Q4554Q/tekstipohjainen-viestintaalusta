@@ -36,7 +36,11 @@ export default {
 		}
 	},
 	methods: {
-		async getData () {
+		/**
+			* Gets all of the data associated with the currently logged in user from the database.
+			* @returns {Promise<void>}
+			*/
+		async getUserData () {
 			this.pending = true
 			this.error = 0
 
@@ -62,8 +66,11 @@ export default {
 			this.pending = false
 		}
 	},
+	/**
+		* Calls the getUserData function when the Profile component is created.
+		*/
 	created () {
-		this.getData()
+		this.getUserData()
 	}
 }
 </script>
