@@ -52,6 +52,10 @@ export default {
 		}
 	},
 	methods: {
+		/**
+			* Sends a login request with the username, password and accesstoken.
+			* @returns {Promise<void>}
+			*/
 		async login () {
 			this.pending = true
 			this.error = 0

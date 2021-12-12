@@ -40,6 +40,10 @@ export default {
 		}
 	},
 	methods: {
+		/**
+			* Sends the contents of a new thread to the database.
+			* @returns {Promise<void>}
+			*/
 		async createNewThread () {
 			this.pending = true
 			this.error = 0

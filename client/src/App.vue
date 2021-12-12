@@ -28,12 +28,23 @@ export default {
 		}
 	},
 	methods: {
+		/**
+			* Sets the current users access token on login.
+			* @param token access token.
+			*/
 		handleLogin (token) {
 			this.setToken(token)
 		},
+		/**
+			* Sets the access token to an empty string on logout.
+			*/
 		handleLogout () {
 			this.setToken('')
 		},
+		/**
+			* Sets the access token to a given parameter value.
+			* @param token access token
+			*/
 		setToken (token) {
 			this.token = token
 			window.accessToken = token
