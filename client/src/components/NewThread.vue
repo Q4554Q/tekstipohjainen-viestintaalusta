@@ -75,7 +75,7 @@ export default {
 
 <style scoped>
 #new-thread {
-	max-width: 800px;
+	width: 800px;
 	background-color: #2e2e2e;
 	color:#d1d1d1;
 }
