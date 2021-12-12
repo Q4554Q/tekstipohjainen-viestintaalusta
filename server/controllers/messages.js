@@ -2,6 +2,14 @@ const Messages = require('../model/messages')
 const { check } = require('express-validator')
 const validationHandler = require('../middleware/validationHandler')
 
+/**
+ * Adds (or changes) a vote on the given message from the logged in user.
+ * The vote amount must be specified in the request data.
+ * Responds with the updated message. If a message is not found, responds with 404 status.
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 const vote = async (req, res) => {
 	const newVote = {
 		writerId: req.user.id,
@@ -17,6 +25,15 @@ const vote = async (req, res) => {
 	res.status(200).json(updatedMessage)
 }
 
+/**
+ * Sets the given message as removed, as long as it's the logged in user's message.
+ * Responds with data of the removed message.
+ * If the message is not found, responds with a 404 status,
+ * or if attempting to remove another user's message, with status 401.
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 const remove = async (req, res) => {
 	const messageId = req.params.id
 	const messageToRemove = await Messages.getById(messageId, req.user.id)
@@ -31,6 +48,9 @@ const remove = async (req, res) => {
 	res.json(removedMessage)
 }
 
+/**
+ * Checks that the vote amount is either -1, 0 or 1.
+ */
 const validatedVote = [
 	check('amount')
 		.custom(value => value === 1 || value === 0 || value === -1)

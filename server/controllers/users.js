@@ -5,11 +5,23 @@ const { check, query } = require('express-validator')
 const validationHandler = require('../middleware/validationHandler')
 const hideWriters = require('../utils/hideWriters')
 
+/**
+ * Responds with all the usernames and their scores.
+ * @param {*} req
+ * @param {*} res
+ */
 const getAll = async (req, res) => {
 	const users = await Users.getAll()
 	res.json(users)
 }
 
+/**
+ * Respond's with the logged in user's data, including all the threads they have participated in.
+ * The threads can be paginated with query strings 'limit' and 'offset'.
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 const getMyProfile = async (req, res) => {
 	const userId = req.user.id
 	const user = await Users.getById(userId)
@@ -31,6 +43,13 @@ const getMyProfile = async (req, res) => {
 	res.json(user)
 }
 
+/**
+ * Creates a new user with the username and password specified in the request body.
+ * The password is hashed before stored into the database.
+ * Responds with the created username and id.
+ * @param {*} req
+ * @param {*} res
+ */
 const create = async (req, res) => {
 	const { username, password } = req.body
 	const passwordHash = await bcrypt.hash(password, 10)
@@ -43,6 +62,9 @@ const create = async (req, res) => {
 	res.status(201).json(createdUser)
 }
 
+/**
+ * Checks that the offset and limit query string parameters are positive integers.
+ */
 const validatedGetMyProfile = [
 	query('offset')
 		.isInt({ min: 0 })
@@ -56,6 +78,10 @@ const validatedGetMyProfile = [
 	getMyProfile,
 ]
 
+/**
+ * Checks that the username is long enough and contains only letters and numbers.
+ * Checks that the password contains at least 6 characters, a lowercase letter, an uppecase letter and a number.
+ */
 const validatedCreate = [
 	check('username')
 		.isLength({ min: 3 }).withMessage('The username must have at least 3 characters')

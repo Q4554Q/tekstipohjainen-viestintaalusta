@@ -5,6 +5,10 @@ const { GET_ALL_TOPICS,
 // Topics don't change, so they can be cached
 let topics = []
 
+/**
+ * Returns all the topics.
+ * @returns The topics.
+ */
 const getAll = async () => {
 	if (topics.length > 0) {
 		return topics
@@ -14,18 +18,22 @@ const getAll = async () => {
 	return topics
 }
 
+/**
+ * Returns the specified topic, or undefined if not found.
+ * @param {*} id The topic's id.
+ * @returns The found topic.
+ */
 const getById = async (id) => {
-	// const rows = await query(GET_TOPIC_BY_ID, [id])
-	// if (rows.length > 0) {
-	// 	return rowToTopic(rows[0])
-	// }
-	// return undefined
-
 	if (topics.length === 0) await getAll()
 	const topic = topics.find(topic => topic.id === id)
 	return topic
 }
 
+/**
+ * Parses the given row from an SQL query into a topic object.
+ * @param {*} row The SQL query result's row.
+ * @returns The topic object.
+ */
 const rowToTopic = (row) => {
 	return {
 		id: row.id,
