@@ -162,6 +162,8 @@ export default {
 						headers: {
 							Authorization: `bearer ${window.accessToken}`
 						}
+					}).then(response => {
+						this.message_data.removed = response.data.removed
 					})
 
 					this.data = data
