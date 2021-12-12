@@ -24,6 +24,9 @@ const testUsers = [
 	}
 ]
 
+/**
+ * Removes all data from the database, except for the topics.
+ */
 const resetDatabase = async () => {
 	await Messages.deleteAllVotes()
 	await Messages.deleteAll()
@@ -31,6 +34,10 @@ const resetDatabase = async () => {
 	await Users.deleteAll()
 }
 
+/**
+ * Adds the given user to the database.
+ * @param {*} user The user to create.
+ */
 const createUser = async (user) => {
 	await Users.create({
 		username: user.username,
@@ -38,6 +45,11 @@ const createUser = async (user) => {
 	})
 }
 
+/**
+ * Logs the given user in.
+ * @param {*} user The user to log in.
+ * @returns The logged in user and the access token.
+ */
 const loginUser = async (user) => {
 	const response = await api
 		.post(loginUrl)
@@ -49,6 +61,11 @@ const loginUser = async (user) => {
 	}
 }
 
+/**
+ * Creates a new dummy thread.
+ * @param {*} writerId The id of the user that creates this thread.
+ * @returns The created thread.
+ */
 const createThread = async (writerId) => {
 	// Needed so that multiple thread's aren't created at the same time
 	// and retrieved from the db in a messed up order
@@ -66,6 +83,11 @@ const createThread = async (writerId) => {
 	return await Threads.create(newThread, firstMessage)
 }
 
+/**
+ * Posts a new dummy message in the specified thread.
+ * @param {*} writerId The id of the user that posts the message.
+ * @param {*} threadId The id of the thread in which the message is posted.
+ */
 const postMessage = async (writerId, threadId) => {
 	await Threads.addMessage({
 		threadId: threadId,
@@ -74,6 +96,11 @@ const postMessage = async (writerId, threadId) => {
 	})
 }
 
+/**
+ * Pauses the server's execution for a given amount of time.
+ * @param {*} ms Time to sleep in milliseconds.
+ * @returns A promise.
+ */
 function sleep(ms) {
 	return new Promise((resolve) => {
 		setTimeout(resolve, ms)

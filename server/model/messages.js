@@ -8,6 +8,13 @@ const { GET_MESSAGE_BY_ID_WITH_SCORE,
 	DELETE_ALL_MESSAGES,
 	DELETE_ALL_VOTES } = require('../db/queries')
 
+/**
+ * Returns a message of the given id, or undefined if not found.
+ * The message data contains the logged in user's vote on this message.
+ * @param {*} id The message's id.
+ * @param {*} userId The logged in user's id that is requesting the message.
+ * @returns The found message.
+ */
 const getById = async (id, userId) => {
 	const rows = await query(GET_MESSAGE_BY_ID_WITH_SCORE, [id])
 	if (rows.length > 0 && rows[0].id) {
@@ -16,6 +23,13 @@ const getById = async (id, userId) => {
 	return undefined
 }
 
+/**
+ * Returns all messages of a given thread.
+ * The messages' data contains the logged in user's votes on the messages.
+ * @param {*} threadId The thread which messages are returned.
+ * @param {*} userId The logged in user's id.
+ * @returns The messages of the thread.
+ */
 const getByThreadId = async (threadId, userId) => {
 	const rows = await query(GET_MESSAGES_BY_THREAD_ID_WITH_SCORE, [threadId])
 	const messages = await Promise.all(
@@ -24,6 +38,13 @@ const getByThreadId = async (threadId, userId) => {
 	return messages
 }
 
+/**
+ * Parses the given row from an SQL query into a message object.
+ * If the message has been set removed, the content and user's vote on the message are not returned.
+ * @param {*} row The SQL query result's row.
+ * @param {*} userId The logged in user's id for retrieving their vote on the message.
+ * @returns The message object.
+ */
 const rowToMessage = async (row, userId) => {
 	if (row.removed) {
 		return {
@@ -45,6 +66,12 @@ const rowToMessage = async (row, userId) => {
 	}
 }
 
+/**
+ * Finds the amount that the given user has voted for the specified message.
+ * @param {*} messageId The message id.
+ * @param {*} userId The user's id.
+ * @returns The vote amount.
+ */
 const getUsersVoteOnMessage = async (messageId, userId) => {
 	const rows = await query(GET_USERS_VOTE_ON_MESSAGE, [messageId, userId])
 	let vote = 0
@@ -56,6 +83,11 @@ const getUsersVoteOnMessage = async (messageId, userId) => {
 	return vote
 }
 
+/**
+ * Adds a new message to the database.
+ * @param {*} message The message to add.
+ * @returns The created message.
+ */
 const create = async (message) => {
 	const resultEvent = await query(CREATE_MESSAGE, [message.threadId, message.writerId, message.indexInThread, message.content])
 	const createdMessage = await getById(resultEvent.insertId)
@@ -63,6 +95,11 @@ const create = async (message) => {
 	return createdMessage
 }
 
+/**
+ * Sets the specified message as removed.
+ * @param {*} messageId The message's id.
+ * @returns The removed message.
+ */
 const remove = async (messageId) => {
 	await query(SET_MESSAGE_REMOVED, [messageId])
 	const removedMessage = await getById(messageId, undefined)
@@ -70,6 +107,13 @@ const remove = async (messageId) => {
 	return removedMessage
 }
 
+/**
+ * Adds the given vote to the database.
+ * Checks that the message to be voted does exist, otherwise return undefined.
+ * @param {*} vote The vote to add.
+ * @param {*} userID The logged in user's id.
+ * @returns The messages updated vote related data.
+ */
 const vote = async (vote, userID) => {
 	// Check that the message exists
 	const message = await getById(vote.messageId, userID)
@@ -86,12 +130,16 @@ const vote = async (vote, userID) => {
 	return updatedMessage
 }
 
-// For tests only
+/**
+ * Removes all messages from the database. For tests only.
+ */
 const deleteAll = async () => {
 	await query(DELETE_ALL_MESSAGES, [])
 }
 
-// For tests only
+/**
+ * Removes all votes from the database. For tests only.
+ */
 const deleteAllVotes = async () => {
 	await query(DELETE_ALL_VOTES, [])
 }

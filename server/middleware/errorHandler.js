@@ -1,5 +1,13 @@
 const logger = require('../utils/logger')
 
+/**
+ * Handles any arrors thrown by the other middleware, logs them, and responds accordingly.
+ * @param {*} error
+ * @param {*} req
+ * @param {*} res
+ * @param {*} _next
+ * @returns
+ */
 const errorHandler = (error, req, res, _next) => {
 	logger.error(`${error.name}: ${error.message}`)
 
