@@ -77,7 +77,7 @@ export default {
 
 <style scoped>
 #profile-info{
-	max-width: 800px;
+	width: 800px;
 	color:#8ed1c6;
 	background-color: #2e2e2e;
 }
