@@ -10,10 +10,27 @@
 					</div>
 				</div>
 				<div v-if="message_data.removed" class="row p-3 removed">
-					{{ "Viesti poistettu" }}
+					{{ "This message was deleted" }}
 				</div>
 				<div v-else class="row p-3">
 					{{ message_data.content }}
+				</div>
+				<div class="row">
+					<div v-if="message_data.writerId === writerIdInThread && !message_data.removed"
+						 class="d-flex align-items-start pt-1">
+						<Button type="button" class="btn btn-xs" v-if="!deleteClicked" id="delete-icon" @click="deleteIconClicked">
+							<DeleteIcon id="delete-icon"/>
+						</Button>
+						<div v-if="deleteClicked" id="delete-warning">
+							Do you want to delete this message?
+							<Button type="button" class="btn btn-xs" @click="deleteMessage">
+								<YesIcon id="yes-icon"/>
+							</Button>
+							<Button type="button" class="btn btn-xs" @click="cancelDelete">
+								<NoIcon id="no-icon"/>
+							</Button>
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -24,7 +41,10 @@
 					</button>
 				</div>
 				<div class="row">
-					<span id="score" class="fw-bold fs-4" v-bind:class="{ 'text-white': !message_data.removed, 'removed': message_data.removed }">{{ message_data.score }}</span>
+					<span id="score" class="fw-bold fs-4"
+						  v-bind:class="{ 'text-white': !message_data.removed, 'removed': message_data.removed }">{{
+							message_data.score
+						}}</span>
 				</div>
 				<div v-if="!message_data.removed" class="row">
 					<button type="button" class="btn btn-xs" id="downvotebutton" @click="handleDownvote">
@@ -42,16 +62,22 @@ import Clock from '../assets/Clock'
 import UpvoteIcon from '../assets/UpvoteIcon'
 import DownvoteIcon from '../assets/DownvoteIcon'
 import axios from 'axios'
+import DeleteIcon from '../assets/DeleteIcon'
+import YesIcon from '../assets/YesIcon'
+import NoIcon from '../assets/NoIcon'
 
 export default {
 	name: 'Message',
-	components: { Clock, UpvoteIcon, DownvoteIcon },
+	components: { Clock, UpvoteIcon, DownvoteIcon, DeleteIcon, YesIcon, NoIcon },
 	props: {
 		message_data: Object,
-		writerIdInThread: Number
+		writerIdInThread: Number,
+		threadId: Number,
+		index: Number
 	},
 	data () {
 		return {
+			deleteClicked: false,
 			pending: false,
 			errorMessage: '',
 			error: 0
@@ -118,6 +144,42 @@ export default {
 			}
 			this.pending = false
 		},
+		async deleteMessage () {
+			this.pending = true
+			this.error = 0
+
+			try {
+				if (this.index === 0) {
+					await axios.delete('/api/threads/' + this.threadId, {
+						headers: {
+							Authorization: `bearer ${window.accessToken}`
+						}
+					})
+					this.$emit('thread-deleted')
+					this.error = 0
+				} else {
+					const { data } = await axios.delete('/api/messages/' + this.message_data.id, {
+						headers: {
+							Authorization: `bearer ${window.accessToken}`
+						}
+					})
+
+					this.data = data
+					console.log(this.data)
+
+					this.error = 0
+				}
+			} catch (error) {
+				this.error = 5
+				if (error.response) {
+					this.errorMessage = error.response.data.error
+				} else {
+					this.errorMessage = error.message
+				}
+			}
+			this.deleteClicked = false
+			this.pending = false
+		},
 		getTimeDiff (date) {
 			const dateArray = []
 
@@ -140,24 +202,40 @@ export default {
 
 			if (differenceInDays > 365) {
 				if (Math.floor(differenceInDays / 365) === 1) return 'A year ago'
-				else { return Math.floor(differenceInDays / 365) + ' years ago' }
+				else {
+					return Math.floor(differenceInDays / 365) + ' years ago'
+				}
 			} else if (differenceInDays > 30) {
 				if (Math.floor(differenceInDays / 30) === 1) return 'A month ago'
-				else { return Math.floor(differenceInDays / 30) + ' months ago' }
+				else {
+					return Math.floor(differenceInDays / 30) + ' months ago'
+				}
 			} else if (differenceInDays >= 1) {
 				if (Math.floor(differenceInDays) === 1) return 'A day ago'
-				else { return Math.floor(differenceInDays) + ' days ago' }
+				else {
+					return Math.floor(differenceInDays) + ' days ago'
+				}
 			} else if (differenceInHours >= 1) {
 				if (Math.floor(differenceInHours) === 1) return 'An hour ago'
-				else { return Math.floor(differenceInHours) + ' hours ago' }
+				else {
+					return Math.floor(differenceInHours) + ' hours ago'
+				}
 			} else if (differenceInMinutes >= 1) {
 				if (Math.floor(differenceInMinutes) === 1) return 'A minute ago'
-				else { return Math.floor(differenceInMinutes) + ' minutes ago' }
+				else {
+					return Math.floor(differenceInMinutes) + ' minutes ago'
+				}
 			} else if (differenceInSeconds >= 5) {
 				return Math.floor(differenceInSeconds) + ' seconds ago'
 			} else {
 				return 'Just now'
 			}
+		},
+		deleteIconClicked () {
+			this.deleteClicked = true
+		},
+		cancelDelete () {
+			this.deleteClicked = false
 		}
 	},
 	computed: {
@@ -203,7 +281,7 @@ export default {
 	border-color: transparent transparent transparent transparent;
 	width: 800px;
 	background-color: #2e2e2e;
-	color:#8ed1c6;
+	color: #8ed1c6;
 }
 
 #border {
@@ -212,7 +290,7 @@ export default {
 	border-color: transparent transparent transparent #757575;
 	width: 800px;
 	background-color: #2e2e2e;
-	color:#8ed1c6;
+	color: #8ed1c6;
 }
 
 #clock-icon {
@@ -242,9 +320,9 @@ export default {
 }
 
 button:focus:not(#downvotebutton, #upvotebutton) {
-	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
-	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
-	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(142, 209, 198,.6);
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(142, 209, 198, .6);
+	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(142, 209, 198, .6);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(142, 209, 198, .6);
 }
 
 #downvotebutton, #upvotebutton {
@@ -253,6 +331,18 @@ button:focus:not(#downvotebutton, #upvotebutton) {
 
 .removed {
 	color: #666666;
+}
+
+#delete-icon {
+	fill: #666666;
+}
+
+#delete-warning {
+	color: #bb2d3b;
+}
+
+#yes-icon, #no-icon {
+	fill: #8ed1c6;
 }
 
 </style>
