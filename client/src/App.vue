@@ -11,12 +11,6 @@ import LoginView from './components/LoginView'
 
 export default {
 	name: 'App',
-	head: {
-		meta: [
-			{ charset: 'utf-8' },
-			{ name: 'viewport', content: 'width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0' }
-		]
-	},
 	components: {
 		LoginView,
 		MainView
@@ -76,9 +70,4 @@ html {
 	background: rgba(30,30,30,50);
 }
 
-@media only screen and (max-width: 480px) {
-	html {
-		font-size: 150%;
-	}
-}
 </style>
