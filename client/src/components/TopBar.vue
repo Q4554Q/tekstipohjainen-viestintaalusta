@@ -1,9 +1,9 @@
 <template>
-	<div id="top-bar" class="container p-3 rounded-bottom text-white">
+	<div id="top-bar" class="container p-3 rounded-bottom">
 		<div class="d-flex justify-content-between">
-				<button type="button" class="btn" @click="$emit('return-clicked')"><HomeIcon id="home-icon"/></button>
-				<button type="button" class="btn fw-bold" @click="$emit('newthread-clicked')" id="newthreadbutton">New thread <PenIcon id="pen-icon"/></button>
-				<button type="button" class="btn" @click="$emit('profile-clicked')"><ProfileIcon id="profile-icon"/></button>
+				<button type="button" class="btn btn-lg" @click="$emit('return-clicked')"><HomeIcon id="home-icon"/></button>
+				<button type="button" class="btn btn-lg fw-bold" @click="$emit('newthread-clicked')" id="newthreadbutton">New thread <PenIcon id="pen-icon"/></button>
+				<button type="button" class="btn btn-lg" @click="$emit('profile-clicked')"><ProfileIcon id="profile-icon"/></button>
 		</div>
 	</div>
 </template>
