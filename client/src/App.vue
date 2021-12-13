@@ -75,4 +75,10 @@ export default {
 html {
 	background: rgba(30,30,30,50);
 }
+
+@media only screen and (max-width: 480px) {
+	html {
+		font-size: 150%;
+	}
+}
 </style>
