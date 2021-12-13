@@ -86,8 +86,6 @@ export default {
 				})
 
 				this.threads = data
-				console.log(this.threads)
-
 				this.error = 0
 			} catch (error) {
 				this.error = 5
