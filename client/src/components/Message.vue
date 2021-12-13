@@ -1,7 +1,7 @@
 <template>
 	<div :id="computedId" class="container my-3 rounded-3" @click="$emit('message-clicked')">
 		<div class="row">
-			<div class="col-sm-10 px-5 pt-4 text-break">
+			<div class="col-10 px-5 pt-4 text-break">
 				<div class="row">
 					<div class="d-flex align-items-start mb-1">
 						<span class="badge rounded-pill" id="writerid">{{ computedWriterId }}</span>
@@ -18,25 +18,35 @@
 				<div class="row">
 					<div v-if="message_data.writerId === writerIdInThread && !message_data.removed"
 						 class="d-flex align-items-start pt-1">
-						<Button type="button" class="btn btn-xs" v-if="!deleteClicked" id="delete-icon" @click="deleteIconClicked">
+						<Button type="button" class="btn" v-if="!deleteClicked" id="delete-icon" @click="deleteIconClicked">
 							<DeleteIcon id="delete-icon"/>
 						</Button>
-						<div v-if="deleteClicked" id="delete-warning">
+						<div v-if="deleteClicked && index !== 0" class="delete-warning">
 							Do you want to delete this message?
-							<Button type="button" class="btn btn-xs" @click="deleteMessage">
+							<Button type="button" class="btn" @click="deleteMessage">
 								<YesIcon id="yes-icon"/>
 							</Button>
-							<Button type="button" class="btn btn-xs" @click="cancelDelete">
+							<Button type="button" class="btn" @click="cancelDelete">
 								<NoIcon id="no-icon"/>
 							</Button>
 						</div>
+						<div v-if="deleteClicked && index === 0" class="delete-warning">
+							Do you want to delete this thread and all the messages in it?
+							<Button type="button" class="btn" @click="deleteMessage">
+								<YesIcon id="yes-icon"/>
+							</Button>
+							<Button type="button" class="btn" @click="cancelDelete">
+								<NoIcon id="no-icon"/>
+							</Button>
+						</div>
+
 					</div>
 				</div>
 			</div>
 
-			<div class="col-sm-2 text-center d-flex flex-column m-auto">
+			<div class="col-2 text-center d-flex flex-column m-auto">
 				<div v-if="!message_data.removed" class="row">
-					<button type="button" class="btn btn-xs" id="upvotebutton" @click="handleUpvote">
+					<button type="button" class="btn" id="upvotebutton" @click="handleUpvote">
 						<UpvoteIcon :id="computedUpVoteIcon"/>
 					</button>
 				</div>
@@ -47,7 +57,7 @@
 						}}</span>
 				</div>
 				<div v-if="!message_data.removed" class="row">
-					<button type="button" class="btn btn-xs" id="downvotebutton" @click="handleDownvote">
+					<button type="button" class="btn" id="downvotebutton" @click="handleDownvote">
 						<DownvoteIcon :id="computedDownVoteIcon"/>
 					</button>
 				</div>
@@ -84,6 +94,10 @@ export default {
 		}
 	},
 	methods: {
+		/**
+		 * Adds or updates the messages upvote to the database.
+		 * @returns {Promise<void>}
+		 */
 		async handleUpvote () {
 			this.pending = true
 			this.error = 0
@@ -114,6 +128,10 @@ export default {
 			}
 			this.pending = false
 		},
+		/**
+		 * Adds or updates the messages downvote to the database
+		 * @returns {Promise<void>}
+		 */
 		async handleDownvote () {
 			this.pending = true
 			this.error = 0
@@ -144,6 +162,10 @@ export default {
 			}
 			this.pending = false
 		},
+		/**
+		 * Marks the message as deleted in the database
+		 * @returns {Promise<void>}
+		 */
 		async deleteMessage () {
 			this.pending = true
 			this.error = 0
@@ -339,7 +361,7 @@ button:focus:not(#downvotebutton, #upvotebutton) {
 	fill: #666666;
 }
 
-#delete-warning {
+.delete-warning {
 	color: #bb2d3b;
 }
 
