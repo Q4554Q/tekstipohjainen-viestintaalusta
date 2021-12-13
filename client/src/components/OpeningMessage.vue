@@ -12,10 +12,10 @@
 				<div class="row p-3">
 					{{ messageData.content }}
 				</div>
-				<div class="row pt-3">
+				<div class="row pt-3" v-if="numMessages > 1">
 					<div class="d-flex align-items-start mt-1">
 						<MessageIcon id="message-icon"/>
-						<span class="fw-bold text-white"> {{ numMessages }}</span>
+						<span class="fw-bold text-white"> {{ numMessages - 1 }}</span>
 						<small class="text-secondary mx-4">Last post {{ computedLatestMsgTime }}</small>
 					</div>
 				</div>

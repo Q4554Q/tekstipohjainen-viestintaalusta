@@ -204,6 +204,11 @@ export default {
 			this.deleteClicked = false
 			this.pending = false
 		},
+		/**
+		 * Calculates the time difference between the time a message was posted and current time.
+		 * @param date The date the message was posted.
+		 * @returns {string} Time difference as a string
+		 */
 		getTimeDiff (date) {
 			const dateArray = []
 
@@ -255,14 +260,25 @@ export default {
 				return 'Just now'
 			}
 		},
+		/**
+		 * Sets the deleteClicked to true, that allows the display of delete message.
+		 */
 		deleteIconClicked () {
 			this.deleteClicked = true
 		},
+		/**
+		 * Set the deleteClicked to false and hides the delete message.
+		 */
 		cancelDelete () {
 			this.deleteClicked = false
 		}
 	},
 	computed: {
+		/**
+		 * Sets the ID of a component based on if the thread was created by the currently
+		 * logged in user. Styling of the component is based on this ID.
+		 * @returns {string} ID.
+		 */
 		computedId () {
 			if (this.writerIdInThread === this.message_data.writerId) {
 				return 'border'
@@ -270,16 +286,28 @@ export default {
 				return 'message'
 			}
 		},
+		/**
+		 * Sets threads creators id as a OP and numbers from others.
+		 * @returns {string|number}
+		 */
 		computedWriterId () {
 			if (this.message_data.writerId === 1) {
-				return 'AP'
+				return 'OP'
 			} else {
 				return this.message_data.writerId - 1
 			}
 		},
+		/**
+		 * Sets the time elapsed since this thread was posted.
+		 * @returns {string} Time elapsed as a string.
+		 */
 		computedTime () {
 			return this.getTimeDiff(this.message_data.postedTime)
 		},
+		/**
+		 * Updates the status of the upvote icon
+		 * @returns {string}
+		 */
 		computedUpVoteIcon () {
 			if (this.message_data.vote === 1) {
 				return 'upvoted'
@@ -287,6 +315,10 @@ export default {
 				return 'notupvoted'
 			}
 		},
+		/**
+		 * Updates the status of the downvote icon
+		 * @returns {string}
+		 */
 		computedDownVoteIcon () {
 			if (this.message_data.vote === -1) {
 				return 'downvoted'
