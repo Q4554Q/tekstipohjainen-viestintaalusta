@@ -11,6 +11,12 @@ import LoginView from './components/LoginView'
 
 export default {
 	name: 'App',
+	head: {
+		meta: [
+			{ charset: 'utf-8' },
+			{ name: 'viewport', content: 'width=800' }
+		]
+	},
 	components: {
 		LoginView,
 		MainView
