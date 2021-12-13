@@ -1,8 +1,11 @@
 <template>
 	<div id="thread">
 		<message v-for="(message, index) in data.messages" :key="message.id" :writerIdInThread="data.yourWriterId"
-				 :threadId="threadId" :message_data="message" :index="index" v-on="$listeners"/>
-		<NewMessage :threadId="this.threadId" @update-thread="updateThread"/>
+											:threadId="threadId" :message_data="message" :index="index" v-on="$listeners"/>
+		<div v-if="pending" class="row justify-content-center">
+			<b-spinner variant="primary" class="mt-3"></b-spinner>
+		</div>
+		<NewMessage v-if="!pending" :threadId="this.threadId" @update-thread="updateThread"/>
 	</div>
 </template>
 
@@ -20,7 +23,8 @@ export default {
 	},
 	data () {
 		return {
-			data: {}
+			data: {},
+			pending: false
 		}
 	},
 	props: {
