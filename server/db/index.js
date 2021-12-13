@@ -8,7 +8,7 @@ const conn = mysql.createPool({
 	user: DB_USERNAME,
 	password: DB_PASSWORD,
 	database: DB_NAME,
-	connectionLimit: 10,
+	connectionLimit: 9,
 })
 
 const query = util.promisify(conn.query).bind(conn)
