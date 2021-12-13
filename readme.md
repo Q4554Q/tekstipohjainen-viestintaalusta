@@ -1,6 +1,6 @@
 # Tekstipohjainen viestintäalusta
 
-Ryhmä 5: Sami Huoppila, Saku Myyryläinen ja Elmo Vahvaselkä
+Ryhmä 3: Sami Huoppila, Saku Myyryläinen ja Elmo Vahvaselkä
 
 ## Projektin alustus
 
