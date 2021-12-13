@@ -2,7 +2,7 @@
 	<div class="container p-3 my-3 rounded-3" @click="$emit('message-clicked')" :id="computedId">
 
 		<div class="row">
-			<div class="col-sm-10 px-3 text-break">
+			<div class="col-10 px-3 text-break">
 				<div class="row">
 					<div class="d-flex align-items-start my-1">
 						<Clock id="clock-icon"/>
@@ -20,7 +20,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-1 m-auto fw-bold fs-3 text-right text-white" id="score">
+			<div class="col-1 m-auto fw-bold fs-3 text-right text-white" id="score">
 				{{ messageData.score }}
 			</div>
 		</div>
