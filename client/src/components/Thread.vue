@@ -48,8 +48,6 @@ export default {
 				})
 
 				this.data = data
-				console.log(this.data)
-
 				this.error = 0
 			} catch (error) {
 				this.error = 5
